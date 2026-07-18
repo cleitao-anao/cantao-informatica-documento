@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Diagnóstico Técnico</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f9f9f9;
+    }
+
+    h1 {
+      margin-bottom: 5px;
+    }
+
+    .topo {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 15px;
+    }
+
+    .topo div {
+      flex: 1;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      background: #fff;
+    }
+
+    th,
+    td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background: #333;
+      color: #fff;
+      text-align: center;
+    }
+
+    .secao {
+      background: #eaeaea;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .btn-salvar {
+      background: #4CAF50;
+      color: #fff;
+    }
+
+    .btn-print {
+      background: #2196F3;
+      color: #fff;
+    }
+
+    .btn-pdf {
+      background: #f44336;
+      color: #fff;
+    }
+
+    @media print {
+      button {
+        display: none;
+      }
+
+      body {
+        background: #fff;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>DIAGNÓSTICO TÉCNICO</h1>
+
+  <!-- DADOS DO CLIENTE -->
+  <div class="topo">
+    <div>
+      <label>CLIENTE</label>
+      <input type="text" class="save">
+    </div>
+  </div>
+
+  <div class="topo">
+    <div>
+      <label>EQUIPAMENTO</label>
+      <input type="text">
+    </div>
+
+    <div>
+      <label>OS</label>
+      <input type="text" id="osField">
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ITEM</th>
+        <th>ENTRADA</th>
+        <th>TÉCNICO</th>
+        <th>TESTES</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      <!-- ENERGIA -->
+      <tr>
+        <td colspan="4" class="secao">ENERGIA</td>
+      </tr>
+
+      <tr>
+        <td>FONTE / PLACA FONTE</td>
+        <td>
+          <select class="save">
+            
+            <option>Selecione</option>
+
+            <option>Funcionando</option>
+
+            <option>Com defeito</option>
+
+            <option>Não Testado</option>
+            
+            <option>Não Se Aplica</option>
+          </select>
+        </td>
+
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+      </tr>
+
+      <tr>
+        <td>BATERIA</td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+      </tr>
+
+      <tr>
+        <td>CONECTOR POWER JACK</td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+      </tr>
+
+      <!-- ACIONAMENTO -->
+      <tr>
+        <td colspan="4" class="secao">ACIONAMENTO</td>
+      </tr>
+
+      <tr>
+        <td>BOTÃO POWER</td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+          </select></td>
+      </tr>
+
+      <!-- CARCAÇA -->
+      <tr>
+        <td colspan="4" class="secao">CARCAÇA</td>
+      </tr>
+
+      <tr>
+        <td>CARCAÇA</td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+          </select></td>
+      </tr>
+
+      <!-- PLACA / PROCESSAMENTO -->
+      <tr>
+        <td colspan="4" class="secao">PLACA / PROCESSAMENTO</td>
+      </tr>
+
+      <tr>
+        <td>PLACA MÃE / PLACA PRINCIPAL</td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+          </select></td>
+      </tr>
+
+      <tr>
+        <td>PROCESSADOR</td>
+        <td>
+          <select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+          </select>
+          <select class="save" style="margin-top:5px;">
+            <option>Modelo</option>
+            <option>Intel Celeron</option>
+            <option>Intel Pentium</option>
+            <option>Core i3</option>
+            <option>Core i5</option>
+            <option>Core i7</option>
+            <option>Core i9</option>
+            <option>AMD Ryzen 3</option>
+            <option>AMD Ryzen 5</option>
+            <option>AMD Ryzen 7</option>
+            <option>AMD Ryzen 9</option>
+          </select>
+        </td>
+        <td>
+          <select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+          </select>
+          <select class="save" style="margin-top:5px;">
+            <option>Modelo</option>
+            <option>Intel Celeron</option>
+            <option>Intel Pentium</option>
+            <option>Core i3</option>
+            <option>Core i5</option>
+            <option>Core i7</option>
+            <option>Core i9</option>
+            <option>AMD Ryzen 3</option>
+            <option>AMD Ryzen 5</option>
+            <option>AMD Ryzen 7</option>
+            <option>AMD Ryzen 9</option>
+          </select>
+        </td>
+        <td>
+          <select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+          </select>
+          <select class="save" style="margin-top:5px;">
+            <option>Modelo</option>
+            <option>Intel Celeron</option>
+            <option>Intel Pentium</option>
+            <option>Core i3</option>
+            <option>Core i5</option>
+            <option>Core i7</option>
+            <option>Core i9</option>
+            <option>AMD Ryzen 3</option>
+            <option>AMD Ryzen 5</option>
+            <option>AMD Ryzen 7</option>
+            <option>AMD Ryzen 9</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td>MEMÓRIA</td>
+        <td>
+          <select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+          </select>
+          <select class="save" style="margin-top:5px;">
+            <option>Capacidade</option>
+            <option>2GB</option>
+            <option>4GB</option>
+            <option>6GB</option>
+            <option>8GB</option>
+            <option>10GB</option>
+            <option>12GB</option>
+            <option>16GB</option>
+            <option>32GB</option>
+            <option>64GB</option>
+          </select>
+        </td>
+        <td>
+          <select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+          </select>
+          <select class="save" style="margin-top:5px;">
+            <option>Capacidade</option>
+            <option>2GB</option>
+            <option>4GB</option>
+            <option>6GB</option>
+            <option>8GB</option>
+            <option>10GB</option>
+            <option>12GB</option>
+            <option>16GB</option>
+            <option>32GB</option>
+            <option>64GB</option>
+          </select>
+        </td>
+        <td>
+          <select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+          </select>
+          <select class="save" style="margin-top:5px;">
+            <option>Capacidade</option>
+            <option>2GB</option>
+            <option>4GB</option>
+            <option>6GB</option>
+            <option>8GB</option>
+            <option>10GB</option>
+            <option>12GB</option>
+            <option>16GB</option>
+            <option>32GB</option>
+            <option>64GB</option>
+          </select>
+        </td>
+      </tr>
+
+      <!-- DISPLAY -->
+      <tr>
+        <td colspan="4" class="secao">DISPLAY</td>
+      </tr>
+      <tr>
+        <td>TELA (ESTADO)</td>
+        <td>
+          <select class="save display-check">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Sem Imagem</option>
+            <option>Imagem com Defeito</option>
+            <option>Não Testado</option>
+          </select>
+        </td>
+        <td>
+          <select class="save display-check">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Sem Imagem</option>
+            <option>Imagem com Defeito</option>
+            <option>Não Testado</option>
+          </select>
+        </td>
+        <td>
+          <select class="save display-check">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Sem Imagem</option>
+            <option>Imagem com Defeito</option>
+            <option>Não Testado</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td>TIPO DE PAINEL</td>
+        <td>
+          <select class="save">
+            <option>Selecione</option>
+            <option>TN</option>
+            <option>IPS</option>
+            <option>VA</option>
+            <option>OLED</option>
+          </select>
+        </td>
+        <td>
+          <select class="save">
+            <option>Selecione</option>
+            <option>TN</option>
+            <option>IPS</option>
+            <option>VA</option>
+            <option>OLED</option>
+          </select>
+        </td>
+        <td>
+          <select class="save">
+            <option>Selecione</option>
+            <option>TN</option>
+            <option>IPS</option>
+            <option>VA</option>
+            <option>OLED</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td>RESOLUÇÃO</td>
+        <td>
+          <select class="save">
+            <option>Selecione</option>
+            <option>HD</option>
+            <option>FULL HD</option>
+            <option>2K (QHD)</option>
+            <option>4K (UHD)</option>
+          </select>
+        </td>
+        <td>
+          <select class="save">
+            <option>Selecione</option>
+            <option>HD</option>
+            <option>FULL HD</option>
+            <option>2K (QHD)</option>
+            <option>4K (UHD)</option>
+          </select>
+        </td>
+        <td>
+          <select class="save">
+            <option>Selecione</option>
+            <option>HD</option>
+            <option>FULL HD</option>
+            <option>2K (QHD)</option>
+            <option>4K (UHD)</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td>TAXA DE ATUALIZAÇÃO</td>
+        <td>
+          <select class="save">
+            <option>Selecione</option>
+            <option>60Hz</option>
+            <option>75Hz</option>
+            <option>120Hz</option>
+            <option>144Hz</option>
+            <option>165Hz</option>
+            <option>240Hz</option>
+          </select>
+        </td>
+        <td>
+          <select class="save">
+            <option>Selecione</option>
+            <option>60Hz</option>
+            <option>75Hz</option>
+            <option>120Hz</option>
+            <option>144Hz</option>
+            <option>165Hz</option>
+            <option>240Hz</option>
+          </select>
+        </td>
+        <td>
+          <select class="save">
+            <option>Selecione</option>
+            <option>60Hz</option>
+            <option>75Hz</option>
+            <option>120Hz</option>
+            <option>144Hz</option>
+            <option>165Hz</option>
+            <option>240Hz</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td>BACKLIGHT (ILUMINAÇÃO)</td>
+        <td><select class="save display-check">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Sem Iluminação</option>
+            <option>Oscilando</option>
+            <option>Não Testado</option>
+          </select></td>
+        <td><select class="save display-check">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Sem Iluminação</option>
+            <option>Oscilando</option>
+            <option>Não Testado</option>
+          </select></td>
+        <td><select class="save display-check">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Sem Iluminação</option>
+            <option>Oscilando</option>
+            <option>Não Testado</option>
+          </select></td>
+      </tr>
+
+      <tr>
+        <td>BARRA DE LEDS</td>
+        <td><select class="save display-check">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Aberta</option>
+            <option>Em Curto</option>
+            <option>Não Testado</option>
+          </select></td>
+        <td><select class="save display-check">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Aberta</option>
+            <option>Em Curto</option>
+            <option>Não Testado</option>
+          </select></td>
+        <td><select class="save display-check">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Aberta</option>
+            <option>Em Curto</option>
+            <option>Não Testado</option>
+          </select></td>
+      </tr>
+
+      <tr>
+        <td>CABO FLAT (LVDS/eDP)</td>
+        <td><select class="save display-check">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Mau Contato</option>
+            <option>Rompido</option>
+            <option>Não Testado</option>
+          </select></td>
+        <td><select class="save display-check">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Mau Contato</option>
+            <option>Rompido</option>
+            <option>Não Testado</option>
+          </select></td>
+        <td><select class="save display-check">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Mau Contato</option>
+            <option>Rompido</option>
+            <option>Não Testado</option>
+          </select></td>
+      </tr>
+
+      <tr>
+        <td>SINTOMA VISUAL</td>
+        <td colspan="3">
+          <select class="save display-check">
+            <option>Selecione</option>
+            <option>Imagem Normal</option>
+            <option>Tela Escura com Imagem</option>
+            <option>Sem Imagem Total</option>
+            <option>Listras / Artefatos</option>
+            <option>Imagem Piscando</option>
+          </select>
+        </td>
+      </tr>
+
+      <!-- PORTAS / PERIFÉRICOS -->
+      <tr>
+        <td colspan="4" class="secao">PORTAS / PERIFÉRICOS</td>
+      </tr>
+
+      <tr>
+        <td>HDMI</td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+      </tr>
+
+      <tr>
+        <td>USB / USB-C</td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+      </tr>
+
+      <tr>
+        <td>VGA</td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+      </tr>
+
+      <tr>
+        <td>TECLADO</td>
+        <td>
+          <select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select>
+          <select class="save" style="margin-top:5px;">
+            <option>Selecione</option>
+            <option>Simples</option>
+            <option>Completo</option>
+          </select>
+        </td>
+        <td>
+          <select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select>
+          <select class="save" style="margin-top:5px;">
+            <option>Selecione</option>
+            <option>Simples</option>
+            <option>Completo</option>
+          </select>
+        </td>
+        <td>
+          <select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select>
+          <select class="save" style="margin-top:5px;">
+            <option>Selecione</option>
+            <option>Simples</option>
+            <option>Completo</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td>TOUCHPAD</td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+      </tr>
+
+      <tr>
+        <td>CÂMERA</td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+      </tr>
+
+      <tr>
+        <td>MICROFONE</td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+      </tr>
+
+      <tr>
+        <td>AUDIO INTERNO</td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+      </tr>
+
+      <tr>
+        <td>CONECTOR P2</td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+      </tr>
+
+      <tr>
+        <td>SISTEMA OPERACIONAL</td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Corrompido</option>
+            <option>Não Inicializa</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Corrompido</option>
+            <option>Não Inicializa</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Corrompido</option>
+            <option>Não Inicializa</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+      </tr>
+
+      <!-- PLACA GRÁFICA -->
+      <tr>
+        <td>PLACA GRÁFICA</td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select></td>
+      </tr>
+
+      <!-- ARMAZENAMENTO -->
+      <tr>
+        <td colspan="4" class="secao">ARMAZENAMENTO</td>
+      </tr>
+
+      <tr>
+        <td>SSD/NVMe/HD</td>
+        <td>
+          <select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select>
+          <select class="save" style="margin-top:5px;">
+            <option>Tipo</option>
+            <option>SSD</option>
+            <option>NVMe</option>
+            <option>HD</option>
+            <option>NGFF(M2)</option>
+          </select>
+          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+        </td>
+        <td>
+          <select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select>
+          <select class="save" style="margin-top:5px;">
+            <option>Tipo</option>
+            <option>SSD</option>
+            <option>NVMe</option>
+            <option>HD</option>
+            <option>NGFF(M2)</option>
+          </select>
+          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+        </td>
+        <td>
+          <select class="save">
+            <option>Selecione</option>
+            <option>Funcionando</option>
+            <option>Com Defeito</option>
+            <option>Não Testado</option>
+            <option>Não Se Aplica</option>
+          </select>
+          <select class="save" style="margin-top:5px;">
+            <option>Tipo</option>
+            <option>SSD</option>
+            <option>NVMe</option>
+            <option>HD</option>
+            <option>NGFF(M2)</option>
+          </select>
+          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+        </td>
+      </tr>
+
+      <!-- BACKUP -->
+      <tr>
+        <td colspan="4" class="secao">BACKUP</td>
+      </tr>
+
+      <tr>
+        <td>BACKUP</td>
+        <td colspan="3">
+          <textarea rows="2" placeholder="Disco C"></textarea>
+          <textarea rows="2" placeholder="Usuário"></textarea>
+          <textarea rows="2" placeholder="Disco D"></textarea>
+        </td>
+      </tr>
+
+      <!-- FINALIZAÇÃO -->
+      <tr>
+        <td colspan="4" class="secao">FINALIZAÇÃO</td>
+      </tr>
+
+      <tr>
+        <td>PREVENTIVA</td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>SIM</option>
+            <option>NÃO</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>SIM</option>
+            <option>NÃO</option>
+          </select></td>
+        <td><select class="save">
+            <option>Selecione</option>
+            <option>SIM</option>
+            <option>NÃO</option>
+          </select></td>
+      </tr>
+
+      <!-- RESULTADO -->
+      <tr>
+        <td colspan="4" class="secao">RESULTADO</td>
+      </tr>
+
+      <tr>
+        <td>DEFEITO ENCONTRADO</td>
+        <td colspan="3">
+          <div id="DEFEITOENCONTRADOField" contenteditable="true" class="save" style="min-height:60px;"></div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>PARECER TÉCNICO</td>
+        <td colspan="3">
+          <div contenteditable="true" class="save" style="min-height:60px;"></div>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <!-- ASSINATURAS -->
+  <table>
+    <tr>
+      <td style="text-align:center; height:80px;">
+        _______________________________<br>
+        ASSINATURA DO TÉCNICO
+      </td>
+      <td style="text-align:center;">
+        _______________________________<br>
+        ASSINATURA DO CLIENTE
+      </td>
+    </tr>
+  </table>
+
+  <button class="btn-salvar" onclick="salvar()">💾 Salvar</button>
+  <button class="btn-print" onclick="imprimir()">🖨️ Imprimir</button>
+  <button class="btn-pdf" onclick="gerarPDF()">📄 PDF</button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <script>
+    function capturarDefeitos() {
+      let defeitos = [];
+
+      document.querySelectorAll(".save").forEach((el) => {
+        let valor;
+
+        if (el.tagName === "SELECT" || el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+          valor = el.value;
+        } else {
+          valor = el.innerText;
+        }
+
+        if (
+          valor &&
+          (
+            valor.toLowerCase() === "com defeito" ||
+            valor.toLowerCase() === "corrompido" ||
+            valor.toLowerCase() === "não inicializa"
+          )
+        ) {
+          let linha = el.closest("tr");
+          if (linha) {
+            let item = linha.querySelector("td")?.innerText.trim();
+            if (item && !defeitos.includes(item)) {
+              defeitos.push(item);
+            }
+          }
+        }
+      });
+
+      let campoDefeito = document.getElementById("DEFEITOENCONTRADOField");
+
+      if (campoDefeito) {
+        campoDefeito.innerHTML = defeitos.join("<br>");
+      }
+
+      diagnosticoDisplay();
+    }
+
+    // 🔧 FUNÇÃO DE DIAGNÓSTICO
+    function diagnosticoDisplay() {
+      let resultado = [];
+      let valores = [];
+
+      document.querySelectorAll(".display-check").forEach(el => {
+        valores.push(el.value);
+      });
+
+      if (valores.includes("Sem Iluminação") && valores.includes("Tela Escura com Imagem")) {
+        resultado.push("Falha no backlight");
+      }
+
+      if (valores.includes("Aberta")) {
+        resultado.push("Barra de LEDs aberta");
+      }
+
+      if (valores.includes("Mau Contato") || valores.includes("Rompido")) {
+        resultado.push("Cabo flat com defeito");
+      }
+
+      let campo = document.getElementById("DEFEITOENCONTRADOField");
+
+      if (campo && resultado.length) {
+        campo.innerHTML += "<br><b>DISPLAY:</b><br>" + resultado.join("<br>");
+      }
+    }
+
+    diagnosticoDisplay();
+
+    // 💾 SALVAR
+    function salvar() {
+      let dados = [];
+
+      document.querySelectorAll(".save").forEach((el, i) => {
+        if (el.tagName === "SELECT" || el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+          dados[i] = el.value;
+        } else {
+          dados[i] = el.innerHTML;
+        }
+      });
+
+      localStorage.setItem("laudo", JSON.stringify(dados));
+    }
+
+    // 🔄 CARREGAR + MONITORAMENTO AUTOMÁTICO
+    function padronizarSelects() {
+      document.querySelectorAll("select").forEach(select => {
+
+        let temSelecione = false;
+
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].text === "Selecione") {
+            temSelecione = true;
+            break;
+          }
+        }
+
+        if (!temSelecione) {
+          let option = document.createElement("option");
+          option.text = "Selecione";
+          option.value = "";
+
+          select.insertBefore(option, select.firstChild);
+        }
+      });
+    }
+
+    window.onload = function () {
+      let dados = JSON.parse(localStorage.getItem("laudo"));
+
+      document.querySelectorAll(".save").forEach((el, i) => {
+        if (dados) {
+          if (el.tagName === "SELECT" || el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+            el.value = dados[i] || "";
+          } else {
+            el.innerHTML = dados[i] || "";
+          }
+        }
+
+        el.addEventListener("change", capturarDefeitos);
+        el.addEventListener("keyup", capturarDefeitos);
+      });
+
+      padronizarSelects();
+      capturarDefeitos();
+    };
+
+    function imprimir() {
+      window.print();
+    }
+
+    function gerarPDF() {
+      html2pdf().from(document.body).save("laudo.pdf");
+    }
+  </script>
+
+</body>
+
+</html>
