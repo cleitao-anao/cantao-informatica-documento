@@ -108,10 +108,55 @@
       color: #fff;
     }
 
+    /* APP BAR STYLES */
+    .app-bar {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      background-color: #333;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+    .app-bar button {
+      background-color: #555;
+      color: white;
+      margin-top: 0;
+      border: 1px solid #777;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .app-bar button:hover {
+      background-color: #777;
+    }
+    .app-bar button.active {
+      background-color: #4CAF50;
+      border-color: #4CAF50;
+    }
+
+    .acoes-coluna {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 5px;
+    }
+    .acoes-coluna button {
+      margin-top: 0;
+      padding: 2px 5px;
+      font-size: 12px;
+      border: 1px solid #ccc;
+      background: #eee;
+      color: #333;
+    }
+    .acoes-coluna button:hover {
+      background: #ddd;
+    }
+
     @media print {
-      button {
-        display: none;
+      button, .app-bar, title {
+        display: none !important;
       }
+
 
       body {
         background: #fff;
@@ -121,6 +166,13 @@
 </head>
 
 <body>
+
+  <!-- APP BAR (Oculta na impressão) -->
+  <div class="app-bar" id="appBar">
+    <button onclick="mudarModo('pc')" id="btn-pc">💻 PC</button>
+    <button onclick="mudarModo('notebook')" id="btn-notebook">💻 Notebook</button>
+    <button onclick="mudarModo('tv')" id="btn-tv">📺 TV</button>
+  </div>
 
   <h1>DIAGNÓSTICO TÉCNICO</h1>
 
@@ -148,20 +200,38 @@
     <thead>
       <tr>
         <th>ITEM</th>
-        <th> <div class="label-tecnico"> ENTRADA |<input class="input-tecnico" type="text"></div></th>
-        <th ><div class="label-tecnico"> TÉCNICO |<input class="input-tecnico" type="text"> </div></th>
-        <th > <div class="label-tecnico"> TESTES |<input class="input-tecnico" type="text"></div></th>
+        <th>
+          <div class="label-tecnico"> ENTRADA |<input class="input-tecnico" type="text"></div>
+          <div class="acoes-coluna">
+            <button onclick="preencherColuna(1, 'Funcionando')" title="Tudo Funcionando">✅</button>
+            <button onclick="preencherColuna(1, 'Com defeito')" title="Tudo com Defeito">❌</button>
+          </div>
+        </th>
+        <th>
+          <div class="label-tecnico"> TÉCNICO |<input class="input-tecnico" type="text"> </div>
+          <div class="acoes-coluna">
+            <button onclick="preencherColuna(2, 'Funcionando')" title="Tudo Funcionando">✅</button>
+            <button onclick="preencherColuna(2, 'Com defeito')" title="Tudo com Defeito">❌</button>
+          </div>
+        </th>
+        <th>
+          <div class="label-tecnico"> TESTES |<input class="input-tecnico" type="text"></div>
+          <div class="acoes-coluna">
+            <button onclick="preencherColuna(3, 'Funcionando')" title="Tudo Funcionando">✅</button>
+            <button onclick="preencherColuna(3, 'Com defeito')" title="Tudo com Defeito">❌</button>
+          </div>
+        </th>
       </tr>
     </thead>
 
     <tbody>
 
       <!-- ENERGIA -->
-      <tr>
+      <tr data-device="pc,notebook,tv">
         <td colspan="4" class="secao">ENERGIA</td>
       </tr>
 
-      <tr>
+      <tr data-device="pc,notebook,tv">
         <td>FONTE / PLACA FONTE</td>
         <td>
           <select class="save" data-opt="opt1"></select>
@@ -171,14 +241,14 @@
         <td><select class="save" data-opt="opt1"></select></td>
       </tr>
 
-      <tr>
+      <tr data-device="notebook">
         <td>BATERIA</td>
         <td><select class="save" data-opt="opt1"></select></td>
         <td><select class="save" data-opt="opt1"></select></td>
         <td><select class="save" data-opt="opt1"></select></td>
       </tr>
 
-      <tr>
+      <tr data-device="notebook">
         <td>CONECTOR POWER JACK</td>
         <td><select class="save" data-opt="opt1"></select></td>
         <td><select class="save" data-opt="opt1"></select></td>
@@ -186,11 +256,11 @@
       </tr>
 
       <!-- ACIONAMENTO -->
-      <tr>
+      <tr data-device="pc,notebook,tv">
         <td colspan="4" class="secao">ACIONAMENTO</td>
       </tr>
 
-      <tr>
+      <tr data-device="pc,notebook,tv">
         <td>BOTÃO POWER</td>
         <td><select class="save" data-opt="opt2"></select></td>
         <td><select class="save" data-opt="opt2"></select></td>
@@ -198,11 +268,11 @@
       </tr>
 
       <!-- CARCAÇA -->
-      <tr>
+      <tr data-device="pc,notebook,tv">
         <td colspan="4" class="secao">CARCAÇA</td>
       </tr>
 
-      <tr>
+      <tr data-device="pc,notebook,tv">
         <td>CARCAÇA</td>
         <td><select class="save" data-opt="opt3"></select></td>
         <td><select class="save" data-opt="opt3"></select></td>
@@ -210,18 +280,18 @@
       </tr>
 
       <!-- PLACA / PROCESSAMENTO -->
-      <tr>
+      <tr data-device="pc,notebook,tv">
         <td colspan="4" class="secao">PLACA / PROCESSAMENTO</td>
       </tr>
 
-      <tr>
+      <tr data-device="pc,notebook,tv">
         <td>PLACA MÃE / PLACA PRINCIPAL</td>
         <td><select class="save" data-opt="opt2"></select></td>
         <td><select class="save" data-opt="opt2"></select></td>
         <td><select class="save" data-opt="opt2"></select></td>
       </tr>
 
-      <tr>
+      <tr data-device="pc,notebook">
         <td>PROCESSADOR</td>
         <td>
           <select class="save" data-opt="opt2"></select>
@@ -237,7 +307,7 @@
         </td>
       </tr>
 
-      <tr>
+      <tr data-device="pc,notebook">
         <td>MEMÓRIA</td>
         <td>
           <select class="save" data-opt="opt2"></select>
@@ -254,10 +324,10 @@
       </tr>
 
       <!-- DISPLAY -->
-      <tr>
+      <tr data-device="notebook,tv">
         <td colspan="4" class="secao">DISPLAY</td>
       </tr>
-      <tr>
+      <tr data-device="notebook,tv">
         <td>TELA (ESTADO)</td>
         <td>
           <select class="save display-check" data-opt="opt6"></select>
@@ -270,7 +340,7 @@
         </td>
       </tr>
 
-      <tr>
+      <tr data-device="notebook,tv">
         <td>TIPO DE PAINEL</td>
         <td>
           <select class="save" data-opt="opt7"></select>
@@ -283,7 +353,7 @@
         </td>
       </tr>
 
-      <tr>
+      <tr data-device="notebook,tv">
         <td>RESOLUÇÃO</td>
         <td>
           <select class="save" data-opt="opt8"></select>
@@ -296,7 +366,7 @@
         </td>
       </tr>
 
-      <tr>
+      <tr data-device="notebook,tv">
         <td>TAXA DE ATUALIZAÇÃO</td>
         <td>
           <select class="save" data-opt="opt9"></select>
@@ -309,28 +379,28 @@
         </td>
       </tr>
 
-      <tr>
+      <tr data-device="notebook,tv">
         <td>BACKLIGHT (ILUMINAÇÃO)</td>
         <td><select class="save display-check" data-opt="opt10"></select></td>
         <td><select class="save display-check" data-opt="opt10"></select></td>
         <td><select class="save display-check" data-opt="opt10"></select></td>
       </tr>
 
-      <tr>
+      <tr data-device="tv">
         <td>BARRA DE LEDS</td>
         <td><select class="save display-check" data-opt="opt11"></select></td>
         <td><select class="save display-check" data-opt="opt11"></select></td>
         <td><select class="save display-check" data-opt="opt11"></select></td>
       </tr>
 
-      <tr>
+      <tr data-device="notebook,tv">
         <td>CABO FLAT (LVDS/eDP)</td>
         <td><select class="save display-check" data-opt="opt12"></select></td>
         <td><select class="save display-check" data-opt="opt12"></select></td>
         <td><select class="save display-check" data-opt="opt12"></select></td>
       </tr>
 
-      <tr>
+      <tr data-device="notebook,tv">
         <td>SINTOMA VISUAL</td>
         <td colspan="3">
           <select class="save display-check" data-opt="opt13"></select>
@@ -338,32 +408,32 @@
       </tr>
 
       <!-- PORTAS / PERIFÉRICOS -->
-      <tr>
+      <tr data-device="pc,notebook,tv">
         <td colspan="4" class="secao">PORTAS / PERIFÉRICOS</td>
       </tr>
 
-      <tr>
+      <tr data-device="pc,notebook,tv">
         <td>HDMI</td>
         <td><select class="save" data-opt="opt1"></select></td>
         <td><select class="save" data-opt="opt1"></select></td>
         <td><select class="save" data-opt="opt1"></select></td>
       </tr>
 
-      <tr>
+      <tr data-device="pc,notebook,tv">
         <td>USB / USB-C</td>
         <td><select class="save" data-opt="opt1"></select></td>
         <td><select class="save" data-opt="opt1"></select></td>
         <td><select class="save" data-opt="opt1"></select></td>
       </tr>
 
-      <tr>
+      <tr data-device="pc,notebook">
         <td>VGA</td>
         <td><select class="save" data-opt="opt1"></select></td>
         <td><select class="save" data-opt="opt1"></select></td>
         <td><select class="save" data-opt="opt1"></select></td>
       </tr>
 
-      <tr>
+      <tr data-device="notebook">
         <td>TECLADO</td>
         <td>
           <select class="save" data-opt="opt1"></select>
@@ -379,42 +449,42 @@
         </td>
       </tr>
 
-      <tr>
+      <tr data-device="notebook">
         <td>TOUCHPAD</td>
         <td><select class="save" data-opt="opt1"></select></td>
         <td><select class="save" data-opt="opt1"></select></td>
         <td><select class="save" data-opt="opt1"></select></td>
       </tr>
 
-      <tr>
+      <tr data-device="notebook">
         <td>CÂMERA</td>
         <td><select class="save" data-opt="opt1"></select></td>
         <td><select class="save" data-opt="opt1"></select></td>
         <td><select class="save" data-opt="opt1"></select></td>
       </tr>
 
-      <tr>
+      <tr data-device="notebook">
         <td>MICROFONE</td>
         <td><select class="save" data-opt="opt1"></select></td>
         <td><select class="save" data-opt="opt1"></select></td>
         <td><select class="save" data-opt="opt1"></select></td>
       </tr>
 
-      <tr>
+      <tr data-device="notebook,tv">
         <td>AUDIO INTERNO</td>
         <td><select class="save" data-opt="opt1"></select></td>
         <td><select class="save" data-opt="opt1"></select></td>
         <td><select class="save" data-opt="opt1"></select></td>
       </tr>
 
-      <tr>
+      <tr data-device="pc,notebook,tv">
         <td>CONECTOR P2</td>
         <td><select class="save" data-opt="opt1"></select></td>
         <td><select class="save" data-opt="opt1"></select></td>
         <td><select class="save" data-opt="opt1"></select></td>
       </tr>
 
-      <tr>
+      <tr data-device="pc,notebook">
         <td>SISTEMA OPERACIONAL</td>
         <td><select class="save" data-opt="opt16"></select></td>
         <td><select class="save" data-opt="opt16"></select></td>
@@ -422,7 +492,7 @@
       </tr>
 
       <!-- PLACA GRÁFICA -->
-      <tr>
+      <tr data-device="pc,notebook">
         <td>PLACA GRÁFICA</td>
         <td><select class="save" data-opt="opt1"></select></td>
         <td><select class="save" data-opt="opt1"></select></td>
@@ -430,11 +500,11 @@
       </tr>
 
       <!-- ARMAZENAMENTO -->
-      <tr>
+      <tr data-device="pc,notebook">
         <td colspan="4" class="secao">ARMAZENAMENTO</td>
       </tr>
 
-      <tr>
+      <tr data-device="pc,notebook">
         <td>SSD/NVMe/HD</td>
         <td>
           <select class="save" data-opt="opt1"></select>
@@ -454,11 +524,11 @@
       </tr>
 
       <!-- BACKUP -->
-      <tr>
+      <tr data-device="pc,notebook">
         <td colspan="4" class="secao">BACKUP</td>
       </tr>
 
-      <tr>
+      <tr data-device="pc,notebook">
         <td>BACKUP</td>
         <td colspan="3">
           <textarea rows="2" placeholder="Disco C"></textarea>
@@ -468,11 +538,11 @@
       </tr>
 
       <!-- FINALIZAÇÃO -->
-      <tr>
+      <tr data-device="pc,notebook,tv">
         <td colspan="4" class="secao">FINALIZAÇÃO</td>
       </tr>
 
-      <tr>
+      <tr data-device="pc,notebook,tv">
         <td>PREVENTIVA</td>
         <td><select class="save" data-opt="opt18"></select></td>
         <td><select class="save" data-opt="opt18"></select></td>
@@ -480,18 +550,18 @@
       </tr>
 
       <!-- RESULTADO -->
-      <tr>
+      <tr data-device="pc,notebook,tv">
         <td colspan="4" class="secao">RESULTADO</td>
       </tr>
 
-      <tr>
+      <tr data-device="pc,notebook,tv">
         <td>DEFEITO ENCONTRADO</td>
         <td colspan="3">
           <div id="DEFEITOENCONTRADOField" contenteditable="true" class="save" style="min-height:60px;"></div>
         </td>
       </tr>
 
-      <tr>
+      <tr data-device="pc,notebook,tv">
         <td>PARECER TÉCNICO</td>
         <td colspan="3">
           <div id="PARECERTECNICOField" contenteditable="true" class="save" style="min-height:60px;"></div>
@@ -672,8 +742,59 @@
       });
     }
 
+    function mudarModo(modo) {
+      // Atualiza botões
+      document.querySelectorAll('.app-bar button').forEach(btn => btn.classList.remove('active'));
+      let btn = document.getElementById('btn-' + modo);
+      if(btn) btn.classList.add('active');
+
+      // Filtra linhas da tabela
+      document.querySelectorAll('tbody tr').forEach(tr => {
+        const devices = tr.getAttribute('data-device');
+        if (devices) {
+          if (devices.includes(modo)) {
+            tr.style.display = 'table-row';
+          } else {
+            tr.style.display = 'none';
+          }
+        }
+      });
+
+      // Salva no localStorage
+      localStorage.setItem("modo_equipamento", modo);
+    }
+
+    function preencherColuna(colIndex, valorProcurado) {
+      document.querySelectorAll('tbody tr').forEach(tr => {
+        // Apenas aplica nas linhas que estão visíveis no modo atual
+        if (tr.style.display !== 'none') {
+          const td = tr.querySelectorAll('td')[colIndex];
+          if (td) {
+            td.querySelectorAll('select').forEach(select => {
+              let optionExists = false;
+              for (let i = 0; i < select.options.length; i++) {
+                if (select.options[i].value === valorProcurado || select.options[i].text === valorProcurado) {
+                  optionExists = true;
+                  break;
+                }
+              }
+              if (optionExists) {
+                select.value = valorProcurado;
+                select.dispatchEvent(new Event('change'));
+              }
+            });
+          }
+        }
+      });
+      capturarDefeitos(); // Atualiza o painel de resultados (Defeito Encontrado, Display)
+    }
+
     window.onload = function () {
       injetarOpcoes(); // Injeta as opções assim que a página carrega
+
+      // Recuperar modo do localStorage ou 'notebook' por padrão
+      let modoSalvo = localStorage.getItem("modo_equipamento") || "notebook";
+      mudarModo(modoSalvo);
 
       let dados = JSON.parse(localStorage.getItem("laudo"));
 
