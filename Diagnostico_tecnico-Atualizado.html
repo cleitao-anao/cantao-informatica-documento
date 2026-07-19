@@ -3,18 +3,24 @@
 
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Diagnóstico Técnico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Inter', Arial, sans-serif;
       padding: 20px;
-      background: #f9f9f9;
+      padding-top: 80px;
+      background: #f0f2f5;
     }
 
     h1 {
       margin-bottom: 5px;
     }
+
 
     .topo {
       display: flex;
@@ -47,16 +53,19 @@
       align-items: center;
       justify-content: center;
       justify-items: space-between;
-      gap: 5px;
-      
+      flex-direction: column;
 
-      
+
+
     }
+
     .input-tecnico {
       display: flex;
+      padding: 1px;
       width: 60%;
       border-radius: 4px;
       box-sizing: border-box;
+
     }
 
     table {
@@ -85,6 +94,13 @@
       text-align: center;
     }
 
+    hr {
+      margin: 5px 0;
+      background-color: #e0e0e0;
+      border: 0;
+      height: 1px;
+    }
+
     button {
       margin-top: 15px;
       padding: 10px 15px;
@@ -111,56 +127,430 @@
     /* APP BAR STYLES */
     .app-bar {
       display: flex;
-      justify-content: center;
-      gap: 15px;
-      background-color: #333;
-      padding: 10px;
-      margin-bottom: 20px;
-      border-radius: 8px;
-    }
-    .app-bar button {
-      background-color: #555;
-      color: white;
-      margin-top: 0;
-      border: 1px solid #777;
-      font-size: 16px;
-      font-weight: bold;
-    }
-    .app-bar button:hover {
-      background-color: #777;
-    }
-    .app-bar button.active {
-      background-color: #4CAF50;
-      border-color: #4CAF50;
+      align-items: center;
+      gap: 0;
+      background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 50%, #1e1e2e 100%);
+      padding: 0;
+      margin-bottom: 0;
+      border-radius: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+      height: 56px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
-    .acoes-coluna {
+    .app-bar-group {
       display: flex;
-      justify-content: center;
-      gap: 5px;
-      margin-top: 5px;
-    }
-    .acoes-coluna button {
-      margin-top: 0;
-      padding: 2px 5px;
-      font-size: 12px;
-      border: 1px solid #ccc;
-      background: #eee;
-      color: #333;
-    }
-    .acoes-coluna button:hover {
-      background: #ddd;
+      align-items: center;
+      gap: 4px;
+      padding: 0 16px;
+      height: 100%;
     }
 
+    .app-bar-group.grow {
+      flex: 1;
+      justify-content: flex-end;
+    }
+
+    .app-bar-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.35);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin-right: 10px;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .app-bar-separator {
+      width: 1px;
+      height: 28px;
+      background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+      flex-shrink: 0;
+    }
+
+    .app-bar button {
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.75);
+      margin-top: 0;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 13px;
+      font-weight: 500;
+      font-family: 'Inter', Arial, sans-serif;
+      padding: 7px 14px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      white-space: nowrap;
+      letter-spacing: 0.2px;
+    }
+
+    .app-bar button:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.18);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .app-bar button:active {
+      transform: translateY(0px);
+      box-shadow: none;
+    }
+
+    .app-bar button.active {
+      background: linear-gradient(135deg, #4CAF50, #43A047);
+      border-color: rgba(76, 175, 80, 0.4);
+      color: #fff;
+      box-shadow: 0 0 12px rgba(76, 175, 80, 0.3);
+    }
+
+    .app-bar button.btn-vazio {
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.6);
+      border: 1px dashed rgba(255, 255, 255, 0.15);
+    }
+
+    .app-bar button.btn-vazio:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.9);
+      border-style: solid;
+    }
+
+    .app-bar button.btn-ok {
+      background: rgba(76, 175, 80, 0.12);
+      color: #66bb6a;
+      border-color: rgba(76, 175, 80, 0.2);
+    }
+
+    .app-bar button.btn-ok:hover {
+      background: rgba(76, 175, 80, 0.25);
+      color: #81c784;
+      border-color: rgba(76, 175, 80, 0.4);
+      box-shadow: 0 0 12px rgba(76, 175, 80, 0.15);
+    }
+
+    .app-bar button.btn-defeito {
+      background: rgba(239, 83, 80, 0.12);
+      color: #ef5350;
+      border-color: rgba(239, 83, 80, 0.2);
+    }
+
+    .app-bar button.btn-defeito:hover {
+      background: rgba(239, 83, 80, 0.25);
+      color: #e57373;
+      border-color: rgba(239, 83, 80, 0.4);
+      box-shadow: 0 0 12px rgba(239, 83, 80, 0.15);
+    }
+
+    .app-bar button.btn-salvar {
+      background: rgba(76, 175, 80, 0.12);
+      color: #66bb6a;
+      border-color: rgba(76, 175, 80, 0.2);
+    }
+
+    .app-bar button.btn-salvar:hover {
+      background: rgba(76, 175, 80, 0.25);
+      color: #81c784;
+      border-color: rgba(76, 175, 80, 0.4);
+      box-shadow: 0 0 12px rgba(76, 175, 80, 0.15);
+    }
+
+    .app-bar button.btn-print {
+      background: rgba(33, 150, 243, 0.12);
+      color: #42a5f5;
+      border-color: rgba(33, 150, 243, 0.2);
+    }
+
+    .app-bar button.btn-print:hover {
+      background: rgba(33, 150, 243, 0.25);
+      color: #64b5f6;
+      border-color: rgba(33, 150, 243, 0.4);
+      box-shadow: 0 0 12px rgba(33, 150, 243, 0.15);
+    }
+
+    .app-bar button.btn-pdf {
+      background: rgba(244, 67, 54, 0.12);
+      color: #ef5350;
+      border-color: rgba(244, 67, 54, 0.2);
+    }
+
+    .app-bar button.btn-pdf:hover {
+      background: rgba(244, 67, 54, 0.25);
+      color: #e57373;
+      border-color: rgba(244, 67, 54, 0.4);
+      box-shadow: 0 0 12px rgba(244, 67, 54, 0.15);
+    }
+
+    .app-bar select {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      padding: 7px 30px 7px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: 'Inter', Arial, sans-serif;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      width: auto;
+    }
+
+    .app-bar select:hover {
+      background-color: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    .app-bar select:focus {
+      outline: none;
+      border-color: rgba(100, 180, 255, 0.5);
+      box-shadow: 0 0 0 2px rgba(100, 180, 255, 0.15);
+    }
+
+    .app-bar select option {
+      background: #2a2a3e;
+      color: #fff;
+    }
+
+    /* Regras de impressão — ativadas por @media print E pela classe .print-mode */
     @media print {
-      button, .app-bar, title {
+
+      button,
+      .app-bar,
+      title {
         display: none !important;
       }
 
+      input,
+      select,
+      textarea {
+        border: none !important;
+        background: transparent !important;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+      }
+
+      .backup-input {
+        border: 1px solid #ccc !important;
+      }
 
       body {
         background: #fff;
+        padding-top: 0 !important;
       }
+    }
+
+    /* Mesmas regras, ativadas via JS ao adicionar .print-mode no body */
+    body.print-mode button,
+    body.print-mode .app-bar,
+    body.print-mode title {
+      display: none !important;
+    }
+
+    body.print-mode input,
+    body.print-mode select,
+    body.print-mode textarea {
+      border: none !important;
+      background: transparent !important;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
+
+    body.print-mode .backup-input {
+      border: 1px solid #ccc !important;
+    }
+
+    body.print-mode {
+      background: #fff;
+      padding-top: 0 !important;
+    }
+
+    /* DEFEITOS ENCONTRADOS */
+    .defeito-card {
+      padding: 8px 12px;
+      margin-bottom: 6px;
+      font-size: 14px;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .defeito-card .defeito-texto {
+      color: #333;
+    }
+
+    .defeito-card .defeito-extra {
+      font-size: 12px;
+      color: #888;
+      font-style: italic;
+    }
+
+    .defeito-card .defeito-obs-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .defeito-card .defeito-obs-row strong {
+      color: #555;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    .defeito-card .defeito-obs-input {
+      flex: 1;
+      border: 1px dashed #ccc;
+      border-radius: 4px;
+      padding: 3px 8px;
+      font-size: 13px;
+      background: #fff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .defeito-card .defeito-obs-input:focus {
+      border-color: #ff9800;
+      border-style: solid;
+    }
+
+    .defeito-display-section {
+      padding: 8px 12px;
+      margin-top: 8px;
+    }
+
+    .defeito-display-section strong {
+      color: #c62828;
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* AVISOS PENDENCIA */
+    .avisos-pendencia {
+      background: #ffebee;
+      border-left: 4px solid #f44336;
+      padding: 10px 15px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #c62828;
+    }
+
+    @media print {
+      .avisos-pendencia {
+        display: none !important;
+      }
+
+      #appBarAviso {
+        display: none !important;
+      }
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px 28px;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      font-family: 'Inter', Arial, sans-serif;
+    }
+
+    .modal-box h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: #e65100;
+    }
+
+    .modal-box p {
+      margin: 0 0 20px;
+      font-size: 14px;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .modal-box .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .modal-box .modal-actions button {
+      padding: 8px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      margin-top: 0;
+      transition: all 0.15s;
+    }
+
+    .modal-btn-cancel {
+      background: #eee;
+      color: #333;
+    }
+
+    .modal-btn-cancel:hover {
+      background: #ddd;
+    }
+
+    .modal-btn-confirm {
+      background: #e53935;
+      color: #fff;
+    }
+
+    .modal-btn-confirm:hover {
+      background: #c62828;
+    }
+
+    @media print {
+      .defeito-obs-input {
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+      }
+
+      .input-tecnico {
+        color: #ffff;
+      }
+    }
+
+    body.print-mode .defeito-obs-input {
+      border: none !important;
+      background: transparent !important;
+      padding: 0 !important;
     }
   </style>
 </head>
@@ -169,9 +559,45 @@
 
   <!-- APP BAR (Oculta na impressão) -->
   <div class="app-bar" id="appBar">
-    <button onclick="mudarModo('pc')" id="btn-pc">💻 PC</button>
-    <button onclick="mudarModo('notebook')" id="btn-notebook">💻 Notebook</button>
-    <button onclick="mudarModo('tv')" id="btn-tv">📺 TV</button>
+
+    <!-- Grupo: Tipo de Equipamento -->
+    <div class="app-bar-group">
+      <span class="app-bar-label">Tipo</span>
+      <button onclick="mudarModo('pc')" id="btn-pc">💻 PC</button>
+      <button onclick="mudarModo('notebook')" id="btn-notebook">💻 Notebook</button>
+      <button onclick="mudarModo('tv')" id="btn-tv">📺 TV</button>
+    </div>
+
+    <div class="app-bar-separator"></div>
+
+    <!-- Grupo: Ações (Salvar, Imprimir, PDF) -->
+    <div class="app-bar-group">
+      <span class="app-bar-label">Ações</span>
+      <button class="btn-salvar" onclick="salvar()">💾 Salvar</button>
+      <button class="btn-print" onclick="imprimir()">🖨️ Imprimir</button>
+      <button class="btn-pdf" onclick="gerarPDF()">📄 PDF</button>
+    </div>
+
+    <div class="app-bar-separator"></div>
+
+    <!-- Grupo: Preenchimento Rápido -->
+    <div class="app-bar-group grow">
+      <span id="appBarAviso"
+        style="display:none; color:#f44336; margin-right:10px; font-weight:bold; font-size:14px; background:rgba(244,67,54,0.1); padding:4px 8px; border-radius:4px; border:1px solid rgba(244,67,54,0.3);">
+        ⚠️ Incompleto
+      </span>
+      <span class="app-bar-label">Preencher</span>
+      <select id="colunaSelect">
+        <option value="0">📋 Todos</option>
+        <option value="1">📥 Entrada</option>
+        <option value="2">🔧 Técnico</option>
+        <option value="3">🧪 Testes</option>
+      </select>
+      <button class="btn-vazio" onclick="preencherColunaApp('Selecione')">⬜ Vazio</button>
+      <button class="btn-ok" onclick="preencherColunaApp('Funcionando')">✅ Funcionando</button>
+      <button class="btn-defeito" onclick="preencherColunaApp('Com defeito')">❌ Com defeito</button>
+    </div>
+
   </div>
 
   <h1>DIAGNÓSTICO TÉCNICO</h1>
@@ -180,14 +606,14 @@
   <div class="topo">
     <div>
       <label>CLIENTE</label>
-      <input type="text" class="save">
+      <input type="text" class="save" id="clienteField">
     </div>
   </div>
 
   <div class="topo">
     <div>
       <label>EQUIPAMENTO</label>
-      <input type="text">
+      <input type="text" class="save" id="equipamentoField">
     </div>
 
     <div>
@@ -201,25 +627,13 @@
       <tr>
         <th>ITEM</th>
         <th>
-          <div class="label-tecnico"> ENTRADA |<input class="input-tecnico" type="text"></div>
-          <div class="acoes-coluna">
-            <button onclick="preencherColuna(1, 'Funcionando')" title="Tudo Funcionando">✅</button>
-            <button onclick="preencherColuna(1, 'Com defeito')" title="Tudo com Defeito">❌</button>
-          </div>
+          <div class="label-tecnico"> ENTRADA<input class="input-tecnico" type="text"></div>
         </th>
         <th>
-          <div class="label-tecnico"> TÉCNICO |<input class="input-tecnico" type="text"> </div>
-          <div class="acoes-coluna">
-            <button onclick="preencherColuna(2, 'Funcionando')" title="Tudo Funcionando">✅</button>
-            <button onclick="preencherColuna(2, 'Com defeito')" title="Tudo com Defeito">❌</button>
-          </div>
+          <div class="label-tecnico"> TÉCNICO <input class="input-tecnico" type="text"> </div>
         </th>
         <th>
-          <div class="label-tecnico"> TESTES |<input class="input-tecnico" type="text"></div>
-          <div class="acoes-coluna">
-            <button onclick="preencherColuna(3, 'Funcionando')" title="Tudo Funcionando">✅</button>
-            <button onclick="preencherColuna(3, 'Com defeito')" title="Tudo com Defeito">❌</button>
-          </div>
+          <div class="label-tecnico"> TESTES <input class="input-tecnico" type="text"></div>
         </th>
       </tr>
     </thead>
@@ -295,15 +709,18 @@
         <td>PROCESSADOR</td>
         <td>
           <select class="save" data-opt="opt2"></select>
-          <select class="save" style="margin-top:5px;" data-opt="opt4"></select>
+          <hr>
+          <select class="save" data-opt="opt4"></select>
         </td>
         <td>
           <select class="save" data-opt="opt2"></select>
-          <select class="save" style="margin-top:5px;" data-opt="opt4"></select>
+          <hr>
+          <select class="save" data-opt="opt4"></select>
         </td>
         <td>
           <select class="save" data-opt="opt2"></select>
-          <select class="save" style="margin-top:5px;" data-opt="opt4"></select>
+          <hr>
+          <select class="save" data-opt="opt4"></select>
         </td>
       </tr>
 
@@ -311,15 +728,18 @@
         <td>MEMÓRIA</td>
         <td>
           <select class="save" data-opt="opt2"></select>
-          <select class="save" style="margin-top:5px;" data-opt="opt5"></select>
+          <hr>
+          <select class="save" data-opt="opt5"></select>
         </td>
         <td>
           <select class="save" data-opt="opt2"></select>
-          <select class="save" style="margin-top:5px;" data-opt="opt5"></select>
+          <hr>
+          <select class="save" data-opt="opt5"></select>
         </td>
         <td>
           <select class="save" data-opt="opt2"></select>
-          <select class="save" style="margin-top:5px;" data-opt="opt5"></select>
+          <hr>
+          <select class="save" data-opt="opt5"></select>
         </td>
       </tr>
 
@@ -437,15 +857,18 @@
         <td>TECLADO</td>
         <td>
           <select class="save" data-opt="opt1"></select>
-          <select class="save" style="margin-top:5px;" data-opt="opt15"></select>
+          <hr>
+          <select class="save" data-opt="opt15"></select>
         </td>
         <td>
           <select class="save" data-opt="opt1"></select>
-          <select class="save" style="margin-top:5px;" data-opt="opt15"></select>
+          <hr>
+          <select class="save" data-opt="opt15"></select>
         </td>
         <td>
           <select class="save" data-opt="opt1"></select>
-          <select class="save" style="margin-top:5px;" data-opt="opt15"></select>
+          <hr>
+          <select class="save" data-opt="opt15"></select>
         </td>
       </tr>
 
@@ -508,17 +931,23 @@
         <td>SSD/NVMe/HD</td>
         <td>
           <select class="save" data-opt="opt1"></select>
-          <select class="save" style="margin-top:5px;" data-opt="opt17"></select>
+          <hr>
+          <select class="save" data-opt="opt17"></select>
+          <hr>
           <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
         </td>
         <td>
           <select class="save" data-opt="opt1"></select>
-          <select class="save" style="margin-top:5px;" data-opt="opt17"></select>
+          <hr>
+          <select class="save" data-opt="opt17"></select>
+          <hr>
           <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
         </td>
         <td>
           <select class="save" data-opt="opt1"></select>
-          <select class="save" style="margin-top:5px;" data-opt="opt17"></select>
+          <hr>
+          <select class="save" data-opt="opt17"></select>
+          <hr>
           <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
         </td>
       </tr>
@@ -531,9 +960,9 @@
       <tr data-device="pc,notebook">
         <td>BACKUP</td>
         <td colspan="3">
-          <textarea rows="2" placeholder="Disco C"></textarea>
-          <textarea rows="2" placeholder="Usuário"></textarea>
-          <textarea rows="2" placeholder="Disco D"></textarea>
+          <textarea class="backup-input" rows="2" placeholder="Disco C"></textarea>
+          <textarea class="backup-input" rows="2" placeholder="Usuário"></textarea>
+          <textarea class="backup-input" rows="2" placeholder="Disco D"></textarea>
         </td>
       </tr>
 
@@ -557,7 +986,7 @@
       <tr data-device="pc,notebook,tv">
         <td>DEFEITO ENCONTRADO</td>
         <td colspan="3">
-          <div id="DEFEITOENCONTRADOField" contenteditable="true" class="save" style="min-height:60px;"></div>
+          <div id="DEFEITOENCONTRADOField" style="min-height:60px;"></div>
         </td>
       </tr>
 
@@ -570,6 +999,8 @@
 
     </tbody>
   </table>
+
+  <div id="avisosPendencia" class="avisos-pendencia" style="display:none;"></div>
 
   <!-- ASSINATURAS -->
   <table>
@@ -585,9 +1016,17 @@
     </tr>
   </table>
 
-  <button class="btn-salvar" onclick="salvar()">💾 Salvar</button>
-  <button class="btn-print" onclick="imprimir()">🖨️ Imprimir</button>
-  <button class="btn-pdf" onclick="gerarPDF()">📄 PDF</button>
+  <!-- MODAL DE AVISO -->
+  <div class="modal-overlay" id="modalAviso">
+    <div class="modal-box">
+      <h3>⚠️ Atenção</h3>
+      <p id="modalMsg">Existem observações em defeitos que serão apagadas. Deseja continuar?</p>
+      <div class="modal-actions">
+        <button class="modal-btn-cancel" onclick="fecharModal(false)">aham</button>
+        <button class="modal-btn-confirm" onclick="fecharModal(true)">Vou fazer</button>
+      </div>
+    </div>
+  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -611,11 +1050,11 @@
       'opt13': ['Selecione', 'Imagem Normal', 'Tela Escura com Imagem', 'Sem Imagem Total', 'Listras / Artefatos', 'Imagem Piscando'],
       // 'opt14': ['Selecione', 'Funcionando', 'Com defeito', 'Não Testado', 'Não Se Aplica'],
 
-      
+
       'opt15': ['Selecione', 'Simples', 'Completo'],
       'opt16': ['Selecione', 'Funcionando', 'Com defeito', 'Corrompido', 'Não Inicializa', 'Não Testado', 'Não Se Aplica'],
       'opt17': ['Tipo', 'SSD', 'NVMe', 'HD', 'NGFF(M2)'],
-      'opt18': ['Selecione', 'SIM', 'NÃO']
+      'opt18': ['Selecione', 'Necessário', 'Realizada', 'Não necessária', 'Não realizada'],
     };
 
     function injetarOpcoes() {
@@ -635,74 +1074,167 @@
     // ------------------------
 
 
+    // Armazena OBS dos defeitos (persistido no localStorage)
+    let defeitosObs = JSON.parse(localStorage.getItem('defeitosObs') || '{}');
+
+    // Callback do modal
+    let _modalCallback = null;
+
+    function abrirModal(msg, callback) {
+      document.getElementById('modalMsg').textContent = msg;
+      document.getElementById('modalAviso').classList.add('show');
+      _modalCallback = callback;
+    }
+
+    function fecharModal(confirmou) {
+      document.getElementById('modalAviso').classList.remove('show');
+      if (_modalCallback) _modalCallback(confirmou);
+      _modalCallback = null;
+    }
+
+    function salvarObs() {
+      localStorage.setItem('defeitosObs', JSON.stringify(defeitosObs));
+    }
+
+    // Verifica se algum defeito com OBS está prestes a ser removido
+    function temObsEmRisco(selectsAfetados, novoValor) {
+      // Se o novo valor ainda é um defeito, não tem risco
+      if (ehValorDeDefeito(novoValor)) return [];
+
+      let itensEmRisco = [];
+      selectsAfetados.forEach(select => {
+        const valorAtual = select.value?.toLowerCase() || '';
+        if (!ehValorDeDefeito(valorAtual)) return;
+        const linha = select.closest('tr');
+        if (!linha) return;
+        const item = linha.querySelector('td')?.innerText.trim();
+        if (item && defeitosObs[item] && defeitosObs[item].trim() !== '') {
+          if (!itensEmRisco.includes(item)) itensEmRisco.push(item);
+        }
+      });
+      return itensEmRisco;
+    }
+
+    // Valores que indicam problema em selects de display
+    const valoresDisplayProblema = [
+      'sem iluminação', 'oscilando', 'aberta', 'em curto',
+      'mau contato', 'rompido', 'tela escura com imagem',
+      'sem imagem total', 'listras / artefatos', 'imagem piscando',
+      'sem imagem', 'imagem com defeito'
+    ];
+
+    // Valores padrão de defeito
+    const valoresDeDefeito = ['com defeito', 'corrompido', 'não inicializa'];
+
+    function ehValorDeDefeito(valor) {
+      const v = valor.toLowerCase();
+      return valoresDeDefeito.includes(v) || valoresDisplayProblema.includes(v);
+    }
+
+    function obterInfoExtra(item, linha) {
+      // Para SSD/NVMe/HD, busca saúde e tipo
+      if (item === 'SSD/NVMe/HD') {
+        const inputs = linha.querySelectorAll('input[placeholder*="Sa\u00fade"]');
+        let saude = '';
+        inputs.forEach(inp => {
+          if (inp.value && inp.value.trim() !== '') saude = inp.value.trim();
+        });
+        const tipoSelects = linha.querySelectorAll('select[data-opt="opt17"]');
+        let tipo = '';
+        tipoSelects.forEach(sel => {
+          if (sel.value && sel.value !== 'Tipo') tipo = sel.value;
+        });
+        let extra = '';
+        if (tipo) extra += tipo;
+        if (saude) extra += (extra ? ' ' : '') + 'com ' + saude + ' de sa\u00fade';
+        return extra;
+      }
+
+      // Para itens de display, mostra os sintomas espec\u00edficos selecionados
+      const displaySelects = linha.querySelectorAll('.display-check');
+      if (displaySelects.length > 0) {
+        let sintomas = [];
+        displaySelects.forEach(sel => {
+          const v = sel.value?.toLowerCase() || '';
+          if (valoresDisplayProblema.includes(v)) {
+            sintomas.push(sel.value);
+          }
+        });
+        if (sintomas.length > 0) {
+          return sintomas.join(', ');
+        }
+      }
+
+      return '';
+    }
+
     function capturarDefeitos() {
-      let defeitos = [];
+      let defeitos = []; // { item, extra }
+      let itensAdicionados = [];
 
-      document.querySelectorAll(".save").forEach((el) => {
+      document.querySelectorAll('.save').forEach((el) => {
         let valor;
-
-        if (el.tagName === "SELECT" || el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+        if (el.tagName === 'SELECT' || el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
           valor = el.value;
         } else {
           valor = el.innerText;
         }
 
-        if (
-          valor &&
-          (
-            valor.toLowerCase() === "com defeito" ||
-            valor.toLowerCase() === "corrompido" ||
-            valor.toLowerCase() === "não inicializa"
-          )
-        ) {
-          let linha = el.closest("tr");
+        if (valor && ehValorDeDefeito(valor)) {
+          let linha = el.closest('tr');
           if (linha) {
-            let item = linha.querySelector("td")?.innerText.trim();
-            if (item && !defeitos.includes(item)) {
-              defeitos.push(item);
+            let item = linha.querySelector('td')?.innerText.trim();
+            if (item && !itensAdicionados.includes(item)) {
+              itensAdicionados.push(item);
+              const extra = obterInfoExtra(item, linha);
+              defeitos.push({ item, extra });
             }
           }
         }
       });
 
-      let campoDefeito = document.getElementById("DEFEITOENCONTRADOField");
+      // Remove OBS de itens que n\u00e3o s\u00e3o mais defeito
+      Object.keys(defeitosObs).forEach(key => {
+        if (!itensAdicionados.includes(key)) {
+          delete defeitosObs[key];
+        }
+      });
+      salvarObs();
 
-      if (campoDefeito) {
-        campoDefeito.innerHTML = defeitos.join("<br>");
-      }
-
-      diagnosticoDisplay();
+      renderizarDefeitos(defeitos);
     }
 
-    // 🔧 FUNÇÃO DE DIAGNÓSTICO
-    function diagnosticoDisplay() {
-      let resultado = [];
-      let valores = [];
+    function renderizarDefeitos(defeitos) {
+      let campo = document.getElementById('DEFEITOENCONTRADOField');
+      if (!campo) return;
 
-      document.querySelectorAll(".display-check").forEach(el => {
-        valores.push(el.value);
+      let html = '';
+
+      defeitos.forEach(d => {
+        const obsVal = defeitosObs[d.item] || '';
+        html += '<div class="defeito-card">';
+        html += '  <div class="defeito-texto">Problema encontrado: <strong>' + d.item + '</strong></div>';
+        if (d.extra) {
+          html += '  <div class="defeito-extra">' + d.extra + '</div>';
+        }
+        html += '  <div class="defeito-obs-row">';
+        html += '    <strong>OBS:</strong>';
+        html += '    <input class="defeito-obs-input" type="text" value="' + obsVal.replace(/"/g, '&quot;') + '" data-item="' + d.item + '" placeholder="Adicionar observa\u00e7\u00e3o..." onchange="atualizarObs(this)" oninput="atualizarObs(this)">';
+        html += '  </div>';
+        html += '</div>';
       });
 
-      if (valores.includes("Sem Iluminação") && valores.includes("Tela Escura com Imagem")) {
-        resultado.push("Falha no backlight");
-      }
-
-      if (valores.includes("Aberta")) {
-        resultado.push("Barra de LEDs aberta");
-      }
-
-      if (valores.includes("Mau Contato") || valores.includes("Rompido")) {
-        resultado.push("Cabo flat com defeito");
-      }
-
-      let campo = document.getElementById("DEFEITOENCONTRADOField");
-
-      if (campo && resultado.length) {
-        campo.innerHTML += "<br><b>DISPLAY:</b><br>" + resultado.join("<br>");
-      }
+      campo.innerHTML = html;
+      verificarPendencias();
     }
 
-    diagnosticoDisplay();
+    function atualizarObs(input) {
+      const item = input.getAttribute('data-item');
+      defeitosObs[item] = input.value;
+      salvarObs();
+    }
+
+
 
     // 💾 SALVAR
     function salvar() {
@@ -746,7 +1278,7 @@
       // Atualiza botões
       document.querySelectorAll('.app-bar button').forEach(btn => btn.classList.remove('active'));
       let btn = document.getElementById('btn-' + modo);
-      if(btn) btn.classList.add('active');
+      if (btn) btn.classList.add('active');
 
       // Filtra linhas da tabela
       document.querySelectorAll('tbody tr').forEach(tr => {
@@ -764,9 +1296,48 @@
       localStorage.setItem("modo_equipamento", modo);
     }
 
+    function preencherColunaApp(valorProcurado) {
+      const colIndex = parseInt(document.getElementById('colunaSelect').value, 10);
+
+      // Coleta todos os selects afetados
+      let selectsAfetados = [];
+      const colunas = colIndex === 0 ? [1, 2, 3] : [colIndex];
+      colunas.forEach(ci => {
+        document.querySelectorAll('tbody tr').forEach(tr => {
+          if (tr.style.display !== 'none') {
+            const td = tr.querySelectorAll('td')[ci];
+            if (td) {
+              td.querySelectorAll('select').forEach(sel => selectsAfetados.push(sel));
+            }
+          }
+        });
+      });
+
+      const itensEmRisco = temObsEmRisco(selectsAfetados, valorProcurado);
+      if (itensEmRisco.length > 0) {
+        abrirModal(
+          'Os seguintes itens t\u00eam observa\u00e7\u00f5es que ser\u00e3o apagadas: ' + itensEmRisco.join(', ') + '. Deseja continuar?',
+          (confirmou) => {
+            if (confirmou) {
+              itensEmRisco.forEach(item => delete defeitosObs[item]);
+              salvarObs();
+              executarPreenchimento(colunas, valorProcurado);
+            }
+          }
+        );
+      } else {
+        executarPreenchimento(colunas, valorProcurado);
+      }
+    }
+
+    function executarPreenchimento(colunas, valorProcurado) {
+      colunas.forEach(colIndex => {
+        preencherColuna(colIndex, valorProcurado);
+      });
+    }
+
     function preencherColuna(colIndex, valorProcurado) {
       document.querySelectorAll('tbody tr').forEach(tr => {
-        // Apenas aplica nas linhas que estão visíveis no modo atual
         if (tr.style.display !== 'none') {
           const td = tr.querySelectorAll('td')[colIndex];
           if (td) {
@@ -780,13 +1351,12 @@
               }
               if (optionExists) {
                 select.value = valorProcurado;
-                select.dispatchEvent(new Event('change'));
               }
             });
           }
         }
       });
-      capturarDefeitos(); // Atualiza o painel de resultados (Defeito Encontrado, Display)
+      capturarDefeitos();
     }
 
     window.onload = function () {
@@ -807,20 +1377,177 @@
           }
         }
 
-        el.addEventListener("change", capturarDefeitos);
-        el.addEventListener("keyup", capturarDefeitos);
+        // Para selects: verificar se tem OBS em risco ao mudar
+        if (el.tagName === "SELECT") {
+          let valorAnterior = el.value;
+          el.addEventListener("focus", function () {
+            valorAnterior = this.value;
+          });
+          el.addEventListener("change", function () {
+            const select = this;
+            const novoValor = select.value;
+
+            // Se estava em defeito e agora não está mais
+            if (ehValorDeDefeito(valorAnterior) && !ehValorDeDefeito(novoValor)) {
+              const linha = select.closest('tr');
+              if (linha) {
+                const item = linha.querySelector('td')?.innerText.trim();
+                if (item && defeitosObs[item] && defeitosObs[item].trim() !== '') {
+                  abrirModal(
+                    'O item "' + item + '" possui uma observação que será apagada. Deseja continuar?',
+                    (confirmou) => {
+                      if (confirmou) {
+                        delete defeitosObs[item];
+                        salvarObs();
+                        valorAnterior = novoValor;
+                        capturarDefeitos();
+                      } else {
+                        select.value = valorAnterior;
+                      }
+                    }
+                  );
+                  return;
+                }
+              }
+            }
+            valorAnterior = novoValor;
+            capturarDefeitos();
+          });
+        } else {
+          el.addEventListener("change", capturarDefeitos);
+          el.addEventListener("keyup", capturarDefeitos);
+        }
       });
 
       padronizarSelects();
       capturarDefeitos();
     };
 
+    function validarObrigatorios() {
+      let falta = [];
+      if (!document.getElementById('clienteField').value.trim()) falta.push("CLIENTE");
+      if (!document.getElementById('equipamentoField').value.trim()) falta.push("EQUIPAMENTO");
+      if (!document.getElementById('osField').value.trim()) falta.push("OS");
+
+      let temTecnico = false;
+      document.querySelectorAll('.input-tecnico').forEach(inp => {
+        if (inp.value.trim()) temTecnico = true;
+      });
+      if (!temTecnico) falta.push("TÉCNICO (pelo menos um nome)");
+
+      if (falta.length > 0) {
+        abrirModal("Os seguintes campos são obrigatórios: " + falta.join(', '));
+        return false;
+      }
+      return true;
+    }
+
+    function verificarPendencias() {
+      let pendenciasColunas = [[], [], []]; // 0: Entrada, 1: Técnico, 2: Testes
+      let tevePreenchimentoColunas = [false, false, false];
+
+      document.querySelectorAll('tbody tr').forEach(tr => {
+        if (tr.style.display !== 'none') {
+          const tds = tr.querySelectorAll('td');
+          // Linhas normais tem 4 tds
+          if (tds.length === 4) {
+            const itemNome = tds[0].innerText.trim();
+            for (let i = 0; i < 3; i++) {
+              const colTd = tds[i + 1];
+              if (!colTd) continue;
+              const selects = colTd.querySelectorAll('select');
+              let temValor = false;
+              let temSelecione = false;
+
+              selects.forEach(sel => {
+                const v = sel.value;
+                if (v && v !== 'Selecione' && v !== 'Vazio' && v !== 'Tipo' && v !== '') {
+                  temValor = true;
+                }
+                if (v === 'Selecione' || v === 'Tipo') {
+                  temSelecione = true;
+                }
+              });
+
+              if (temValor) {
+                tevePreenchimentoColunas[i] = true;
+              }
+              if (temSelecione) {
+                pendenciasColunas[i].push(itemNome);
+              }
+            }
+          }
+        }
+      });
+
+      let msgs = [];
+      const nomesColunas = ['Entrada', 'Técnico', 'Testes'];
+      for (let i = 0; i < 3; i++) {
+        if (tevePreenchimentoColunas[i] && pendenciasColunas[i].length > 0) {
+          msgs.push(`<strong>⚠️ Coluna ${nomesColunas[i]} incompleta:</strong> Faltou selecionar em: ${pendenciasColunas[i].join(', ')}`);
+        }
+      }
+
+      const avisoDiv = document.getElementById('avisosPendencia');
+      const appBarAviso = document.getElementById('appBarAviso');
+
+      if (msgs.length > 0) {
+        avisoDiv.innerHTML = msgs.join('<br><br>');
+        avisoDiv.style.display = 'block';
+        if (appBarAviso) appBarAviso.style.display = 'inline-block';
+      } else {
+        avisoDiv.style.display = 'none';
+        if (appBarAviso) appBarAviso.style.display = 'none';
+      }
+    }
+
     function imprimir() {
+      if (!validarObrigatorios()) return;
       window.print();
     }
 
     function gerarPDF() {
-      html2pdf().from(document.body).save("laudo.pdf");
+      if (!validarObrigatorios()) return;
+      // Captura os valores para o nome do arquivo
+      const os = (document.getElementById('osField').value || 'SemOS').trim().replace(/[\\/:*?"<>|]/g, '_');
+      const cliente = (document.getElementById('clienteField').value || 'SemCliente').trim().replace(/[\\/:*?"<>|]/g, '_');
+      const nomeArquivo = os + '_Diagnostico_Tecnico_do_' + cliente + '.pdf';
+
+      // Ativa o CSS de impressão via classe
+      document.body.classList.add('print-mode');
+
+      // Substitui selects por texto para o PDF renderizar corretamente
+      const selects = document.querySelectorAll('select:not(#colunaSelect)');
+      const selectBackup = [];
+      selects.forEach(sel => {
+        const span = document.createElement('span');
+        span.textContent = sel.options[sel.selectedIndex]?.text || '';
+        span.className = 'pdf-text-replace';
+        span.style.cssText = 'display:inline-block; padding:4px 6px; font-size:inherit;';
+        sel.parentNode.insertBefore(span, sel);
+        sel.style.display = 'none';
+        selectBackup.push({ sel, span });
+      });
+
+      const opt = {
+        margin: [5, 5, 5, 5],
+        filename: nomeArquivo,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+      };
+
+      html2pdf().set(opt).from(document.body).save().then(() => {
+        // Desativa o CSS de impressão
+        document.body.classList.remove('print-mode');
+
+        // Restaura os selects
+        selectBackup.forEach(({ sel, span }) => {
+          sel.style.display = '';
+          span.remove();
+        });
+      });
     }
   </script>
 
