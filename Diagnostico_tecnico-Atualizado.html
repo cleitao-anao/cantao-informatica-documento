@@ -32,6 +32,8 @@
       flex: 1;
     }
 
+
+
     label {
       font-weight: bold;
       display: block;
@@ -342,6 +344,13 @@
         -moz-appearance: none;
       }
 
+      .topo input {
+        padding: 0px;
+        border-bottom: 1px solid #000 !important;
+        border-radius: 0px  !important;
+
+    }
+
       .backup-input {
         border: 1px solid #ccc !important;
       }
@@ -468,6 +477,14 @@
       }
 
       #appBarAviso {
+        display: none !important;
+      }
+
+      select[data-print-hide-text="true"] {
+        color: transparent !important;
+      }
+
+      .defeito-obs-row[data-print-hide="true"] {
         display: none !important;
       }
     }
@@ -1022,8 +1039,8 @@
       <h3>⚠️ Atenção</h3>
       <p id="modalMsg">Existem observações em defeitos que serão apagadas. Deseja continuar?</p>
       <div class="modal-actions">
-        <button class="modal-btn-cancel" onclick="fecharModal(false)">aham</button>
-        <button class="modal-btn-confirm" onclick="fecharModal(true)">Vou fazer</button>
+        <button class="modal-btn-cancel" onclick="fecharModal(false)">Cancelar</button>
+        <button class="modal-btn-confirm" onclick="fecharModal(true)">Confirmar</button>
       </div>
     </div>
   </div>
@@ -1342,15 +1359,20 @@
           const td = tr.querySelectorAll('td')[colIndex];
           if (td) {
             td.querySelectorAll('select').forEach(select => {
-              let optionExists = false;
-              for (let i = 0; i < select.options.length; i++) {
-                if (select.options[i].value === valorProcurado || select.options[i].text === valorProcurado) {
-                  optionExists = true;
-                  break;
+              if (valorProcurado === 'Selecione') {
+                // Para o botão Vazio, sempre volta pro primeiro item que é o padrão (Selecione, Tipo, Modelo, Capacidade)
+                select.selectedIndex = 0;
+              } else {
+                let optionExists = false;
+                for (let i = 0; i < select.options.length; i++) {
+                  if (select.options[i].value === valorProcurado || select.options[i].text === valorProcurado) {
+                    optionExists = true;
+                    break;
+                  }
                 }
-              }
-              if (optionExists) {
-                select.value = valorProcurado;
+                if (optionExists) {
+                  select.value = valorProcurado;
+                }
               }
             });
           }
@@ -1461,10 +1483,12 @@
 
               selects.forEach(sel => {
                 const v = sel.value;
-                if (v && v !== 'Selecione' && v !== 'Vazio' && v !== 'Tipo' && v !== '') {
+                const placeholders = ['Selecione', 'Vazio', 'Tipo', 'Modelo', 'Capacidade'];
+                
+                if (v && !placeholders.includes(v) && v !== '') {
                   temValor = true;
                 }
-                if (v === 'Selecione' || v === 'Tipo') {
+                if (placeholders.includes(v)) {
                   temSelecione = true;
                 }
               });
@@ -1501,9 +1525,70 @@
       }
     }
 
+    function prepararImpressao() {
+      const placeholders = ['Selecione', 'Vazio', 'Tipo', 'Modelo', 'Capacidade'];
+      
+      document.querySelectorAll('select:not(#colunaSelect)').forEach(sel => {
+        if (placeholders.includes(sel.value)) {
+          sel.setAttribute('data-print-hide-text', 'true');
+        } else {
+          sel.removeAttribute('data-print-hide-text');
+        }
+      });
+
+      document.querySelectorAll('.defeito-obs-input').forEach(inp => {
+        if (inp.value.trim() === '') {
+          inp.closest('.defeito-obs-row').setAttribute('data-print-hide', 'true');
+        } else {
+          inp.closest('.defeito-obs-row').removeAttribute('data-print-hide');
+        }
+      });
+    }
+
     function imprimir() {
       if (!validarObrigatorios()) return;
+      prepararImpressao();
+
+      const os = (document.getElementById('osField').value || 'SemOS').trim().replace(/[\\/:*?"<>|]/g, '_');
+      const cliente = (document.getElementById('clienteField').value || 'SemCliente').trim().replace(/[\\/:*?"<>|]/g, '_');
+      const tituloDesejado = os + ' Diagnóstico Técnico ' + cliente;
+      
+      const originalTitle = document.title;
+      document.title = tituloDesejado;
+
       window.print();
+
+      setTimeout(() => {
+        document.title = originalTitle;
+      }, 1000);
+    }
+
+    function aplicarMediaPrintDynamic() {
+      let printStyle = document.createElement('style');
+      printStyle.id = 'temp-print-styles';
+      let rules = '';
+      
+      for (let i = 0; i < document.styleSheets.length; i++) {
+        let sheet = document.styleSheets[i];
+        try {
+          for (let j = 0; j < sheet.cssRules.length; j++) {
+            let rule = sheet.cssRules[j];
+            if (rule.conditionText === 'print') {
+              for (let k = 0; k < rule.cssRules.length; k++) {
+                rules += rule.cssRules[k].cssText + '\n';
+              }
+            }
+          }
+        } catch (e) { }
+      }
+      
+      printStyle.innerHTML = rules;
+      document.head.appendChild(printStyle);
+    }
+
+    function removerMediaPrintDynamic() {
+      let el = document.getElementById('temp-print-styles');
+      if (el) el.remove();
     }
 
     function gerarPDF() {
@@ -1511,17 +1596,22 @@
       // Captura os valores para o nome do arquivo
       const os = (document.getElementById('osField').value || 'SemOS').trim().replace(/[\\/:*?"<>|]/g, '_');
       const cliente = (document.getElementById('clienteField').value || 'SemCliente').trim().replace(/[\\/:*?"<>|]/g, '_');
-      const nomeArquivo = os + '_Diagnostico_Tecnico_do_' + cliente + '.pdf';
+      const nomeArquivo = os + ' Diagnóstico Técnico ' + cliente + '.pdf';
 
-      // Ativa o CSS de impressão via classe
-      document.body.classList.add('print-mode');
+      // Ativa as regras do @media print dinamicamente para o html2canvas ler
+      prepararImpressao();
+      aplicarMediaPrintDynamic();
 
       // Substitui selects por texto para o PDF renderizar corretamente
       const selects = document.querySelectorAll('select:not(#colunaSelect)');
       const selectBackup = [];
       selects.forEach(sel => {
         const span = document.createElement('span');
-        span.textContent = sel.options[sel.selectedIndex]?.text || '';
+        if (sel.getAttribute('data-print-hide-text') === 'true') {
+          span.textContent = '';
+        } else {
+          span.textContent = sel.options[sel.selectedIndex]?.text || '';
+        }
         span.className = 'pdf-text-replace';
         span.style.cssText = 'display:inline-block; padding:4px 6px; font-size:inherit;';
         sel.parentNode.insertBefore(span, sel);
@@ -1539,8 +1629,8 @@
       };
 
       html2pdf().set(opt).from(document.body).save().then(() => {
-        // Desativa o CSS de impressão
-        document.body.classList.remove('print-mode');
+        // Desativa o CSS de impressão dinâmico
+        removerMediaPrintDynamic();
 
         // Restaura os selects
         selectBackup.forEach(({ sel, span }) => {
