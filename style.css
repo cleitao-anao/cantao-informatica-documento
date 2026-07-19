@@ -1,0 +1,559 @@
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    padding: 20px;
+    padding-top: 80px;
+    background: #f0f2f5;
+}
+
+h1 {
+    margin-bottom: 5px;
+}
+
+
+.topo {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.topo div {
+    flex: 1;
+}
+
+
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 3px;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.label-tecnico {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-items: space-between;
+    flex-direction: column;
+
+
+
+}
+
+.input-tecnico {
+    display: flex;
+    padding: 1px;
+    width: 60%;
+    border-radius: 4px;
+    box-sizing: border-box;
+
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: #fff;
+}
+
+th,
+td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background: #333;
+    color: #fff;
+    text-align: center;
+}
+
+.secao {
+    background: #eaeaea;
+    font-weight: bold;
+    text-align: center;
+}
+
+hr {
+    margin: 5px 0;
+    background-color: #e0e0e0;
+    border: 0;
+    height: 1px;
+}
+
+button {
+    margin-top: 15px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-salvar {
+    background: #4CAF50;
+    color: #fff;
+}
+
+.btn-print {
+    background: #2196F3;
+    color: #fff;
+}
+
+.btn-pdf {
+    background: #f44336;
+    color: #fff;
+}
+
+/* APP BAR STYLES */
+.app-bar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 50%, #1e1e2e 100%);
+    padding: 0;
+    margin-bottom: 0;
+    border-radius: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+    height: 56px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.app-bar-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 16px;
+    height: 100%;
+}
+
+.app-bar-group.grow {
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.app-bar-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.35);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-right: 10px;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.app-bar-separator {
+    width: 1px;
+    height: 28px;
+    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+    flex-shrink: 0;
+}
+
+.app-bar button {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.75);
+    margin-top: 0;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'Inter', Arial, sans-serif;
+    padding: 7px 14px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    white-space: nowrap;
+    letter-spacing: 0.2px;
+}
+
+.app-bar button:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.18);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.app-bar button:active {
+    transform: translateY(0px);
+    box-shadow: none;
+}
+
+.app-bar button.active {
+    background: linear-gradient(135deg, #4CAF50, #43A047);
+    border-color: rgba(76, 175, 80, 0.4);
+    color: #fff;
+    box-shadow: 0 0 12px rgba(76, 175, 80, 0.3);
+}
+
+.app-bar button.btn-vazio {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.6);
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+.app-bar button.btn-vazio:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+    border-style: solid;
+}
+
+.app-bar button.btn-ok {
+    background: rgba(76, 175, 80, 0.12);
+    color: #66bb6a;
+    border-color: rgba(76, 175, 80, 0.2);
+}
+
+.app-bar button.btn-ok:hover {
+    background: rgba(76, 175, 80, 0.25);
+    color: #81c784;
+    border-color: rgba(76, 175, 80, 0.4);
+    box-shadow: 0 0 12px rgba(76, 175, 80, 0.15);
+}
+
+.app-bar button.btn-defeito {
+    background: rgba(239, 83, 80, 0.12);
+    color: #ef5350;
+    border-color: rgba(239, 83, 80, 0.2);
+}
+
+.app-bar button.btn-defeito:hover {
+    background: rgba(239, 83, 80, 0.25);
+    color: #e57373;
+    border-color: rgba(239, 83, 80, 0.4);
+    box-shadow: 0 0 12px rgba(239, 83, 80, 0.15);
+}
+
+.app-bar button.btn-salvar {
+    background: rgba(76, 175, 80, 0.12);
+    color: #66bb6a;
+    border-color: rgba(76, 175, 80, 0.2);
+}
+
+.app-bar button.btn-salvar:hover {
+    background: rgba(76, 175, 80, 0.25);
+    color: #81c784;
+    border-color: rgba(76, 175, 80, 0.4);
+    box-shadow: 0 0 12px rgba(76, 175, 80, 0.15);
+}
+
+.app-bar button.btn-print {
+    background: rgba(33, 150, 243, 0.12);
+    color: #42a5f5;
+    border-color: rgba(33, 150, 243, 0.2);
+}
+
+.app-bar button.btn-print:hover {
+    background: rgba(33, 150, 243, 0.25);
+    color: #64b5f6;
+    border-color: rgba(33, 150, 243, 0.4);
+    box-shadow: 0 0 12px rgba(33, 150, 243, 0.15);
+}
+
+.app-bar button.btn-pdf {
+    background: rgba(244, 67, 54, 0.12);
+    color: #ef5350;
+    border-color: rgba(244, 67, 54, 0.2);
+}
+
+.app-bar button.btn-pdf:hover {
+    background: rgba(244, 67, 54, 0.25);
+    color: #e57373;
+    border-color: rgba(244, 67, 54, 0.4);
+    box-shadow: 0 0 12px rgba(244, 67, 54, 0.15);
+}
+
+.app-bar select {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    padding: 7px 30px 7px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'Inter', Arial, sans-serif;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    width: auto;
+}
+
+.app-bar select:hover {
+    background-color: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.22);
+}
+
+.app-bar select:focus {
+    outline: none;
+    border-color: rgba(100, 180, 255, 0.5);
+    box-shadow: 0 0 0 2px rgba(100, 180, 255, 0.15);
+}
+
+.app-bar select option {
+    background: #2a2a3e;
+    color: #fff;
+}
+
+/* Regras de impressão — ativadas por @media print E pela classe .print-mode */
+@media print {
+
+    button,
+    .app-bar,
+    title {
+    display: none !important;
+    }
+
+    input,
+    select,
+    textarea {
+    border: none !important;
+    background: transparent !important;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    }
+
+    .topo input {
+    padding: 0px;
+    border-bottom: 1px solid #000 !important;
+    border-radius: 0px  !important;
+
+}
+
+    .backup-input {
+    border: 1px solid #ccc !important;
+    }
+
+    body {
+    background: #fff;
+    padding-top: 0 !important;
+    }
+}
+
+/* Mesmas regras, ativadas via JS ao adicionar .print-mode no body */
+body.print-mode button,
+body.print-mode .app-bar,
+body.print-mode title {
+    display: none !important;
+}
+
+body.print-mode input,
+body.print-mode select,
+body.print-mode textarea {
+    border: none !important;
+    background: transparent !important;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+body.print-mode .backup-input {
+    border: 1px solid #ccc !important;
+}
+
+body.print-mode {
+    background: #fff;
+    padding-top: 0 !important;
+}
+
+/* DEFEITOS ENCONTRADOS */
+.defeito-card {
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.defeito-card .defeito-texto {
+    color: #333;
+}
+
+.defeito-card .defeito-extra {
+    font-size: 12px;
+    color: #888;
+    font-style: italic;
+}
+
+.defeito-card .defeito-obs-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 2px;
+}
+
+.defeito-card .defeito-obs-row strong {
+    color: #555;
+    white-space: nowrap;
+    font-size: 13px;
+}
+
+.defeito-card .defeito-obs-input {
+    flex: 1;
+    border: 1px dashed #ccc;
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 13px;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.defeito-card .defeito-obs-input:focus {
+    border-color: #ff9800;
+    border-style: solid;
+}
+
+.defeito-display-section {
+    padding: 8px 12px;
+    margin-top: 8px;
+}
+
+.defeito-display-section strong {
+    color: #c62828;
+}
+
+/* MODAL */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+/* AVISOS PENDENCIA */
+.avisos-pendencia {
+    background: #ffebee;
+    border-left: 4px solid #f44336;
+    padding: 10px 15px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #c62828;
+}
+
+@media print {
+    .avisos-pendencia {
+    display: none !important;
+    }
+
+    #appBarAviso {
+    display: none !important;
+    }
+
+    select[data-print-hide-text="true"] {
+    color: transparent !important;
+    }
+
+    .defeito-obs-row[data-print-hide="true"] {
+    display: none !important;
+    }
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+.modal-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px 28px;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+.modal-box h3 {
+    margin: 0 0 8px;
+    font-size: 18px;
+    color: #e65100;
+}
+
+.modal-box p {
+    margin: 0 0 20px;
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.modal-box .modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.modal-box .modal-actions button {
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    margin-top: 0;
+    transition: all 0.15s;
+}
+
+.modal-btn-cancel {
+    background: #eee;
+    color: #333;
+}
+
+.modal-btn-cancel:hover {
+    background: #ddd;
+}
+
+.modal-btn-confirm {
+    background: #e53935;
+    color: #fff;
+}
+
+.modal-btn-confirm:hover {
+    background: #c62828;
+}
+
+@media print {
+    .defeito-obs-input {
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    }
+
+    .input-tecnico {
+    color: #ffff;
+    }
+}
+
+body.print-mode .defeito-obs-input {
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+}

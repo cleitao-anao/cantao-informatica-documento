@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Diagnóstico Técnico</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+
+
+</head>
+
+<body>
+
+  <!-- APP BAR (Oculta na impressão) -->
+  <div class="app-bar" id="appBar">
+
+    <!-- Grupo: Tipo de Equipamento -->
+    <div class="app-bar-group">
+      <span class="app-bar-label">Tipo</span>
+      <button onclick="mudarModo('pc')" id="btn-pc">💻 PC</button>
+      <button onclick="mudarModo('notebook')" id="btn-notebook">💻 Notebook</button>
+      <button onclick="mudarModo('tv')" id="btn-tv">📺 TV</button>
+    </div>
+
+    <div class="app-bar-separator"></div>
+
+    <!-- Grupo: Ações (Salvar, Imprimir, PDF) -->
+    <div class="app-bar-group">
+      <span class="app-bar-label">Ações</span>
+      <button class="btn-salvar" onclick="salvar()">💾 Salvar</button>
+      <button class="btn-print" onclick="imprimir()">🖨️ Imprimir</button>
+      <button class="btn-pdf" onclick="gerarPDF()">📄 PDF</button>
+    </div>
+
+    <div class="app-bar-separator"></div>
+
+    <!-- Grupo: Preenchimento Rápido -->
+    <div class="app-bar-group grow">
+      <span id="appBarAviso"
+        style="display:none; color:#f44336; margin-right:10px; font-weight:bold; font-size:14px; background:rgba(244,67,54,0.1); padding:4px 8px; border-radius:4px; border:1px solid rgba(244,67,54,0.3);">
+        ⚠️ Incompleto
+      </span>
+      <span class="app-bar-label">Preencher</span>
+      <select id="colunaSelect">
+        <option value="0">📋 Todos</option>
+        <option value="1">📥 Entrada</option>
+        <option value="2">🔧 Técnico</option>
+        <option value="3">🧪 Testes</option>
+      </select>
+      <button class="btn-vazio" onclick="preencherColunaApp('Selecione')">⬜ Vazio</button>
+      <button class="btn-ok" onclick="preencherColunaApp('Funcionando')">✅ Funcionando</button>
+      <button class="btn-defeito" onclick="preencherColunaApp('Com defeito')">❌ Com defeito</button>
+    </div>
+
+  </div>
+
+  <h1>DIAGNÓSTICO TÉCNICO</h1>
+
+  <!-- DADOS DO CLIENTE -->
+  <div class="topo">
+    <div>
+      <label>CLIENTE</label>
+      <input type="text" class="save" id="clienteField">
+    </div>
+  </div>
+
+  <div class="topo">
+    <div>
+      <label>EQUIPAMENTO</label>
+      <input type="text" class="save" id="equipamentoField">
+    </div>
+
+    <div>
+      <label>OS</label>
+      <input type="text" id="osField">
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ITEM</th>
+        <th>
+          <div class="label-tecnico"> ENTRADA<input class="input-tecnico" type="text"></div>
+        </th>
+        <th>
+          <div class="label-tecnico"> TÉCNICO <input class="input-tecnico" type="text"> </div>
+        </th>
+        <th>
+          <div class="label-tecnico"> TESTES <input class="input-tecnico" type="text"></div>
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      <!-- ENERGIA -->
+      <tr data-device="pc,notebook,tv">
+        <td colspan="4" class="secao">ENERGIA</td>
+      </tr>
+
+      <tr data-device="pc,notebook,tv">
+        <td>FONTE / PLACA FONTE</td>
+        <td>
+          <select class="save" data-opt="opt1"></select>
+        </td>
+
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+      </tr>
+
+      <tr data-device="notebook">
+        <td>BATERIA</td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+      </tr>
+
+      <tr data-device="notebook">
+        <td>CONECTOR POWER JACK</td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+      </tr>
+
+      <!-- ACIONAMENTO -->
+      <tr data-device="pc,notebook,tv">
+        <td colspan="4" class="secao">ACIONAMENTO</td>
+      </tr>
+
+      <tr data-device="pc,notebook,tv">
+        <td>BOTÃO POWER</td>
+        <td><select class="save" data-opt="opt2"></select></td>
+        <td><select class="save" data-opt="opt2"></select></td>
+        <td><select class="save" data-opt="opt2"></select></td>
+      </tr>
+
+      <!-- CARCAÇA -->
+      <tr data-device="pc,notebook,tv">
+        <td colspan="4" class="secao">CARCAÇA</td>
+      </tr>
+
+      <tr data-device="pc,notebook,tv">
+        <td>CARCAÇA</td>
+        <td><select class="save" data-opt="opt3"></select></td>
+        <td><select class="save" data-opt="opt3"></select></td>
+        <td><select class="save" data-opt="opt3"></select></td>
+      </tr>
+
+      <!-- PLACA / PROCESSAMENTO -->
+      <tr data-device="pc,notebook,tv">
+        <td colspan="4" class="secao">PLACA / PROCESSAMENTO</td>
+      </tr>
+
+      <tr data-device="pc,notebook,tv">
+        <td>PLACA MÃE / PLACA PRINCIPAL</td>
+        <td><select class="save" data-opt="opt2"></select></td>
+        <td><select class="save" data-opt="opt2"></select></td>
+        <td><select class="save" data-opt="opt2"></select></td>
+      </tr>
+
+      <tr data-device="pc,notebook">
+        <td>PROCESSADOR</td>
+        <td>
+          <select class="save" data-opt="opt2"></select>
+          <hr>
+          <select class="save" data-opt="opt4"></select>
+        </td>
+        <td>
+          <select class="save" data-opt="opt2"></select>
+          <hr>
+          <select class="save" data-opt="opt4"></select>
+        </td>
+        <td>
+          <select class="save" data-opt="opt2"></select>
+          <hr>
+          <select class="save" data-opt="opt4"></select>
+        </td>
+      </tr>
+
+      <tr data-device="pc,notebook">
+        <td>MEMÓRIA</td>
+        <td>
+          <select class="save" data-opt="opt2"></select>
+          <hr>
+          <select class="save" data-opt="opt5"></select>
+        </td>
+        <td>
+          <select class="save" data-opt="opt2"></select>
+          <hr>
+          <select class="save" data-opt="opt5"></select>
+        </td>
+        <td>
+          <select class="save" data-opt="opt2"></select>
+          <hr>
+          <select class="save" data-opt="opt5"></select>
+        </td>
+      </tr>
+
+      <!-- DISPLAY -->
+      <tr data-device="notebook,tv">
+        <td colspan="4" class="secao">DISPLAY</td>
+      </tr>
+      <tr data-device="notebook,tv">
+        <td>TELA (ESTADO)</td>
+        <td>
+          <select class="save display-check" data-opt="opt6"></select>
+        </td>
+        <td>
+          <select class="save display-check" data-opt="opt6"></select>
+        </td>
+        <td>
+          <select class="save display-check" data-opt="opt6"></select>
+        </td>
+      </tr>
+
+      <tr data-device="notebook,tv">
+        <td>TIPO DE PAINEL</td>
+        <td>
+          <select class="save" data-opt="opt7"></select>
+        </td>
+        <td>
+          <select class="save" data-opt="opt7"></select>
+        </td>
+        <td>
+          <select class="save" data-opt="opt7"></select>
+        </td>
+      </tr>
+
+      <tr data-device="notebook,tv">
+        <td>RESOLUÇÃO</td>
+        <td>
+          <select class="save" data-opt="opt8"></select>
+        </td>
+        <td>
+          <select class="save" data-opt="opt8"></select>
+        </td>
+        <td>
+          <select class="save" data-opt="opt8"></select>
+        </td>
+      </tr>
+
+      <tr data-device="notebook,tv">
+        <td>TAXA DE ATUALIZAÇÃO</td>
+        <td>
+          <select class="save" data-opt="opt9"></select>
+        </td>
+        <td>
+          <select class="save" data-opt="opt9"></select>
+        </td>
+        <td>
+          <select class="save" data-opt="opt9"></select>
+        </td>
+      </tr>
+
+      <tr data-device="notebook,tv">
+        <td>BACKLIGHT (ILUMINAÇÃO)</td>
+        <td><select class="save display-check" data-opt="opt10"></select></td>
+        <td><select class="save display-check" data-opt="opt10"></select></td>
+        <td><select class="save display-check" data-opt="opt10"></select></td>
+      </tr>
+
+      <tr data-device="tv">
+        <td>BARRA DE LEDS</td>
+        <td><select class="save display-check" data-opt="opt11"></select></td>
+        <td><select class="save display-check" data-opt="opt11"></select></td>
+        <td><select class="save display-check" data-opt="opt11"></select></td>
+      </tr>
+
+      <tr data-device="notebook,tv">
+        <td>CABO FLAT (LVDS/eDP)</td>
+        <td><select class="save display-check" data-opt="opt12"></select></td>
+        <td><select class="save display-check" data-opt="opt12"></select></td>
+        <td><select class="save display-check" data-opt="opt12"></select></td>
+      </tr>
+
+      <tr data-device="notebook,tv">
+        <td>SINTOMA VISUAL</td>
+        <td colspan="3">
+          <select class="save display-check" data-opt="opt13"></select>
+        </td>
+      </tr>
+
+      <!-- PORTAS / PERIFÉRICOS -->
+      <tr data-device="pc,notebook,tv">
+        <td colspan="4" class="secao">PORTAS / PERIFÉRICOS</td>
+      </tr>
+
+      <tr data-device="pc,notebook,tv">
+        <td>HDMI</td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+      </tr>
+
+      <tr data-device="pc,notebook,tv">
+        <td>USB / USB-C</td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+      </tr>
+
+      <tr data-device="pc,notebook">
+        <td>VGA</td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+      </tr>
+
+      <tr data-device="notebook">
+        <td>TECLADO</td>
+        <td>
+          <select class="save" data-opt="opt1"></select>
+          <hr>
+          <select class="save" data-opt="opt15"></select>
+        </td>
+        <td>
+          <select class="save" data-opt="opt1"></select>
+          <hr>
+          <select class="save" data-opt="opt15"></select>
+        </td>
+        <td>
+          <select class="save" data-opt="opt1"></select>
+          <hr>
+          <select class="save" data-opt="opt15"></select>
+        </td>
+      </tr>
+
+      <tr data-device="notebook">
+        <td>TOUCHPAD</td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+      </tr>
+
+      <tr data-device="notebook">
+        <td>CÂMERA</td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+      </tr>
+
+      <tr data-device="notebook">
+        <td>MICROFONE</td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+      </tr>
+
+      <tr data-device="notebook,tv">
+        <td>AUDIO INTERNO</td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+      </tr>
+
+      <tr data-device="pc,notebook,tv">
+        <td>CONECTOR P2</td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+      </tr>
+
+      <tr data-device="pc,notebook">
+        <td>SISTEMA OPERACIONAL</td>
+        <td><select class="save" data-opt="opt16"></select></td>
+        <td><select class="save" data-opt="opt16"></select></td>
+        <td><select class="save" data-opt="opt16"></select></td>
+      </tr>
+
+      <!-- PLACA GRÁFICA -->
+      <tr data-device="pc,notebook">
+        <td>PLACA GRÁFICA</td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1"></select></td>
+      </tr>
+
+      <!-- ARMAZENAMENTO -->
+      <tr data-device="pc,notebook">
+        <td colspan="4" class="secao">ARMAZENAMENTO</td>
+      </tr>
+
+      <tr data-device="pc,notebook">
+        <td>SSD/NVMe/HD</td>
+        <td>
+          <select class="save" data-opt="opt1"></select>
+          <hr>
+          <select class="save" data-opt="opt17"></select>
+          <hr>
+          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+        </td>
+        <td>
+          <select class="save" data-opt="opt1"></select>
+          <hr>
+          <select class="save" data-opt="opt17"></select>
+          <hr>
+          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+        </td>
+        <td>
+          <select class="save" data-opt="opt1"></select>
+          <hr>
+          <select class="save" data-opt="opt17"></select>
+          <hr>
+          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+        </td>
+      </tr>
+
+      <!-- BACKUP -->
+      <tr data-device="pc,notebook">
+        <td colspan="4" class="secao">BACKUP</td>
+      </tr>
+
+      <tr data-device="pc,notebook">
+        <td>BACKUP</td>
+        <td colspan="3">
+          <textarea class="backup-input" rows="2" placeholder="Disco C"></textarea>
+          <textarea class="backup-input" rows="2" placeholder="Usuário"></textarea>
+          <textarea class="backup-input" rows="2" placeholder="Disco D"></textarea>
+        </td>
+      </tr>
+
+      <!-- FINALIZAÇÃO -->
+      <tr data-device="pc,notebook,tv">
+        <td colspan="4" class="secao">FINALIZAÇÃO</td>
+      </tr>
+
+      <tr data-device="pc,notebook,tv">
+        <td>PREVENTIVA</td>
+        <td><select class="save" data-opt="opt18"></select></td>
+        <td><select class="save" data-opt="opt18"></select></td>
+        <td><select class="save" data-opt="opt18"></select></td>
+      </tr>
+
+      <!-- RESULTADO -->
+      <tr data-device="pc,notebook,tv">
+        <td colspan="4" class="secao">RESULTADO</td>
+      </tr>
+
+      <tr data-device="pc,notebook,tv">
+        <td>DEFEITO ENCONTRADO</td>
+        <td colspan="3">
+          <div id="DEFEITOENCONTRADOField" style="min-height:60px;"></div>
+        </td>
+      </tr>
+
+      <tr data-device="pc,notebook,tv">
+        <td>PARECER TÉCNICO</td>
+        <td colspan="3">
+          <div id="PARECERTECNICOField" contenteditable="true" class="save" style="min-height:60px;"></div>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <div id="avisosPendencia" class="avisos-pendencia" style="display:none;"></div>
+
+  <!-- ASSINATURAS -->
+  <table>
+    <tr>
+      <td style="text-align:center; height:80px;">
+        _______________________________<br>
+        ASSINATURA DO TÉCNICO
+      </td>
+      <td style="text-align:center;">
+        _______________________________<br>
+        ASSINATURA DO CLIENTE
+      </td>
+    </tr>
+  </table>
+
+  <!-- MODAL DE AVISO -->
+  <div class="modal-overlay" id="modalAviso">
+    <div class="modal-box">
+      <h3>⚠️ Atenção</h3>
+      <p id="modalMsg">Existem observações em defeitos que serão apagadas. Deseja continuar?</p>
+      <div class="modal-actions">
+        <button class="modal-btn-cancel" onclick="fecharModal(false)">Cancelar</button>
+        <button class="modal-btn-confirm" onclick="fecharModal(true)">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="script.js"></script>
+
+</body>
+
+</html>
