@@ -346,6 +346,8 @@ button {
     body {
     background: #fff;
     padding-top: 0 !important;
+    transform: scale(0.95);
+    transform-origin: top left;
     }
 }
 
@@ -354,6 +356,13 @@ body.print-mode button,
 body.print-mode .app-bar,
 body.print-mode title {
     display: none !important;
+}
+
+body.print-mode {
+    background: #fff;
+    padding-top: 0 !important;
+    transform: scale(0.95);
+    transform-origin: top left;
 }
 
 body.print-mode input,
@@ -368,11 +377,6 @@ body.print-mode textarea {
 
 body.print-mode .backup-input {
     border: 1px solid #ccc !important;
-}
-
-body.print-mode {
-    background: #fff;
-    padding-top: 0 !important;
 }
 
 /* DEFEITOS ENCONTRADOS */
@@ -556,4 +560,16 @@ body.print-mode .defeito-obs-input {
     border: none !important;
     background: transparent !important;
     padding: 0 !important;
+}
+
+/* Escala do PDF gerado pelo botão PDF */
+body.pdf-scale-95 {
+    transform: scale(0.9);
+    transform-origin: top left;
+}
+
+body.pdf-scale-95 .app-bar,
+body.pdf-scale-95 button,
+body.pdf-scale-95 title {
+    display: none !important;
 }

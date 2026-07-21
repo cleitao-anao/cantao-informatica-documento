@@ -569,6 +569,8 @@
         selectBackup.push({ sel, span });
       });
 
+      document.body.classList.add('pdf-scale-95');
+
       const opt = {
         margin: [5, 5, 5, 5],
         filename: nomeArquivo,
@@ -587,5 +589,6 @@
           sel.style.display = '';
           span.remove();
         });
+        document.body.classList.remove('pdf-scale-95');
       });
     }
