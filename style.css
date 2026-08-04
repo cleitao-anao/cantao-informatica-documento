@@ -38,6 +38,14 @@ textarea {
     box-sizing: border-box;
 }
 
+textarea {
+  field-sizing: content;
+  resize: none; /* Opcional: remove a barra de puxar com o mouse */
+
+}
+
+
+
 .label-tecnico {
     display: flex;
     align-items: center;

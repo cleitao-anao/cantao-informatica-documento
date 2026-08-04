@@ -186,7 +186,8 @@
         }
         html += '  <div class="defeito-obs-row">';
         html += '    <strong>OBS:</strong>';
-        html += '    <input class="defeito-obs-input" type="text" value="' + obsVal.replace(/"/g, '&quot;') + '" data-item="' + d.item + '" placeholder="Adicionar observa\u00e7\u00e3o..." onchange="atualizarObs(this)" oninput="atualizarObs(this)">';
+        html += '    <textarea class="defeito-obs-input" data-item="' + d.item + '" placeholder="Adicionar observa\u00e7\u00e3o..." onchange="atualizarObs(this)" oninput="atualizarObs(this)">' + obsVal.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</textarea>';
+        // html += '    <input class="defeito-obs-input" type="text" value="' + obsVal.replace(/"/g, '&quot;') + '" data-item="' + d.item + '" placeholder="Adicionar observa\u00e7\u00e3o..." onchange="atualizarObs(this)" oninput="atualizarObs(this)">';
         html += '  </div>';
         html += '</div>';
       });
