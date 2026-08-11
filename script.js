@@ -22,6 +22,8 @@
       'opt16': ['Selecione', 'Funcionando', 'Com defeito', 'Corrompido', 'Não Inicializa', 'Não Testado', 'Não Se Aplica'],
       'opt17': ['Tipo', 'SSD', 'NVMe', 'HD', 'NGFF(M2)'],
       'opt18': ['Selecione', 'Necessário', 'Realizada', 'Não necessária', 'Não realizada'],
+
+      'opt19': ['Vídeo integrado', 'Com vídeo integrado', 'Sem vídeo integrado']
     };
 
     let armazenamentoCount = 0;
@@ -667,56 +669,4 @@
     function removerMediaPrintDynamic() {
       let el = document.getElementById('temp-print-styles');
       if (el) el.remove();
-    }
-
-    function gerarPDF() {
-      if (!validarObrigatorios()) return;
-      // Captura os valores para o nome do arquivo
-      const os = (document.getElementById('osField').value || 'SemOS').trim().replace(/[\\/:*?"<>|]/g, '_');
-      const cliente = (document.getElementById('clienteField').value || 'SemCliente').trim().replace(/[\\/:*?"<>|]/g, '_');
-      const nomeArquivo = os + ' Diagnóstico Técnico ' + cliente + '.pdf';
-
-      // Ativa as regras do @media print dinamicamente para o html2canvas ler
-      prepararImpressao();
-      aplicarMediaPrintDynamic();
-
-      // Substitui selects por texto para o PDF renderizar corretamente
-      const selects = document.querySelectorAll('select:not(#colunaSelect)');
-      const selectBackup = [];
-      selects.forEach(sel => {
-        const span = document.createElement('span');
-        if (sel.getAttribute('data-print-hide-text') === 'true') {
-          span.textContent = '';
-        } else {
-          span.textContent = sel.options[sel.selectedIndex]?.text || '';
-        }
-        span.className = 'pdf-text-replace';
-        span.style.cssText = 'display:inline-block; padding:4px 6px; font-size:inherit;';
-        sel.parentNode.insertBefore(span, sel);
-        sel.style.display = 'none';
-        selectBackup.push({ sel, span });
-      });
-
-      document.body.classList.add('pdf-scale-95');
-
-      const opt = {
-        margin: [5, 5, 5, 5],
-        filename: nomeArquivo,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-      };
-
-      html2pdf().set(opt).from(document.body).save().then(() => {
-        // Desativa o CSS de impressão dinâmico
-        removerMediaPrintDynamic();
-
-        // Restaura os selects
-        selectBackup.forEach(({ sel, span }) => {
-          sel.style.display = '';
-          span.remove();
-        });
-        document.body.classList.remove('pdf-scale-95');
-      });
     }
