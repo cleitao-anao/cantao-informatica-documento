@@ -99,6 +99,44 @@ hr {
     height: 1px;
 }
 
+/* Botões Adicionar/Remover Armazenamento */
+.btn-add-armazenamento,
+.btn-remove-armazenamento {
+    margin: 4px 6px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Inter', Arial, sans-serif;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 1px solid;
+    transition: all 0.2s ease;
+}
+
+.btn-add-armazenamento {
+    background: rgba(76, 175, 80, 0.1);
+    color: #388E3C;
+    border-color: rgba(76, 175, 80, 0.3);
+}
+
+.btn-add-armazenamento:hover {
+    background: rgba(76, 175, 80, 0.2);
+    border-color: rgba(76, 175, 80, 0.5);
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.15);
+}
+
+.btn-remove-armazenamento {
+    background: rgba(244, 67, 54, 0.1);
+    color: #c62828;
+    border-color: rgba(244, 67, 54, 0.3);
+}
+
+.btn-remove-armazenamento:hover {
+    background: rgba(244, 67, 54, 0.2);
+    border-color: rgba(244, 67, 54, 0.5);
+    box-shadow: 0 2px 8px rgba(244, 67, 54, 0.15);
+}
+
 button {
     margin-top: 15px;
     padding: 10px 15px;
@@ -326,7 +364,8 @@ button {
 
     button,
     .app-bar,
-    title {
+    title,
+    .no-print {
     display: none !important;
     }
 
@@ -362,7 +401,8 @@ button {
 /* Mesmas regras, ativadas via JS ao adicionar .print-mode no body */
 body.print-mode button,
 body.print-mode .app-bar,
-body.print-mode title {
+body.print-mode title,
+body.print-mode .no-print {
     display: none !important;
 }
 

@@ -410,7 +410,7 @@
         <td colspan="4" class="secao">ARMAZENAMENTO</td>
       </tr>
 
-      <tr data-device="pc,notebook">
+      <tr data-device="pc,notebook" class="armazenamento-row">
         <td>SSD/NVMe/HD</td>
         <td>
           <select class="save" data-opt="opt1"></select>
@@ -432,6 +432,13 @@
           <select class="save" data-opt="opt17"></select>
           <hr>
           <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+        </td>
+      </tr>
+
+      <tr data-device="pc,notebook" class="armazenamento-btn-row no-print">
+        <td colspan="4" style="text-align:center; padding:4px;">
+          <button type="button" class="btn-add-armazenamento" onclick="adicionarArmazenamento()">➕ Adicionar Armazenamento</button>
+          <button type="button" class="btn-remove-armazenamento" id="btnRemoverArmazenamento" onclick="removerArmazenamento()" style="display:none;">➖ Remover Último</button>
         </td>
       </tr>
 

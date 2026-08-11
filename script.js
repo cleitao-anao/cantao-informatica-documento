@@ -24,6 +24,8 @@
       'opt18': ['Selecione', 'Necessário', 'Realizada', 'Não necessária', 'Não realizada'],
     };
 
+    let armazenamentoCount = 0;
+
     function injetarOpcoes() {
       document.querySelectorAll('select[data-opt]').forEach(select => {
         const optKey = select.getAttribute('data-opt');
@@ -37,6 +39,119 @@
           });
         }
       });
+    }
+
+    function adicionarArmazenamento() {
+      armazenamentoCount++;
+      const btnRow = document.querySelector('.armazenamento-btn-row');
+      if (!btnRow) return;
+
+      const newRow = document.createElement('tr');
+      newRow.setAttribute('data-device', 'pc,notebook');
+      newRow.classList.add('armazenamento-row', 'armazenamento-extra');
+
+      newRow.innerHTML = `
+        <td>SSD/NVMe/HD (${armazenamentoCount + 1})</td>
+        <td>
+          <select class="save" data-opt="opt1"></select>
+          <hr>
+          <select class="save" data-opt="opt17"></select>
+          <hr>
+          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+        </td>
+        <td>
+          <select class="save" data-opt="opt1"></select>
+          <hr>
+          <select class="save" data-opt="opt17"></select>
+          <hr>
+          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+        </td>
+        <td>
+          <select class="save" data-opt="opt1"></select>
+          <hr>
+          <select class="save" data-opt="opt17"></select>
+          <hr>
+          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+        </td>
+      `;
+
+      btnRow.parentNode.insertBefore(newRow, btnRow);
+
+      // Injetar opções nos novos selects
+      newRow.querySelectorAll('select[data-opt]').forEach(select => {
+        const optKey = select.getAttribute('data-opt');
+        const items = optionsData[optKey];
+        if (items) {
+          select.innerHTML = '';
+          items.forEach(item => {
+            const option = document.createElement('option');
+            option.textContent = item;
+            select.appendChild(option);
+          });
+        }
+      });
+
+      // Adicionar listeners nos novos selects
+      newRow.querySelectorAll('.save').forEach(el => {
+        if (el.tagName === 'SELECT') {
+          let valorAnterior = el.value;
+          el.addEventListener('focus', function() { valorAnterior = this.value; });
+          el.addEventListener('change', function() {
+            const select = this;
+            const novoValor = select.value;
+            if (ehValorDeDefeito(valorAnterior) && !ehValorDeDefeito(novoValor)) {
+              const linha = select.closest('tr');
+              if (linha) {
+                const item = linha.querySelector('td')?.innerText.trim();
+                if (item && defeitosObs[item] && defeitosObs[item].trim() !== '') {
+                  abrirModal(
+                    'O item "' + item + '" possui uma observação que será apagada. Deseja continuar?',
+                    (confirmou) => {
+                      if (confirmou) {
+                        delete defeitosObs[item];
+                        salvarObs();
+                        valorAnterior = novoValor;
+                        capturarDefeitos();
+                      } else {
+                        select.value = valorAnterior;
+                      }
+                    }
+                  );
+                  return;
+                }
+              }
+            }
+            valorAnterior = novoValor;
+            capturarDefeitos();
+          });
+        } else {
+          el.addEventListener('change', capturarDefeitos);
+          el.addEventListener('keyup', capturarDefeitos);
+        }
+      });
+
+      // Mostrar botão remover
+      document.getElementById('btnRemoverArmazenamento').style.display = 'inline-block';
+
+      // Aplicar modo atual
+      const modoAtual = localStorage.getItem('modo_equipamento') || 'notebook';
+      const devices = newRow.getAttribute('data-device');
+      if (devices && !devices.includes(modoAtual)) {
+        newRow.style.display = 'none';
+      }
+    }
+
+    function removerArmazenamento() {
+      const extras = document.querySelectorAll('.armazenamento-extra');
+      if (extras.length > 0) {
+        const ultimo = extras[extras.length - 1];
+        ultimo.remove();
+        armazenamentoCount--;
+      }
+      if (document.querySelectorAll('.armazenamento-extra').length === 0) {
+        document.getElementById('btnRemoverArmazenamento').style.display = 'none';
+      }
+      capturarDefeitos();
     }
     // ------------------------
 
@@ -155,6 +270,18 @@
               itensAdicionados.push(item);
               const extra = obterInfoExtra(item, linha);
               defeitos.push({ item, extra });
+            }
+          }
+        }
+
+        // Preventiva: quando "Necessário" é selecionado, aparece na área de problemas
+        if (valor && valor === 'Necessário' && el.tagName === 'SELECT') {
+          let linha = el.closest('tr');
+          if (linha) {
+            let item = linha.querySelector('td')?.innerText.trim();
+            if (item === 'PREVENTIVA' && !itensAdicionados.includes(item)) {
+              itensAdicionados.push(item);
+              defeitos.push({ item: 'PREVENTIVA', extra: 'Limpeza preventiva necessária' });
             }
           }
         }
