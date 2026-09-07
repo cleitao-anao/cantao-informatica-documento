@@ -38,6 +38,11 @@ textarea {
     box-sizing: border-box;
 }
 
+input[type="checkbox"] {
+    width: auto;
+    margin-right: 6px;
+}
+
 textarea {
   field-sizing: content;
   resize: none; /* Opcional: remove a barra de puxar com o mouse */
@@ -620,4 +625,20 @@ body.pdf-scale-95 .app-bar,
 body.pdf-scale-95 button,
 body.pdf-scale-95 title {
     display: none !important;
+}
+/* Checkbox de Teste Rápido (Atendente) */
+.teste-rapido-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.teste-rapido-container select {
+    flex: 1;
+}
+
+.check-atendente {
+    flex-shrink: 0;
+    transform: scale(1.2);
+    cursor: pointer;
 }
