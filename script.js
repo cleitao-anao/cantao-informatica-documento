@@ -685,7 +685,7 @@ window.onload = function () {
     }
 
     // --- EXPORTAR / IMPORTAR JSON ---
-    function exportarJSON() {
+    async function exportarJSON() {
       let dadosJSON = {};
       document.querySelectorAll(".save").forEach(el => {
         const id = el.getAttribute('data-id');
@@ -703,14 +703,38 @@ window.onload = function () {
       const os = (document.getElementById('osField') ? document.getElementById('osField').value : 'OS').trim() || 'OS';
       const cliente = (document.getElementById('clienteField') ? document.getElementById('clienteField').value : 'Cliente').trim() || 'Cliente';
       const nomeArquivo = `${os} - Diagnostico - ${cliente}.json`;
+      const conteudoJSON = JSON.stringify(dadosJSON, null, 2);
 
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dadosJSON, null, 2));
-      const btnDownload = document.createElement('a');
-      btnDownload.setAttribute("href", dataStr);
-      btnDownload.setAttribute("download", nomeArquivo);
-      document.body.appendChild(btnDownload);
-      btnDownload.click();
-      btnDownload.remove();
+      try {
+        // Tenta usar a API moderna do navegador para forçar a janela "Salvar Como"
+        if (window.showSaveFilePicker) {
+          const handle = await window.showSaveFilePicker({
+            suggestedName: nomeArquivo,
+            types: [{
+              description: 'Arquivo JSON',
+              accept: {'application/json': ['.json']},
+            }],
+          });
+          const writable = await handle.createWritable();
+          await writable.write(conteudoJSON);
+          await writable.close();
+        } else {
+          // Fallback: Se o navegador não suportar a API moderna (ex: Firefox antigo ou rodando localmente sem HTTPS)
+          const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(conteudoJSON);
+          const btnDownload = document.createElement('a');
+          btnDownload.setAttribute("href", dataStr);
+          btnDownload.setAttribute("download", nomeArquivo);
+          document.body.appendChild(btnDownload);
+          btnDownload.click();
+          btnDownload.remove();
+        }
+      } catch (err) {
+        // Ignora o erro se o usuário apenas clicou em "Cancelar" na janela
+        if (err.name !== 'AbortError') {
+          console.error("Erro ao salvar:", err);
+          alert("Não foi possível salvar o arquivo.");
+        }
+      }
     }
 
     function importarJSON(event) {
