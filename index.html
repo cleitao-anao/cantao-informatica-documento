@@ -37,6 +37,9 @@
       <span class="app-bar-label">Ações</span>
       <button class="btn-salvar" onclick="salvar()">💾 Salvar</button>
       <button class="btn-print" onclick="imprimir()">🖨️ Imprimir</button>
+      <button class="btn-primary" onclick="exportarJSON()" style="background: #2196F3; color: white;">⬇️ Exportar JSON</button>
+      <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importarJSON(event)">
+      <button class="btn-primary" onclick="document.getElementById('importFile').click()" style="background: #FF9800; color: white;">⬆️ Importar JSON</button>
       
     </div>
 
@@ -68,14 +71,14 @@
   <div class="topo">
     <div>
       <label>CLIENTE</label>
-      <input type="text" class="save" id="clienteField">
+      <input type="text" class="save" id="clienteField" data-id="campo_1">
     </div>
   </div>
 
   <div class="topo">
     <div>
       <label>EQUIPAMENTO</label>
-      <input type="text" class="save" id="equipamentoField">
+      <input type="text" class="save" id="equipamentoField" data-id="campo_2">
     </div>
 
     <div>
@@ -110,45 +113,45 @@
       <tr data-device="pc,notebook,tv">
         <td>FONTE / PLACA FONTE</td>
         <td>
-          <select class="save" data-opt="opt1"></select>
+          <select class="save" data-opt="opt1" data-id="campo_3"></select>
         </td>
 
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_4"></select></td>
         <td><div class="teste-rapido-container">
-            <select class="save" data-opt="opt1"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt1" data-id="campo_5"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_6">
           </div></td>
       </tr>
 
       <tr data-device="notebook">
         <td>BATERIA</td>
         <td>
-          <select class="save" data-opt="opt1"></select>
+          <select class="save" data-opt="opt1" data-id="campo_7"></select>
           <hr>
-          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;" data-id="campo_8">
         </td>
         <td>
-          <select class="save" data-opt="opt1"></select>
+          <select class="save" data-opt="opt1" data-id="campo_9"></select>
           <hr>
-          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;" data-id="campo_10">
         </td>
         <td>
           <div class="teste-rapido-container">
-            <select class="save" data-opt="opt1"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt1" data-id="campo_11"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_12">
           </div>
           <hr>
-          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;" data-id="campo_13">
         </td>
       </tr>
 
       <tr data-device="notebook">
         <td>CONECTOR POWER JACK</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_14"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_15"></select></td>
         <td><div style="display: flex; align-items: center; gap: 1px;">
-            <select class="save" data-opt="opt1"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt1" data-id="campo_16"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_17">
           </div></td>
       </tr>
 
@@ -159,11 +162,11 @@
 
       <tr data-device="pc,notebook,tv">
         <td>BOTÃO POWER</td>
-        <td><select class="save" data-opt="opt2"></select></td>
-        <td><select class="save" data-opt="opt2"></select></td>
+        <td><select class="save" data-opt="opt2" data-id="campo_18"></select></td>
+        <td><select class="save" data-opt="opt2" data-id="campo_19"></select></td>
         <td><div class="teste-rapido-container">
-            <select class="save" data-opt="opt2"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt2" data-id="campo_20"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_21">
           </div></td>
       </tr>
 
@@ -174,11 +177,11 @@
 
       <tr data-device="pc,notebook,tv">
         <td>CARCAÇA</td>
-        <td><select class="save" data-opt="opt3"></select></td>
-        <td><select class="save" data-opt="opt3"></select></td>
+        <td><select class="save" data-opt="opt3" data-id="campo_22"></select></td>
+        <td><select class="save" data-opt="opt3" data-id="campo_23"></select></td>
         <td><div class="teste-rapido-container">
-            <select class="save" data-opt="opt3"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt3" data-id="campo_24"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_25">
           </div></td>
       </tr>
 
@@ -189,61 +192,61 @@
 
       <tr data-device="pc,notebook,tv">
         <td>PLACA MÃE / PLACA PRINCIPAL</td>
-        <td><select class="save" data-opt="opt2"></select></td>
-        <td><select class="save" data-opt="opt2"></select></td>
+        <td><select class="save" data-opt="opt2" data-id="campo_26"></select></td>
+        <td><select class="save" data-opt="opt2" data-id="campo_27"></select></td>
         <td><div class="teste-rapido-container">
-            <select class="save" data-opt="opt2"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt2" data-id="campo_28"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_29">
           </div></td>
       </tr>
 
       <tr data-device="pc,notebook">
         <td>PROCESSADOR</td>
         <td>
-          <select class="save" data-opt="opt2"></select>
+          <select class="save" data-opt="opt2" data-id="campo_30"></select>
           <hr>
-          <select class="save" data-opt="opt4"></select>
+          <select class="save" data-opt="opt4" data-id="campo_31"></select>
           <hr>
-          <select class="save" data-opt="opt19"></select>
+          <select class="save" data-opt="opt19" data-id="campo_32"></select>
         </td>
         <td>
-          <select class="save" data-opt="opt2"></select>
+          <select class="save" data-opt="opt2" data-id="campo_33"></select>
           <hr>
-          <select class="save" data-opt="opt4"></select>
+          <select class="save" data-opt="opt4" data-id="campo_34"></select>
           <hr>
-          <select class="save" data-opt="opt19"></select>
+          <select class="save" data-opt="opt19" data-id="campo_35"></select>
         </td>
         <td>
           <div class="teste-rapido-container">
-            <select class="save" data-opt="opt2"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt2" data-id="campo_36"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_37">
           </div>
           <hr>
-          <select class="save" data-opt="opt4"></select>
+          <select class="save" data-opt="opt4" data-id="campo_38"></select>
           <hr>
-          <select class="save" data-opt="opt19"></select>
+          <select class="save" data-opt="opt19" data-id="campo_39"></select>
         </td>
       </tr>
 
       <tr data-device="pc,notebook">
         <td>MEMÓRIA</td>
         <td>
-          <select class="save" data-opt="opt2"></select>
+          <select class="save" data-opt="opt2" data-id="campo_40"></select>
           <hr>
-          <select class="save" data-opt="opt5"></select>
+          <select class="save" data-opt="opt5" data-id="campo_41"></select>
         </td>
         <td>
-          <select class="save" data-opt="opt2"></select>
+          <select class="save" data-opt="opt2" data-id="campo_42"></select>
           <hr>
-          <select class="save" data-opt="opt5"></select>
+          <select class="save" data-opt="opt5" data-id="campo_43"></select>
         </td>
         <td>
           <div class="teste-rapido-container">
-            <select class="save" data-opt="opt2"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt2" data-id="campo_44"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_45">
           </div>
           <hr>
-          <select class="save" data-opt="opt5"></select>
+          <select class="save" data-opt="opt5" data-id="campo_46"></select>
         </td>
       </tr>
 
@@ -254,15 +257,15 @@
       <tr data-device="notebook,tv">
         <td>TELA (ESTADO)</td>
         <td>
-          <select class="save display-check" data-opt="opt6"></select>
+          <select class="save display-check" data-opt="opt6" data-id="campo_47"></select>
         </td>
         <td>
-          <select class="save display-check" data-opt="opt6"></select>
+          <select class="save display-check" data-opt="opt6" data-id="campo_48"></select>
         </td>
         <td>
           <div class="teste-rapido-container">
-            <select class="save display-check" data-opt="opt6"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save display-check" data-opt="opt6" data-id="campo_49"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_50">
           </div>
         </td>
       </tr>
@@ -270,15 +273,15 @@
       <tr data-device="notebook,tv">
         <td>TIPO DE PAINEL</td>
         <td>
-          <select class="save" data-opt="opt7"></select>
+          <select class="save" data-opt="opt7" data-id="campo_51"></select>
         </td>
         <td>
-          <select class="save" data-opt="opt7"></select>
+          <select class="save" data-opt="opt7" data-id="campo_52"></select>
         </td>
         <td>
           <div class="teste-rapido-container">
-            <select class="save" data-opt="opt7"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt7" data-id="campo_53"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_54">
           </div>
         </td>
       </tr>
@@ -286,15 +289,15 @@
       <tr data-device="notebook,tv">
         <td>RESOLUÇÃO</td>
         <td>
-          <select class="save" data-opt="opt8"></select>
+          <select class="save" data-opt="opt8" data-id="campo_55"></select>
         </td>
         <td>
-          <select class="save" data-opt="opt8"></select>
+          <select class="save" data-opt="opt8" data-id="campo_56"></select>
         </td>
         <td>
           <div class="teste-rapido-container">
-            <select class="save" data-opt="opt8"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt8" data-id="campo_57"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_58">
           </div>
         </td>
       </tr>
@@ -302,53 +305,53 @@
       <tr data-device="notebook,tv">
         <td>TAXA DE ATUALIZAÇÃO</td>
         <td>
-          <select class="save" data-opt="opt9"></select>
+          <select class="save" data-opt="opt9" data-id="campo_59"></select>
         </td>
         <td>
-          <select class="save" data-opt="opt9"></select>
+          <select class="save" data-opt="opt9" data-id="campo_60"></select>
         </td>
         <td>
           <div class="teste-rapido-container">
-            <select class="save" data-opt="opt9"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt9" data-id="campo_61"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_62">
           </div>
         </td>
       </tr>
 
       <tr data-device="notebook,tv">
         <td>BACKLIGHT (ILUMINAÇÃO)</td>
-        <td><select class="save display-check" data-opt="opt10"></select></td>
-        <td><select class="save display-check" data-opt="opt10"></select></td>
+        <td><select class="save display-check" data-opt="opt10" data-id="campo_63"></select></td>
+        <td><select class="save display-check" data-opt="opt10" data-id="campo_64"></select></td>
         <td><div class="teste-rapido-container">
-            <select style="flex: 1;" class="save display-check" data-opt="opt10"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select style="flex: 1;" class="save display-check" data-opt="opt10" data-id="campo_65"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_66">
           </div></td>
       </tr>
 
       <tr data-device="tv">
         <td>BARRA DE LEDS</td>
-        <td><select class="save display-check" data-opt="opt11"></select></td>
-        <td><select class="save display-check" data-opt="opt11"></select></td>
+        <td><select class="save display-check" data-opt="opt11" data-id="campo_67"></select></td>
+        <td><select class="save display-check" data-opt="opt11" data-id="campo_68"></select></td>
         <td><div class="teste-rapido-container">
-            <select style="flex: 1;" class="save display-check" data-opt="opt11"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select style="flex: 1;" class="save display-check" data-opt="opt11" data-id="campo_69"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_70">
           </div></td>
       </tr>
 
       <tr data-device="notebook,tv">
         <td>CABO FLAT (LVDS/eDP)</td>
-        <td><select class="save display-check" data-opt="opt12"></select></td>
-        <td><select class="save display-check" data-opt="opt12"></select></td>
+        <td><select class="save display-check" data-opt="opt12" data-id="campo_71"></select></td>
+        <td><select class="save display-check" data-opt="opt12" data-id="campo_72"></select></td>
         <td><div class="teste-rapido-container">
-            <select style="flex: 1;" class="save display-check" data-opt="opt12"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select style="flex: 1;" class="save display-check" data-opt="opt12" data-id="campo_73"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_74">
           </div></td>
       </tr>
 
       <tr data-device="notebook,tv">
         <td>SINTOMA VISUAL</td>
         <td colspan="3">
-          <select class="save display-check" data-opt="opt13"></select>
+          <select class="save display-check" data-opt="opt13" data-id="campo_75"></select>
         </td>
       </tr>
 
@@ -359,60 +362,60 @@
 
       <tr data-device="pc,notebook,tv">
         <td>HDMI</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_76"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_77"></select></td>
         <td><div class="teste-rapido-container">
-            <select class="save" data-opt="opt1"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt1" data-id="campo_78"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_79">
           </div></td>
       </tr>
 
       <tr data-device="pc,notebook,tv">
         <td>USB / USB-C</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_80"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_81"></select></td>
         <td><div class="teste-rapido-container">
-            <select class="save" data-opt="opt1"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt1" data-id="campo_82"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_83">
           </div></td>
       </tr>
 
       <tr data-device="pc,notebook">
         <td>VGA</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_84"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_85"></select></td>
         <td><div class="teste-rapido-container">
-            <select class="save" data-opt="opt1"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt1" data-id="campo_86"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_87">
           </div></td>
       </tr>
       <tr data-device="pc,notebook">
         <td>LAN</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_88"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_89"></select></td>
         <td><div class="teste-rapido-container">
-            <select class="save" data-opt="opt1"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt1" data-id="campo_90"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_91">
           </div></td>
       </tr>
 
       <tr data-device="pc,notebook">
         <td>WIFI</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_92"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_93"></select></td>
         <td><div class="teste-rapido-container">
-            <select class="save" data-opt="opt1"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt1" data-id="campo_94"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_95">
           </div></td>
       </tr>
 
       <tr data-device="pc,notebook">
         <td>BLUETOOTH</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_96"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_97"></select></td>
         <td><div class="teste-rapido-container">
-            <select class="save" data-opt="opt1"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt1" data-id="campo_98"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_99">
           </div></td>
       </tr>
 
@@ -420,93 +423,93 @@
       <tr data-device="notebook">
         <td>TECLADO</td>
         <td>
-          <select class="save" data-opt="opt1"></select>
+          <select class="save" data-opt="opt1" data-id="campo_100"></select>
           <hr>
-          <select class="save" data-opt="opt15"></select>
+          <select class="save" data-opt="opt15" data-id="campo_101"></select>
         </td>
         <td>
-          <select class="save" data-opt="opt1"></select>
+          <select class="save" data-opt="opt1" data-id="campo_102"></select>
           <hr>
-          <select class="save" data-opt="opt15"></select>
+          <select class="save" data-opt="opt15" data-id="campo_103"></select>
         </td>
         <td>
           <div class="teste-rapido-container">
-            <select class="save" data-opt="opt1"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt1" data-id="campo_104"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_105">
           </div>
           <hr>
-          <select class="save" data-opt="opt15"></select>
+          <select class="save" data-opt="opt15" data-id="campo_106"></select>
         </td>
       </tr>
 
       <tr data-device="notebook">
         <td>TOUCHPAD</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_107"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_108"></select></td>
         <td><div class="teste-rapido-container">
-            <select class="save" data-opt="opt1"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt1" data-id="campo_109"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_110">
           </div></td>
       </tr>
 
       <tr data-device="notebook">
         <td>CÂMERA</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_111"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_112"></select></td>
         <td><div class="teste-rapido-container">
-            <select class="save" data-opt="opt1"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt1" data-id="campo_113"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_114">
           </div></td>
       </tr>
 
       <tr data-device="notebook">
         <td>MICROFONE</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_115"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_116"></select></td>
         <td><div class="teste-rapido-container">
-            <select class="save" data-opt="opt1"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt1" data-id="campo_117"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_118">
           </div></td>
       </tr>
 
       <tr data-device="notebook,tv">
         <td>AUDIO INTERNO</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_119"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_120"></select></td>
         <td><div class="teste-rapido-container">
-            <select class="save" data-opt="opt1"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt1" data-id="campo_121"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_122">
           </div></td>
       </tr>
 
       <tr data-device="pc,notebook,tv">
         <td>CONECTOR P2</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_123"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_124"></select></td>
         <td><div class="teste-rapido-container">
-            <select class="save" data-opt="opt1"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt1" data-id="campo_125"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_126">
           </div></td>
       </tr>
 
       <tr data-device="pc,notebook">
         <td>SISTEMA OPERACIONAL</td>
-        <td><select class="save" data-opt="opt16"></select></td>
-        <td><select class="save" data-opt="opt16"></select></td>
+        <td><select class="save" data-opt="opt16" data-id="campo_127"></select></td>
+        <td><select class="save" data-opt="opt16" data-id="campo_128"></select></td>
         <td><div class="teste-rapido-container">
-            <select class="save" data-opt="opt16"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt16" data-id="campo_129"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_130">
           </div></td>
       </tr>
 
       <!-- PLACA GRÁFICA -->
       <tr data-device="pc,notebook">
         <td>PLACA GRÁFICA</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_131"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_132"></select></td>
         <td><div class="teste-rapido-container">
-            <select class="save" data-opt="opt1"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt1" data-id="campo_133"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_134">
           </div></td>
       </tr>
 
@@ -518,28 +521,28 @@
       <tr data-device="pc,notebook" class="armazenamento-row">
         <td>SSD/NVMe/HD</td>
         <td>
-          <select class="save" data-opt="opt1"></select>
+          <select class="save" data-opt="opt1" data-id="campo_135"></select>
           <hr>
-          <select class="save" data-opt="opt17"></select>
+          <select class="save" data-opt="opt17" data-id="campo_136"></select>
           <hr>
-          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;" data-id="campo_137">
         </td>
         <td>
-          <select class="save" data-opt="opt1"></select>
+          <select class="save" data-opt="opt1" data-id="campo_138"></select>
           <hr>
-          <select class="save" data-opt="opt17"></select>
+          <select class="save" data-opt="opt17" data-id="campo_139"></select>
           <hr>
-          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;" data-id="campo_140">
         </td>
         <td>
           <div class="teste-rapido-container">
-            <select class="save" data-opt="opt1"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt1" data-id="campo_141"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_142">
           </div>
           <hr>
-          <select class="save" data-opt="opt17"></select>
+          <select class="save" data-opt="opt17" data-id="campo_143"></select>
           <hr>
-          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;" data-id="campo_144">
         </td>
       </tr>
 
@@ -571,11 +574,11 @@
 
       <tr data-device="pc,notebook,tv">
         <td>PREVENTIVA</td>
-        <td><select class="save" data-opt="opt18"></select></td>
-        <td><select class="save" data-opt="opt18"></select></td>
+        <td><select class="save" data-opt="opt18" data-id="campo_145"></select></td>
+        <td><select class="save" data-opt="opt18" data-id="campo_146"></select></td>
         <td><div class="teste-rapido-container">
-            <select class="save" data-opt="opt18"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)">
+            <select class="save" data-opt="opt18" data-id="campo_147"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_148">
           </div></td>
       </tr>
 

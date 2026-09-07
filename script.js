@@ -338,7 +338,9 @@
       let dados = [];
 
       document.querySelectorAll(".save").forEach((el, i) => {
-        if (el.tagName === "SELECT" || el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+        if (el.type === 'checkbox') {
+          dados[i] = el.checked;
+        } else if (el.tagName === "SELECT" || el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
           dados[i] = el.value;
         } else {
           dados[i] = el.innerHTML;
@@ -461,7 +463,16 @@
       capturarDefeitos();
     }
 
-    window.onload = function () {
+    
+window.onload = function () {
+      // Auto-save listeners
+      document.querySelectorAll('.save').forEach(el => {
+        el.addEventListener('change', salvar);
+        if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+          el.addEventListener('input', salvar);
+        }
+      });
+
       injetarOpcoes(); // Injeta as opções assim que a página carrega
 
       // Recuperar modo do localStorage ou 'notebook' por padrão
@@ -471,8 +482,10 @@
       let dados = JSON.parse(localStorage.getItem("laudo"));
 
       document.querySelectorAll(".save").forEach((el, i) => {
-        if (dados) {
-          if (el.tagName === "SELECT" || el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+        if (dados && dados[i] !== undefined) {
+          if (el.type === 'checkbox') {
+            el.checked = dados[i] === true || dados[i] === "true";
+          } else if (el.tagName === "SELECT" || el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
             el.value = dados[i] || "";
           } else {
             el.innerHTML = dados[i] || "";
@@ -563,7 +576,7 @@
 
               selects.forEach(sel => {
                 const v = sel.value;
-                const placeholders = ['Selecione', 'Vazio', 'Tipo', 'Modelo', 'Capacidade'];
+                const placeholders = ['Selecione', 'Vazio', 'Tipo', 'Modelo', 'Capacidade', 'Vídeo integrado'];
                 
                 if (v && !placeholders.includes(v) && v !== '') {
                   temValor = true;
@@ -670,3 +683,75 @@
       let el = document.getElementById('temp-print-styles');
       if (el) el.remove();
     }
+
+    // --- EXPORTAR / IMPORTAR JSON ---
+    function exportarJSON() {
+      let dadosJSON = {};
+      document.querySelectorAll(".save").forEach(el => {
+        const id = el.getAttribute('data-id');
+        if (!id) return;
+        
+        if (el.type === 'checkbox') {
+            dadosJSON[id] = el.checked;
+        } else if (el.tagName === "SELECT" || el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+            dadosJSON[id] = el.value;
+        } else {
+            dadosJSON[id] = el.innerHTML;
+        }
+      });
+
+      const os = (document.getElementById('osField') ? document.getElementById('osField').value : 'OS').trim() || 'OS';
+      const cliente = (document.getElementById('clienteField') ? document.getElementById('clienteField').value : 'Cliente').trim() || 'Cliente';
+      const nomeArquivo = `${os} - Diagnostico - ${cliente}.json`;
+
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dadosJSON, null, 2));
+      const btnDownload = document.createElement('a');
+      btnDownload.setAttribute("href", dataStr);
+      btnDownload.setAttribute("download", nomeArquivo);
+      document.body.appendChild(btnDownload);
+      btnDownload.click();
+      btnDownload.remove();
+    }
+
+    function importarJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const dadosJSON = JSON.parse(e.target.result);
+          
+          document.querySelectorAll(".save").forEach(el => {
+            const id = el.getAttribute('data-id');
+            if (id && dadosJSON[id] !== undefined) {
+              if (el.type === 'checkbox') {
+                  el.checked = dadosJSON[id];
+              } else if (el.tagName === "SELECT" || el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+                  el.value = dadosJSON[id];
+              } else {
+                  el.innerHTML = dadosJSON[id];
+              }
+            }
+          });
+          
+          // Trigger change event to update any dependent logic
+          document.querySelectorAll(".save").forEach(el => {
+            if (el.tagName === "SELECT") {
+                el.dispatchEvent(new Event('change'));
+            }
+          });
+          
+          salvar(); // Atualiza o localStorage com os novos dados
+          alert('Dados carregados com sucesso!');
+        } catch (error) {
+          alert('Erro ao ler o arquivo JSON. O arquivo pode estar corrompido.');
+          console.error(error);
+        }
+        
+        // Reset the file input so the same file can be imported again if needed
+        event.target.value = '';
+      };
+      reader.readAsText(file);
+    }
+    
