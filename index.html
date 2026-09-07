@@ -12,6 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css" />
 
 
@@ -25,9 +26,9 @@
     <!-- Grupo: Tipo de Equipamento -->
     <div class="app-bar-group">
       <span class="app-bar-label">Tipo</span>
-      <button onclick="mudarModo('pc')" id="btn-pc">💻 PC</button>
-      <button onclick="mudarModo('notebook')" id="btn-notebook">💻 Notebook</button>
-      <button onclick="mudarModo('tv')" id="btn-tv">📺 TV</button>
+      <button onclick="mudarModo('pc')" id="btn-pc"><i class="fa-solid fa-desktop"></i> PC</button>
+      <button onclick="mudarModo('notebook')" id="btn-notebook"><i class="fa-solid fa-laptop"></i> Notebook</button>
+      <button onclick="mudarModo('tv')" id="btn-tv"><i class="fa-solid fa-tv"></i> TV</button>
     </div>
 
     <div class="app-bar-separator"></div>
@@ -35,11 +36,10 @@
     <!-- Grupo: Ações (Salvar, Imprimir, PDF) -->
     <div class="app-bar-group">
       <span class="app-bar-label">Ações</span>
-      <button class="btn-salvar" onclick="salvar()">💾 Salvar</button>
-      <button class="btn-print" onclick="imprimir()">🖨️ Imprimir</button>
-      <button class="btn-primary" onclick="exportarJSON()" style="background: #2196F3; color: white;">⬇️ Exportar JSON</button>
+      <button class="btn-primary" onclick="exportarJSON()" style="background: #2196F3; color: white;"><i class="fa-solid fa-download"></i> Exportar</button>
       <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importarJSON(event)">
-      <button class="btn-primary" onclick="document.getElementById('importFile').click()" style="background: #FF9800; color: white;">⬆️ Importar JSON</button>
+      <button class="btn-primary" onclick="document.getElementById('importFile').click()" style="background: #FF9800; color: white;"><i class="fa-solid fa-upload"></i> Importar</button>
+      <button class="btn-print" onclick="imprimir()"><i class="fa-solid fa-print"></i> Imprimir</button>
       
     </div>
 
@@ -49,18 +49,18 @@
     <div class="app-bar-group grow">
       <span id="appBarAviso"
         style="display:none; color:#f44336; margin-right:10px; font-weight:bold; font-size:14px; background:rgba(244,67,54,0.1); padding:4px 8px; border-radius:4px; border:1px solid rgba(244,67,54,0.3);">
-        ⚠️ Incompleto
+        <i class="fa-solid fa-triangle-exclamation"></i> Incompleto
       </span>
       <span class="app-bar-label">Preencher</span>
       <select id="colunaSelect">
-        <option value="0">📋 Todos</option>
-        <option value="1">📥 Entrada</option>
-        <option value="2">🔧 Técnico</option>
-        <option value="3">🧪 Testes</option>
+        <option value="0">Todos</option>
+        <option value="1">Entrada</option>
+        <option value="2">Técnico</option>
+        <option value="3">Testes</option>
       </select>
-      <button class="btn-vazio" onclick="preencherColunaApp('Selecione')">⬜ Vazio</button>
-      <button class="btn-ok" onclick="preencherColunaApp('Funcionando')">✅ Funcionando</button>
-      <button class="btn-defeito" onclick="preencherColunaApp('Com defeito')">❌ Com defeito</button>
+      <button class="btn-vazio" onclick="preencherColunaApp('Selecione')"><i class="fa-regular fa-square"></i> Vazio</button>
+      <button class="btn-ok" onclick="preencherColunaApp('Funcionando')"><i class="fa-solid fa-check"></i> Funcionando</button>
+      <button class="btn-defeito" onclick="preencherColunaApp('Com defeito')"><i class="fa-solid fa-xmark"></i> Com defeito</button>
     </div>
 
   </div>
@@ -548,8 +548,8 @@
 
       <tr data-device="pc,notebook" class="armazenamento-btn-row no-print">
         <td colspan="4" style="text-align:center; padding:4px;">
-          <button type="button" class="btn-add-armazenamento" onclick="adicionarArmazenamento()">➕ Adicionar Armazenamento</button>
-          <button type="button" class="btn-remove-armazenamento" id="btnRemoverArmazenamento" onclick="removerArmazenamento()" style="display:none;">➖ Remover Último</button>
+          <button type="button" class="btn-add-armazenamento" onclick="adicionarArmazenamento()"><i class="fa-solid fa-plus"></i> Adicionar Armazenamento</button>
+          <button type="button" class="btn-remove-armazenamento" id="btnRemoverArmazenamento" onclick="removerArmazenamento()" style="display:none;"><i class="fa-solid fa-minus"></i> Remover Último</button>
         </td>
       </tr>
 
@@ -623,7 +623,7 @@
   <!-- MODAL DE AVISO -->
   <div class="modal-overlay" id="modalAviso">
     <div class="modal-box">
-      <h3>⚠️ Atenção</h3>
+      <h3><i class="fa-solid fa-triangle-exclamation"></i> Atenção</h3>
       <p id="modalMsg">Existem observações em defeitos que serão apagadas. Deseja continuar?</p>
       <div class="modal-actions">
         <button class="modal-btn-cancel" onclick="fecharModal(false)">Cancelar</button>

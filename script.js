@@ -601,7 +601,7 @@ window.onload = function () {
       const nomesColunas = ['Entrada', 'Técnico', 'Testes'];
       for (let i = 0; i < 3; i++) {
         if (tevePreenchimentoColunas[i] && pendenciasColunas[i].length > 0) {
-          msgs.push(`<strong>⚠️ Coluna ${nomesColunas[i]} incompleta:</strong> Faltou selecionar em: ${pendenciasColunas[i].join(', ')}`);
+          msgs.push(`<strong><i class="fa-solid fa-triangle-exclamation"></i> Coluna ${nomesColunas[i]} incompleta:</strong> Faltou selecionar em: ${pendenciasColunas[i].join(', ')}`);
         }
       }
 
