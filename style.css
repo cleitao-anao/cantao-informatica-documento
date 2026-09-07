@@ -642,3 +642,61 @@ body.pdf-scale-95 title {
     transform: scale(1.2);
     cursor: pointer;
 }
+
+/* ====== RESPONSIVIDADE ====== */
+@media (max-width: 768px) {
+    body {
+        padding-top: 200px; /* Espaço maior para acomodar a app-bar estendida */
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .app-bar {
+        height: auto;
+        flex-wrap: wrap;
+        padding: 10px;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .app-bar-group {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding: 5px 0;
+    }
+
+    .app-bar-separator {
+        display: none; /* Ocultar barra vertical em mobile */
+    }
+
+    .topo {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    table {
+        min-width: 700px; /* Força scroll horizontal em vez de amassar os campos */
+    }
+
+    .app-bar button, 
+    .app-bar select {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+}
+
+@media print {
+    .table-responsive {
+        overflow-x: visible !important;
+        box-shadow: none !important;
+    }
+}
