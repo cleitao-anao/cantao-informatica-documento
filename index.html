@@ -83,7 +83,7 @@
 
     <div>
       <label>OS</label>
-      <input type="text" id="osField">
+      <input type="text" class="save" id="osField" data-id="campo_os">
     </div>
   </div>
 
@@ -93,13 +93,13 @@
       <tr>
         <th>ITEM</th>
         <th>
-          <div class="label-tecnico"> ENTRADA<input class="input-tecnico" type="text"></div>
+          <div class="label-tecnico"> ENTRADA<input class="input-tecnico save" type="text" data-id="campo_tecnico_entrada"></div>
         </th>
         <th>
-          <div class="label-tecnico"> TÉCNICO <input class="input-tecnico" type="text"> </div>
+          <div class="label-tecnico"> TÉCNICO <input class="input-tecnico save" type="text" data-id="campo_tecnico_tecnico"> </div>
         </th>
         <th>
-          <div class="label-tecnico"> TESTES <input class="input-tecnico" type="text"></div>
+          <div class="label-tecnico"> TESTES <input class="input-tecnico save" type="text" data-id="campo_tecnico_testes"></div>
         </th>
       </tr>
     </thead>
@@ -375,11 +375,11 @@
 
       <tr data-device="pc,notebook,tv">
         <td>HDMI</td>
-        <td><select class="save" data-opt="opt1" data-id="campo_76"></select></td>
-        <td><select class="save" data-opt="opt1" data-id="campo_77"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_76h"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_77h"></select></td>
         <td><div class="teste-rapido-container">
-            <select class="save" data-opt="opt1" data-id="campo_78"></select>
-            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_79">
+            <select class="save" data-opt="opt1" data-id="campo_78h"></select>
+            <input type="checkbox" class="save check-atendente" title="Teste rápido (Atendente)" data-id="campo_79h">
           </div></td>
       </tr>
 
@@ -574,9 +574,9 @@
       <tr data-device="pc,notebook">
         <td>BACKUP</td>
         <td colspan="3">
-          <textarea class="backup-input" rows="2" placeholder="Disco C"></textarea>
-          <textarea class="backup-input" rows="2" placeholder="Usuário"></textarea>
-          <textarea class="backup-input" rows="2" placeholder="Disco D"></textarea>
+          <textarea class="backup-input save" rows="2" placeholder="Disco C" data-id="campo_backup_c"></textarea>
+          <textarea class="backup-input save" rows="2" placeholder="Usuário" data-id="campo_backup_usuario"></textarea>
+          <textarea class="backup-input save" rows="2" placeholder="Disco D" data-id="campo_backup_d"></textarea>
         </td>
       </tr>
 

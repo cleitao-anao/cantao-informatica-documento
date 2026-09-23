@@ -1561,6 +1561,18 @@ body.pdf-scale-95 title {
     function preencherColunaApp(valorProcurado) {
       const colIndex = parseInt(document.getElementById('colunaSelect').value, 10);
 
+      // Se "Todos" e "Vazio" (valorProcurado === 'Selecione')
+      if (colIndex === 0 && valorProcurado === 'Selecione') {
+        abrirModal('Deseja realmente resetar o cache e apagar todos os dados da tela?', (confirmou) => {
+          if (confirmou) {
+            localStorage.removeItem('laudo');
+            localStorage.removeItem('defeitosObs');
+            location.reload();
+          }
+        });
+        return;
+      }
+
       // Coleta todos os selects afetados
       let selectsAfetados = [];
       const colunas = colIndex === 0 ? [1, 2, 3] : [colIndex];

@@ -52,28 +52,29 @@
       newRow.setAttribute('data-device', 'pc,notebook');
       newRow.classList.add('armazenamento-row', 'armazenamento-extra');
 
+      const n = armazenamentoCount + 1;
       newRow.innerHTML = `
-        <td>SSD/NVMe/HD (${armazenamentoCount + 1})</td>
+        <td>SSD/NVMe/HD (${n})</td>
         <td>
-          <select class="save" data-opt="opt1"></select>
+          <select class="save" data-opt="opt1" data-id="campo_arm${n}_1"></select>
           <hr>
-          <select class="save" data-opt="opt17"></select>
+          <select class="save" data-opt="opt17" data-id="campo_arm${n}_2"></select>
           <hr>
-          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;" data-id="campo_arm${n}_3">
         </td>
         <td>
-          <select class="save" data-opt="opt1"></select>
+          <select class="save" data-opt="opt1" data-id="campo_arm${n}_4"></select>
           <hr>
-          <select class="save" data-opt="opt17"></select>
+          <select class="save" data-opt="opt17" data-id="campo_arm${n}_5"></select>
           <hr>
-          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;" data-id="campo_arm${n}_6">
         </td>
         <td>
-          <select class="save" data-opt="opt1"></select>
+          <select class="save" data-opt="opt1" data-id="campo_arm${n}_7"></select>
           <hr>
-          <select class="save" data-opt="opt17"></select>
+          <select class="save" data-opt="opt17" data-id="campo_arm${n}_8"></select>
           <hr>
-          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;" data-id="campo_arm${n}_9">
         </td>
       `;
 
@@ -129,6 +130,14 @@
         } else {
           el.addEventListener('change', capturarDefeitos);
           el.addEventListener('keyup', capturarDefeitos);
+        }
+      });
+
+      // Auto-save listeners for new elements
+      newRow.querySelectorAll('.save').forEach(el => {
+        el.addEventListener('change', salvar);
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+          el.addEventListener('input', salvar);
         }
       });
 
@@ -335,17 +344,22 @@
 
     // 💾 SALVAR
     function salvar() {
-      let dados = [];
+      let dados = {};
 
-      document.querySelectorAll(".save").forEach((el, i) => {
+      document.querySelectorAll(".save").forEach(el => {
+        const id = el.getAttribute('data-id') || el.id;
+        if (!id) return;
         if (el.type === 'checkbox') {
-          dados[i] = el.checked;
+          dados[id] = el.checked;
         } else if (el.tagName === "SELECT" || el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
-          dados[i] = el.value;
+          dados[id] = el.value;
         } else {
-          dados[i] = el.innerHTML;
+          dados[id] = el.innerHTML;
         }
       });
+
+      // Save the count of extra storage rows
+      dados['_armazenamentoCount'] = armazenamentoCount;
 
       localStorage.setItem("laudo", JSON.stringify(dados));
     }
@@ -397,6 +411,18 @@
 
     function preencherColunaApp(valorProcurado) {
       const colIndex = parseInt(document.getElementById('colunaSelect').value, 10);
+
+      // Se "Todos" e "Vazio" (valorProcurado === 'Selecione')
+      if (colIndex === 0 && valorProcurado === 'Selecione') {
+        abrirModal('Deseja realmente resetar o cache e apagar todos os dados da tela?', (confirmou) => {
+          if (confirmou) {
+            localStorage.removeItem('laudo');
+            localStorage.removeItem('defeitosObs');
+            location.reload();
+          }
+        });
+        return;
+      }
 
       // Coleta todos os selects afetados
       let selectsAfetados = [];
@@ -481,14 +507,23 @@ window.onload = function () {
 
       let dados = JSON.parse(localStorage.getItem("laudo"));
 
-      document.querySelectorAll(".save").forEach((el, i) => {
-        if (dados && dados[i] !== undefined) {
+      // Recreate dynamic storage rows before loading data
+      if (dados && dados['_armazenamentoCount']) {
+        const count = dados['_armazenamentoCount'];
+        for (let i = 0; i < count; i++) {
+          adicionarArmazenamento();
+        }
+      }
+
+      document.querySelectorAll(".save").forEach(el => {
+        const id = el.getAttribute('data-id') || el.id;
+        if (dados && id && dados[id] !== undefined) {
           if (el.type === 'checkbox') {
-            el.checked = dados[i] === true || dados[i] === "true";
+            el.checked = dados[id] === true || dados[id] === "true";
           } else if (el.tagName === "SELECT" || el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
-            el.value = dados[i] || "";
+            el.value = dados[id] || "";
           } else {
-            el.innerHTML = dados[i] || "";
+            el.innerHTML = dados[id] || "";
           }
         }
 
@@ -688,7 +723,7 @@ window.onload = function () {
     async function exportarJSON() {
       let dadosJSON = {};
       document.querySelectorAll(".save").forEach(el => {
-        const id = el.getAttribute('data-id');
+        const id = el.getAttribute('data-id') || el.id;
         if (!id) return;
         
         if (el.type === 'checkbox') {
@@ -699,6 +734,9 @@ window.onload = function () {
             dadosJSON[id] = el.innerHTML;
         }
       });
+
+      // Salva as observações dos defeitos no JSON
+      dadosJSON['defeitosObs'] = defeitosObs;
 
       const os = (document.getElementById('osField') ? document.getElementById('osField').value : 'OS').trim() || 'OS';
       const cliente = (document.getElementById('clienteField') ? document.getElementById('clienteField').value : 'Cliente').trim() || 'Cliente';
@@ -746,8 +784,14 @@ window.onload = function () {
         try {
           const dadosJSON = JSON.parse(e.target.result);
           
+          // Restaura as observações dos defeitos
+          if (dadosJSON.defeitosObs) {
+            defeitosObs = dadosJSON.defeitosObs;
+            salvarObs();
+          }
+
           document.querySelectorAll(".save").forEach(el => {
-            const id = el.getAttribute('data-id');
+            const id = el.getAttribute('data-id') || el.id;
             if (id && dadosJSON[id] !== undefined) {
               if (el.type === 'checkbox') {
                   el.checked = dadosJSON[id];
