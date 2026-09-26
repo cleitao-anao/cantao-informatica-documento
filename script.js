@@ -28,6 +28,11 @@
 
     let armazenamentoCount = 0;
 
+
+    function campo_tecnico_entrada() {
+      
+    }
+
     function injetarOpcoes() {
       document.querySelectorAll('select[data-opt]').forEach(select => {
         const optKey = select.getAttribute('data-opt');
@@ -169,6 +174,17 @@
 
     // Armazena OBS dos defeitos (persistido no localStorage)
     let defeitosObs = JSON.parse(localStorage.getItem('defeitosObs') || '{}');
+
+    function toggleDarkMode() {
+      const checkbox = document.getElementById('themeSwitch');
+      if (checkbox && checkbox.checked) {
+        document.body.classList.add("dark-mode");
+        localStorage.setItem("tema_escuro", "true");
+      } else {
+        document.body.classList.remove("dark-mode");
+        localStorage.setItem("tema_escuro", "false");
+      }
+    }
 
     // Callback do modal
     let _modalCallback = null;
@@ -500,10 +516,22 @@ window.onload = function () {
       });
 
       injetarOpcoes(); // Injeta as opções assim que a página carrega
+      configurarNavegacaoTeclado(); // Habilita a navegação por Alt+Setas ou Ctrl+Setas
 
       // Recuperar modo do localStorage ou 'notebook' por padrão
       let modoSalvo = localStorage.getItem("modo_equipamento") || "notebook";
       mudarModo(modoSalvo);
+
+      // Recuperar tema (dark/light) do localStorage
+      let temaSalvo = localStorage.getItem("tema_escuro") || "false";
+      const themeSwitch = document.getElementById('themeSwitch');
+      if (temaSalvo === "true") {
+        document.body.classList.add("dark-mode");
+        if (themeSwitch) themeSwitch.checked = true;
+      } else {
+        document.body.classList.remove("dark-mode");
+        if (themeSwitch) themeSwitch.checked = false;
+      }
 
       let dados = JSON.parse(localStorage.getItem("laudo"));
 
@@ -671,6 +699,14 @@ window.onload = function () {
           inp.closest('.defeito-obs-row').removeAttribute('data-print-hide');
         }
       });
+
+      document.querySelectorAll('.input-tecnico').forEach(inp => {
+        if (inp.value.trim() === '') {
+          inp.setAttribute('data-print-hide', 'true');
+        } else {
+          inp.removeAttribute('data-print-hide');
+        }
+      });
     }
 
     function imprimir() {
@@ -821,5 +857,100 @@ window.onload = function () {
         event.target.value = '';
       };
       reader.readAsText(file);
+    }
+    
+    function configurarNavegacaoTeclado() {
+      document.addEventListener('keydown', function(e) {
+        const isTab = e.key === 'Tab';
+        const isSeta = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key);
+        
+        // Exigir Tab ou (Alt/Ctrl + Seta)
+        if (!isTab && !(isSeta && (e.altKey || e.ctrlKey))) return;
+
+        const atual = document.activeElement;
+        // Só navegar se estiver focando em algum campo de entrada/select
+        if (!atual || (!atual.classList.contains('save') && !atual.classList.contains('input-tecnico'))) return;
+
+        const td = atual.closest('td');
+        const tr = td ? td.closest('tr') : null;
+        if (!td || !tr) return;
+
+        // Lista de todos os inputs/selects dentro da mesma célula (td)
+        const irmaos = Array.from(td.querySelectorAll('input:not([type="hidden"]), select, textarea'));
+        const indexNestaCelula = irmaos.indexOf(atual);
+
+        let alvo = null;
+        const colIndex = td.cellIndex;
+
+        function pegarFocavel(linha, colIdx, pegarUltimo = false) {
+           if (!linha) return null;
+           const celula = linha.cells[colIdx];
+           if (!celula) return null;
+           const itens = Array.from(celula.querySelectorAll('input:not([type="hidden"]), select, textarea'));
+           if (itens.length === 0) return null;
+           return pegarUltimo ? itens[itens.length - 1] : itens[0];
+        }
+
+        // Tab normal se comporta igual ArrowDown. Shift+Tab igual ArrowUp
+        const indoParaBaixo = (e.key === 'ArrowDown') || (isTab && !e.shiftKey);
+        const indoParaCima = (e.key === 'ArrowUp') || (isTab && e.shiftKey);
+
+        if (indoParaBaixo) {
+            if (indexNestaCelula >= 0 && indexNestaCelula < irmaos.length - 1) {
+                // Desce pro próximo item na MESMA célula (ex: combos do SSD)
+                alvo = irmaos[indexNestaCelula + 1];
+            } else {
+                // Pula pra próxima linha
+                let nextTr = tr.nextElementSibling;
+                // Ignorar linhas invisíveis ou de cabeçalho
+                while (nextTr && (nextTr.style.display === 'none' || nextTr.querySelector('th'))) {
+                    nextTr = nextTr.nextElementSibling;
+                }
+                if (nextTr) alvo = pegarFocavel(nextTr, colIndex, false);
+            }
+        } 
+        else if (indoParaCima) {
+            if (indexNestaCelula > 0) {
+                // Sobe pro item anterior na MESMA célula
+                alvo = irmaos[indexNestaCelula - 1];
+            } else {
+                // Pula pra linha de cima
+                let prevTr = tr.previousElementSibling;
+                while (prevTr && (prevTr.style.display === 'none' || prevTr.querySelector('th'))) {
+                    prevTr = prevTr.previousElementSibling;
+                }
+                if (prevTr) alvo = pegarFocavel(prevTr, colIndex, true);
+            }
+        }
+        else if (e.key === 'ArrowRight') {
+            let nextTd = td.nextElementSibling;
+            while (nextTd && !alvo) {
+                const itens = Array.from(nextTd.querySelectorAll('input:not([type="hidden"]), select, textarea'));
+                if (itens.length > 0) {
+                    alvo = itens[Math.min(indexNestaCelula >= 0 ? indexNestaCelula : 0, itens.length - 1)];
+                }
+                nextTd = nextTd.nextElementSibling;
+            }
+        }
+        else if (e.key === 'ArrowLeft') {
+            let prevTd = td.previousElementSibling;
+            while (prevTd && !alvo) {
+                const itens = Array.from(prevTd.querySelectorAll('input:not([type="hidden"]), select, textarea'));
+                if (itens.length > 0) {
+                    alvo = itens[Math.min(indexNestaCelula >= 0 ? indexNestaCelula : 0, itens.length - 1)];
+                }
+                prevTd = prevTd.previousElementSibling;
+            }
+        }
+
+        // Se achou um alvo, foca nele e previne o comportamento padrão do navegador
+        if (alvo) {
+            e.preventDefault();
+            alvo.focus();
+            if (alvo.tagName === 'INPUT' && typeof alvo.select === 'function') {
+                alvo.select();
+            }
+        }
+      });
     }
     

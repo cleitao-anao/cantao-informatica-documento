@@ -39,24 +39,22 @@
 }
 
 /* ====== DARK MODE ====== */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --cor-fundo: #121218;
-        --cor-superficie: #1e1e2a;
-        --cor-secao: #252536;
-        --cor-borda: #333348;
-        --cor-separador: #333348;
+body.dark-mode {
+    --cor-fundo: #121218;
+    --cor-superficie: #1e1e2a;
+    --cor-secao: #252536;
+    --cor-borda: #333348;
+    --cor-separador: #333348;
 
-        --cor-texto: #e2e8f0;
-        --cor-texto-secundario: #94a3b8;
-        --cor-texto-claro: #64748b;
+    --cor-texto: #e2e8f0;
+    --cor-texto-secundario: #94a3b8;
+    --cor-texto-claro: #64748b;
 
-        --cor-cabecalho: #161622;
-        --cor-cabecalho-texto: #e2e8f0;
+    --cor-cabecalho: #161622;
+    --cor-cabecalho-texto: #e2e8f0;
 
-        --sombra-card: 0 1px 3px rgba(0, 0, 0, 0.3);
-        --sombra-elevada: 0 4px 12px rgba(0, 0, 0, 0.4);
-    }
+    --sombra-card: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --sombra-elevada: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 /* ====== RESET E BASE ====== */
@@ -253,6 +251,58 @@ button {
     cursor: pointer;
 }
 
+/* ====== SWITCH TEMA (DARK/LIGHT) ====== */
+.switch {
+  font-size: 15px; /* Tamanho ajustado para a navbar */
+  position: relative;
+  display: inline-block;
+  width: 3.5em;
+  height: 2em;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch .slider {
+  --background: #522ba7; /* Fundo claro (Sol) */
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--background);
+  transition: .5s;
+  border-radius: 30px;
+}
+
+.switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 1.4em;
+  width: 1.4em;
+  border-radius: 50%;
+  left: 10%;
+  bottom: 15%;
+  /* Sombra cobrindo todo o círculo para fazer o Sol */
+  box-shadow: inset 15px -4px 0px 15px #fff000;
+  background: var(--background);
+  transition: .5s;
+}
+
+.switch input:checked + .slider {
+  background-color: #28096b; /* Fundo escuro (Lua) */
+}
+
+.switch input:checked + .slider:before {
+  transform: translateX(100%);
+  /* Sombra parcial para formar a Lua crescente */
+  box-shadow: inset 8px -4px 0px 0px #fff000;
+}
+
 /* ====== APP BAR ====== */
 .app-bar {
     display: flex;
@@ -281,6 +331,9 @@ button {
     flex: 1;
     justify-content: flex-end;
 }
+
+
+
 
 .app-bar-label {
     font-size: 10px;
@@ -451,6 +504,24 @@ button {
 
 /* ====== IMPRESSÃO ====== */
 @media print {
+    /* Forçar modo claro na impressão, independente do tema ativo */
+    body, body.dark-mode {
+        --cor-fundo: #f0f2f5;
+        --cor-superficie: #ffffff;
+        --cor-secao: #f1f5f9;
+        --cor-borda: #dde1e6;
+        --cor-separador: #e0e0e0;
+        --cor-texto: #1e293b;
+        --cor-texto-secundario: #64748b;
+        --cor-texto-claro: #94a3b8;
+        --cor-cabecalho: #1e293b;
+        --cor-cabecalho-texto: #ffffff;
+        --cor-perigo: #f44336;
+        --cor-alerta: #ff9800;
+        --sombra-card: none;
+        --sombra-elevada: none;
+    }
+
     button,
     .app-bar,
     title,
@@ -458,12 +529,6 @@ button {
     .avisos-pendencia,
     #appBarAviso {
         display: none !important;
-    }
-
-    body {
-        background: #fff;
-        padding-top: 0 !important;
-        color: #000;
     }
 
     input,
@@ -474,8 +539,6 @@ button {
         appearance: none;
         -webkit-appearance: none;
         -moz-appearance: none;
-        color: #000 !important;
-        box-shadow: none !important;
     }
 
     .topo input {
@@ -488,40 +551,41 @@ button {
         border: 1px solid #ccc !important;
     }
 
-    .input-tecnico {
-        color: #000 !important;
-        background: transparent !important;
-        border: none !important;
+    body {
+        background: #fff;
+        padding-top: 0 !important;
+        transform: scale(0.98);
+        transform-origin: top center;
+        color: #000;
     }
 
-    table {
-        box-shadow: none;
-    }
-
-    th {
-        background: #333 !important;
-        color: #fff !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
+    /* Comprimir a tabela para caber em 1 página sempre */
+    table th, table td {
+        padding: 4px 6px !important;
+        font-size: 11px !important;
+        line-height: 1.2 !important;
     }
 
     .secao {
-        background: #f1f5f9 !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-        border-left-color: #2196F3 !important;
+        padding: 4px !important;
+        font-size: 11px !important;
     }
 
-    tr {
-        page-break-inside: avoid;
-        break-inside: avoid;
+    .assinatura-linha {
+        margin: 25px auto 4px !important; /* Menos espaço vazio na assinatura */
+    }
+
+    h1 {
+        font-size: 16px !important;
+        margin-bottom: 4px !important;
     }
 
     select[data-print-hide-text="true"] {
         color: transparent !important;
     }
 
-    .defeito-obs-row[data-print-hide="true"] {
+    .defeito-obs-row[data-print-hide="true"],
+    .input-tecnico[data-print-hide="true"] {
         display: none !important;
     }
 
@@ -531,19 +595,13 @@ button {
         padding: 0 !important;
     }
 
+    .input-tecnico {
+        color: inherit !important;
+    }
+
     .table-responsive {
         overflow-x: visible !important;
         box-shadow: none !important;
-    }
-
-    .assinatura-area {
-        page-break-inside: avoid;
-        break-inside: avoid;
-    }
-
-    @page {
-        margin: 10mm;
-        size: A4 portrait;
     }
 }
 
@@ -703,11 +761,9 @@ button {
     border-radius: 0 var(--raio-borda-sm) var(--raio-borda-sm) 0;
 }
 
-@media (prefers-color-scheme: dark) {
-    .avisos-pendencia {
-        background: rgba(244, 67, 54, 0.1);
-        color: #ef9a9a;
-    }
+body.dark-mode .avisos-pendencia {
+    background: rgba(244, 67, 54, 0.1);
+    color: #ef9a9a;
 }
 
 /* ====== CHECKBOX TESTE RÁPIDO ====== */
@@ -779,8 +835,10 @@ button {
         width: 100%;
         justify-content: center;
         flex-wrap: wrap;
-        padding: 4px 0;
+      
     }
+
+
 
     .app-bar-separator {
         display: none;
@@ -809,4 +867,58 @@ button {
         padding: 8px 12px;
         min-height: 44px;
     }
+}
+
+/* ====== THEME TOGGLE SWITCH ====== */
+/* The switch - the box around the slider */
+.switch {
+  font-size: 11px;
+  position: relative;
+  display: inline-block;
+  width: 3.5em;
+
+  height: 2em;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  --background: #28096b;
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--background);
+  transition: .5s;
+  border-radius: 30px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 1.4em;
+  width: 1.4em;
+  border-radius: 50%;
+  left: 10%;
+  bottom: 15%;
+  box-shadow: inset 8px -4px 0px 0px #fff000;
+  background: var(--background);
+  transition: .5s;
+}
+
+input:checked + .slider {
+  background-color: #522ba7;
+}
+
+input:checked + .slider:before {
+  transform: translateX(100%);
+  box-shadow: inset 15px -4px 0px 15px #fff000;
 }

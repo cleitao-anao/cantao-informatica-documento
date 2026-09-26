@@ -23,6 +23,16 @@
   <!-- APP BAR (Oculta na impressão) -->
   <div class="app-bar" id="appBar">
 
+    <!-- Grupo: Tema (Esquerda Total) -->
+    <div class="app-bar-group" style="padding-left: 20px;">
+      <label class="switch" title="Trocar Tema">
+        <input type="checkbox" id="themeSwitch" onchange="toggleDarkMode()">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="app-bar-separator"></div>
+
     <!-- Grupo: Tipo de Equipamento -->
     <div class="app-bar-group">
       <span class="app-bar-label">Tipo</span>
@@ -36,10 +46,10 @@
     <!-- Grupo: Ações (Salvar, Imprimir, PDF) -->
     <div class="app-bar-group">
       <span class="app-bar-label">Ações</span>
-      <button class="btn-primary" onclick="exportarJSON()" style="background: #2196F3; color: white;"><i class="fa-solid fa-download"></i> Exportar</button>
+      <button class="btn-exportar" onclick="exportarJSON()"><i class="fa-solid fa-download"></i> Exportar</button>
       <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importarJSON(event)">
-      <button class="btn-primary" onclick="document.getElementById('importFile').click()" style="background: #FF9800; color: white;"><i class="fa-solid fa-upload"></i> Importar</button>
-      <button style="background: #4CAF50; color: white;" onclick="imprimir()"><i class="fa-solid fa-print"></i> Imprimir</button>
+      <button class="btn-importar" onclick="document.getElementById('importFile').click()"><i class="fa-solid fa-upload"></i> Importar</button>
+      <button class="btn-imprimir" onclick="imprimir()"><i class="fa-solid fa-print"></i> Imprimir</button>
       
     </div>
 
@@ -621,16 +631,16 @@
   <div id="avisosPendencia" class="avisos-pendencia" style="display:none;"></div>
 
   <!-- ASSINATURAS -->
-  <div class="table-responsive">
+  <div class="assinatura-area">
   <table>
     <tr>
-      <td style="text-align:center; height:80px;">
-        _______________________________<br>
-        ASSINATURA DO TÉCNICO
+      <td class="assinatura-celula">
+        <div class="assinatura-linha"></div>
+        <div class="assinatura-nome">ASSINATURA DO TÉCNICO</div>
       </td>
-      <td style="text-align:center;">
-        _______________________________<br>
-        ASSINATURA DO CLIENTE
+      <td class="assinatura-celula">
+        <div class="assinatura-linha"></div>
+        <div class="assinatura-nome">ASSINATURA DO CLIENTE</div>
       </td>
     </tr>
   </table>
@@ -648,7 +658,6 @@
     </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="script.js"></script>
 
 </body>
