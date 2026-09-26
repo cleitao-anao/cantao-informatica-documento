@@ -605,6 +605,17 @@ button {
     }
 }
 
+/* ====== CAMPOS CONTENTEDITABLE (Parecer Técnico / Defeito Encontrado) ====== */
+#PARECERTECNICOField,
+#DEFEITOENCONTRADOField {
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: pre-wrap;
+    max-width: 100%;
+    line-height: 1.5;
+}
+
 /* ====== DEFEITOS ENCONTRADOS ====== */
 .defeito-card {
     padding: 10px 14px;
@@ -631,7 +642,7 @@ button {
 
 .defeito-card .defeito-obs-row {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 6px;
     margin-top: 2px;
 }
@@ -640,6 +651,7 @@ button {
     color: var(--cor-texto-secundario);
     white-space: nowrap;
     font-size: 13px;
+    padding-top: 4px;
 }
 
 .defeito-card .defeito-obs-input {
@@ -651,6 +663,12 @@ button {
     background: var(--cor-superficie);
     outline: none;
     transition: border-color 0.2s;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    resize: vertical;
+    min-height: 28px;
+    font-family: inherit;
 }
 
 .defeito-card .defeito-obs-input:focus {
