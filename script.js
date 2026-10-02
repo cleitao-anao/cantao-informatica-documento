@@ -826,6 +826,22 @@ window.onload = function () {
             salvarObs();
           }
 
+          // Auto-switch notebook/pc mode based on _modo from diagnostico.ps1
+          if (dadosJSON._modo && (dadosJSON._modo === 'notebook' || dadosJSON._modo === 'pc')) {
+            mudarModo(dadosJSON._modo);
+          }
+
+          // Create dynamic storage rows if needed before loading data
+          if (dadosJSON._armazenamentoCount) {
+            // Remove existing extra rows first
+            document.querySelectorAll('.armazenamento-extra').forEach(r => r.remove());
+            armazenamentoCount = 0;
+            const count = parseInt(dadosJSON._armazenamentoCount, 10);
+            for (let i = 0; i < count; i++) {
+              adicionarArmazenamento();
+            }
+          }
+
           document.querySelectorAll(".save").forEach(el => {
             const id = el.getAttribute('data-id') || el.id;
             if (id && dadosJSON[id] !== undefined) {
