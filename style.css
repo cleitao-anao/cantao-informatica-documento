@@ -89,6 +89,23 @@ h1 {
     flex: 1;
 }
 
+.topo .campo-data {
+    flex: 0 0 180px;
+}
+
+.topo input.invalido {
+    border-color: var(--cor-perigo);
+    box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.15);
+}
+
+.campo-erro {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--cor-perigo);
+}
+
 label {
     font-weight: 600;
     display: block;
@@ -120,6 +137,15 @@ textarea:focus {
     outline: none;
     border-color: var(--cor-primaria);
     box-shadow: 0 0 0 3px var(--cor-foco);
+}
+
+[hidden] {
+    display: none !important;
+}
+
+/* Campo "Saúde (%)" abaixo dos selects */
+.saude {
+    margin-top: 5px;
 }
 
 input[type="checkbox"] {
@@ -206,6 +232,11 @@ hr {
 }
 
 /* ====== BOTÕES ARMAZENAMENTO ====== */
+.table-responsive .armazenamento-acoes {
+    text-align: center;
+    padding: 4px;
+}
+
 .btn-add-armazenamento,
 .btn-remove-armazenamento {
     margin: 4px 6px;
@@ -253,7 +284,7 @@ button {
 
 /* ====== SWITCH TEMA (DARK/LIGHT) ====== */
 .switch {
-  font-size: 15px; /* Tamanho ajustado para a navbar */
+  font-size: 11px;
   position: relative;
   display: inline-block;
   width: 3.5em;
@@ -330,6 +361,23 @@ button {
 .app-bar-group.grow {
     flex: 1;
     justify-content: flex-end;
+}
+
+.app-bar-group.app-bar-tema {
+    padding-left: 20px;
+}
+
+.app-bar-aviso {
+    display: inline-block;
+    white-space: nowrap;
+    margin-right: 10px;
+    padding: 4px 8px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #f44336;
+    background: rgba(244, 67, 54, 0.1);
+    border: 1px solid rgba(244, 67, 54, 0.3);
+    border-radius: 4px;
 }
 
 
@@ -426,6 +474,16 @@ button {
 .btn-imprimir:hover {
     background: rgba(76, 175, 80, 0.3) !important;
     color: #a5d6a7 !important;
+}
+
+.btn-novo {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.btn-novo:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
 }
 
 .app-bar button.btn-vazio {
@@ -554,6 +612,7 @@ button {
     body {
         background: #fff;
         padding-top: 0 !important;
+        padding-bottom: 0 !important;
         transform: scale(0.98);
         transform-origin: top center;
         color: #000;
@@ -580,12 +639,12 @@ button {
         margin-bottom: 4px !important;
     }
 
-    select[data-print-hide-text="true"] {
+    select[data-print-hide-text] {
         color: transparent !important;
     }
 
-    .defeito-obs-row[data-print-hide="true"],
-    .input-tecnico[data-print-hide="true"] {
+    .defeito-obs-row[data-print-hide],
+    .input-tecnico[data-print-hide] {
         display: none !important;
     }
 
@@ -608,6 +667,7 @@ button {
 /* ====== CAMPOS CONTENTEDITABLE (Parecer Técnico / Defeito Encontrado) ====== */
 #PARECERTECNICOField,
 #DEFEITOENCONTRADOField {
+    min-height: 60px;
     word-wrap: break-word;
     overflow-wrap: anywhere;
     word-break: break-word;
@@ -779,28 +839,77 @@ button {
     border-radius: 0 var(--raio-borda-sm) var(--raio-borda-sm) 0;
 }
 
+.pendencia-link {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+}
+
+.pendencia-link:hover {
+    text-decoration-thickness: 2px;
+}
+
+/* Pisca o campo quando se chega nele pelo aviso de pendências */
+.destaque {
+    animation: destacar 1.6s ease-out;
+}
+
+@keyframes destacar {
+    0%, 40% {
+        box-shadow: 0 0 0 4px rgba(244, 67, 54, 0.45);
+        border-color: var(--cor-perigo);
+    }
+    100% {
+        box-shadow: 0 0 0 4px rgba(244, 67, 54, 0);
+    }
+}
+
 body.dark-mode .avisos-pendencia {
     background: rgba(244, 67, 54, 0.1);
     color: #ef9a9a;
 }
 
-/* ====== CHECKBOX TESTE RÁPIDO ====== */
-.teste-rapido-container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
+/* ====== CORES DOS RESULTADOS ====== */
+@media screen {
+    .table-responsive select[data-status="ok"] {
+        border-color: rgba(76, 175, 80, 0.6);
+        background-color: rgba(76, 175, 80, 0.12);
+        color: #2e7d32;
+        font-weight: 600;
+    }
 
-.teste-rapido-container select {
-    flex: 1;
-}
+    .table-responsive select[data-status="defeito"] {
+        border-color: rgba(244, 67, 54, 0.6);
+        background-color: rgba(244, 67, 54, 0.12);
+        color: #c62828;
+        font-weight: 600;
+    }
 
-.check-atendente {
-    flex-shrink: 0;
-    width: 18px !important;
-    height: 18px;
-    cursor: pointer;
-    accent-color: #10b981;
+    .table-responsive select[data-status="vazio"] {
+        background-color: var(--cor-secao);
+        color: var(--cor-texto-claro);
+    }
+
+    body.dark-mode .table-responsive select[data-status="ok"] {
+        color: #81c784;
+    }
+
+    body.dark-mode .table-responsive select[data-status="defeito"] {
+        color: #ef9a9a;
+    }
+
+    /* A lista aberta mantém as cores normais */
+    .table-responsive select option {
+        background: var(--cor-superficie);
+        color: var(--cor-texto);
+        font-weight: normal;
+    }
 }
 
 /* ====== ASSINATURAS ====== */
@@ -829,36 +938,300 @@ body.dark-mode .avisos-pendencia {
     color: var(--cor-texto-secundario);
 }
 
+/* ====== MENU FLUTUANTE ====== */
+body {
+    padding-bottom: 96px; /* espaço para o botão não cobrir o fim da página */
+}
+
+.fab {
+    position: fixed;
+    right: 20px;
+    bottom: calc(20px + env(safe-area-inset-bottom));
+    z-index: 1500;
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+.fab button {
+    margin-top: 0;
+    font-family: inherit;
+}
+
+.fab-botao {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: linear-gradient(135deg, var(--cor-appbar-inicio), var(--cor-appbar-fim));
+    color: #fff;
+    font-size: 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    transition: transform 0.2s ease;
+}
+
+.fab-botao:hover {
+    transform: scale(1.05);
+}
+
+.fab-botao:focus-visible {
+    outline: 2px solid var(--cor-primaria);
+    outline-offset: 3px;
+}
+
+.fab-icone-fechar,
+.fab.aberto .fab-icone-abrir {
+    display: none;
+}
+
+.fab.aberto .fab-icone-fechar {
+    display: inline;
+}
+
+/* Bolinha vermelha quando o laudo está incompleto */
+.fab.com-aviso .fab-botao::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--cor-perigo);
+    border: 2px solid var(--cor-fundo);
+}
+
+.fab-menu {
+    position: absolute;
+    right: 0;
+    bottom: 68px;
+    width: 270px;
+    max-width: calc(100vw - 40px);
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px) scale(0.98);
+    transform-origin: bottom right;
+    transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+}
+
+.fab.aberto .fab-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+}
+
+.fab-aviso {
+    display: none;
+    padding: 8px 10px;
+    margin-bottom: 4px;
+    border-radius: var(--raio-borda-sm);
+    background: rgba(244, 67, 54, 0.1);
+    color: var(--cor-perigo);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.fab.com-aviso .fab-aviso {
+    display: block;
+}
+
+.fab-titulo {
+    padding: 2px 4px 4px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--cor-texto-secundario);
+}
+
+.fab-colunas {
+    display: flex;
+    padding: 3px;
+    border-radius: 8px;
+    background: var(--cor-secao);
+}
+
+.fab-colunas button {
+    flex: 1;
+    padding: 8px 4px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--cor-texto-secundario);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.fab-colunas button.active {
+    background: var(--cor-superficie);
+    color: var(--cor-texto);
+    box-shadow: var(--sombra-card);
+}
+
+.fab-preencher {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.fab-preencher button {
+    flex: 1;
+    min-height: 44px;
+    padding: 8px 6px;
+    border: 1px solid;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.fab-ok {
+    background: rgba(76, 175, 80, 0.12);
+    border-color: rgba(76, 175, 80, 0.35) !important;
+    color: #2e7d32;
+}
+
+.fab-vazio {
+    grid-column: 1 / -1;
+    min-height: 38px !important;
+    background: transparent;
+    border-style: dashed !important;
+    border-color: var(--cor-borda) !important;
+    color: var(--cor-texto-secundario);
+}
+
+.fab-defeito {
+    background: rgba(244, 67, 54, 0.1);
+    border-color: rgba(244, 67, 54, 0.35) !important;
+    color: #c62828;
+}
+
+body.dark-mode .fab-ok {
+    color: #81c784;
+}
+
+body.dark-mode .fab-defeito {
+    color: #ef9a9a;
+}
+
+.fab-separador {
+    height: 1px;
+    margin: 6px 0;
+    background: var(--cor-separador);
+}
+
+.fab-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--cor-texto);
+    font-size: 14px;
+    text-align: left;
+}
+
+.fab-item i {
+    width: 18px;
+    text-align: center;
+    color: var(--cor-texto-secundario);
+}
+
+.fab-item:hover,
+.fab-colunas button:hover {
+    background: var(--cor-secao);
+}
+
+.fab-colunas button.active:hover {
+    background: var(--cor-superficie);
+}
+
 /* ====== RESPONSIVIDADE ====== */
-@media (max-width: 768px) {
+@media screen and (max-width: 1700px) {
+    /* App bar deixa de ser fixa e quebra em linhas, sem cobrir o conteúdo */
     body {
-        padding-top: 160px;
-        padding-left: 10px;
-        padding-right: 10px;
+        padding: 10px 10px 96px;
     }
 
+    .app-bar {
+        position: static;
+        height: auto;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: var(--raio-borda);
+    }
+
+    .app-bar-group {
+        flex-wrap: wrap;
+        padding: 0 6px;
+        height: auto;
+    }
+
+    .app-bar-group.grow {
+        flex-basis: 100%;
+        justify-content: flex-start;
+    }
+
+    .app-bar-separator:has(+ .grow) {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 768px) {
     h1 {
         font-size: 18px;
     }
 
-    .app-bar {
-        height: auto;
-        flex-wrap: wrap;
-        padding: 10px;
-        justify-content: center;
-        gap: 8px;
+    .app-bar-separator,
+    .app-bar-label {
+        display: none;
     }
 
     .app-bar-group {
-        width: 100%;
-        justify-content: center;
-        flex-wrap: wrap;
-      
+        flex: 1 1 100%;
+        gap: 6px;
+        padding: 0;
     }
 
+    /* Tema + tipo de equipamento dividem a primeira linha */
+    .app-bar-group:first-child {
+        flex: 0 0 auto;
+    }
 
+    .app-bar-group:nth-child(3) {
+        flex: 1 1 0;
+    }
 
-    .app-bar-separator {
+    .app-bar button,
+    .app-bar select {
+        flex: 1 1 auto;
+        font-size: 13px;
+        padding: 8px 10px;
+        min-height: 44px;
+    }
+
+    .app-bar select {
+        flex-basis: 100%;
+    }
+
+    /* Ações e preenchimento rápido ficam no menu flutuante (.fab) */
+    .app-bar-group:nth-child(5),
+    .app-bar-group.grow {
         display: none;
     }
 
@@ -867,76 +1240,99 @@ body.dark-mode .avisos-pendencia {
         gap: 10px;
     }
 
-    .table-responsive {
+    .topo .campo-data {
+        flex: 1;
+    }
+
+    .modal-box {
+        padding: 22px 20px;
+    }
+
+    .modal-box .modal-actions button {
+        flex: 1;
+    }
+
+    .assinatura-celula {
+        padding: 0 8px 10px !important;
+    }
+
+    .assinatura-linha {
         width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        border-radius: var(--raio-borda);
-        box-shadow: var(--sombra-elevada);
+    }
+}
+
+/* Tabela vira "cartões": nome do item em cima, Técnico e Testes lado a lado */
+@media screen and (max-width: 600px) {
+    .table-responsive table,
+    .table-responsive thead,
+    .table-responsive tbody {
+        display: block;
     }
 
-    table {
-        min-width: 700px;
+    .table-responsive tr {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-bottom: 1px solid var(--cor-borda);
     }
 
-    .app-bar button,
-    .app-bar select {
+    .table-responsive th,
+    .table-responsive td {
+        display: block;
+        min-width: 0;
+        border: none;
+        padding: 6px 8px;
+    }
+
+    .table-responsive th:first-child {
+        display: none;
+    }
+
+    .table-responsive .input-tecnico {
+        width: 100%;
+    }
+
+    .table-responsive td:first-child,
+    .table-responsive td[colspan] {
+        grid-column: 1 / -1;
+    }
+
+    .table-responsive td:first-child:not(.secao) {
+        padding-bottom: 0;
         font-size: 13px;
-        padding: 8px 12px;
-        min-height: 44px;
+        font-weight: 600;
     }
-}
 
-/* ====== THEME TOGGLE SWITCH ====== */
-/* The switch - the box around the slider */
-.switch {
-  font-size: 11px;
-  position: relative;
-  display: inline-block;
-  width: 3.5em;
+    .table-responsive td:first-child:not([colspan]) + td[colspan] {
+        padding-top: 6px;
+    }
 
-  height: 2em;
-}
+    .table-responsive tbody td:nth-child(2):not([colspan])::before,
+    .table-responsive tbody td:nth-child(3)::before {
+        display: block;
+        margin-bottom: 3px;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--cor-texto-secundario);
+    }
 
-/* Hide default HTML checkbox */
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
+    .table-responsive tbody td:nth-child(2):not([colspan])::before {
+        content: "Técnico";
+    }
 
-/* The slider */
-.slider {
-  --background: #28096b;
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--background);
-  transition: .5s;
-  border-radius: 30px;
-}
+    .table-responsive tbody td:nth-child(3)::before {
+        content: "Testes";
+    }
 
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 1.4em;
-  width: 1.4em;
-  border-radius: 50%;
-  left: 10%;
-  bottom: 15%;
-  box-shadow: inset 8px -4px 0px 0px #fff000;
-  background: var(--background);
-  transition: .5s;
-}
+    .table-responsive select,
+    .table-responsive input,
+    .table-responsive textarea {
+        font-size: 16px; /* evita o zoom automático do iPhone ao tocar no campo */
+        min-height: 40px;
+    }
 
-input:checked + .slider {
-  background-color: #522ba7;
-}
-
-input:checked + .slider:before {
-  transform: translateX(100%);
-  box-shadow: inset 15px -4px 0px 15px #fff000;
+    .secao {
+        padding: 8px !important;
+    }
 }
