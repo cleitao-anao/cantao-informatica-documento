@@ -677,6 +677,28 @@ function imprimir() {
   }, 1000);
 }
 
+// Compartilha o laudo pela tela de compartilhar do sistema. Só em telas de toque
+// e em https; devolve false quando não dá, para o Exportar baixar o arquivo.
+async function compartilharArquivo(conteudo, nomeArquivo) {
+  if (!navigator.canShare || !window.matchMedia('(pointer: coarse)').matches) return false;
+
+  // Chrome/Brave no Android não compartilham .json: manda o mesmo conteúdo como .txt
+  const candidatos = [
+    new File([conteudo], nomeArquivo, { type: 'application/json' }),
+    new File([conteudo], nomeArquivo.replace(/\.json$/, '.txt'), { type: 'text/plain' }),
+  ];
+  const arquivo = candidatos.find(f => navigator.canShare({ files: [f] }));
+  if (!arquivo) return false;
+
+  try {
+    await navigator.share({ files: [arquivo], title: nomeArquivo });
+  } catch (err) {
+    // Cancelar a tela de compartilhar não é erro; outras falhas caem no download
+    if (err.name !== 'AbortError') return false;
+  }
+  return true;
+}
+
 async function exportarJSON() {
   const dadosJSON = coletarDados();
   dadosJSON.defeitosObs = defeitosObs;
@@ -688,6 +710,9 @@ async function exportarJSON() {
   const conteudoJSON = JSON.stringify(dadosJSON, null, 2);
 
   try {
+    // No celular, abre a tela de compartilhar (Drive, Arquivos, WhatsApp, e-mail...)
+    if (await compartilharArquivo(conteudoJSON, nomeArquivo)) return;
+
     // Tenta usar a API moderna do navegador para abrir a janela "Salvar Como"
     if (window.showSaveFilePicker) {
       const handle = await window.showSaveFilePicker({
