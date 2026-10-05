@@ -12,19 +12,88 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+/* ====== VARIÃVEIS DE DESIGN ====== */
+:root {
+    /* Cores principais */
+    --cor-primaria: #2196F3;
+    --cor-sucesso: #4CAF50;
+    --cor-perigo: #f44336;
+    --cor-alerta: #ff9800;
+
+    /* SuperfÃ­cies */
+    --cor-fundo: #f0f2f5;
+    --cor-superficie: #ffffff;
+    --cor-secao: #f1f5f9;
+    --cor-borda: #dde1e6;
+    --cor-separador: #e0e0e0;
+
+    /* Texto */
+    --cor-texto: #1e293b;
+    --cor-texto-secundario: #64748b;
+    --cor-texto-claro: #94a3b8;
+
+    /* CabeÃ§alho da tabela */
+    --cor-cabecalho: #1e293b;
+    --cor-cabecalho-texto: #ffffff;
+
+    /* App Bar */
+    --cor-appbar-inicio: #1e1e2e;
+    --cor-appbar-fim: #2a2a3e;
+
+    /* Sombras */
+    --sombra-card: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --sombra-elevada: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    /* EspaÃ§amento */
+    --raio-borda: 8px;
+    --raio-borda-sm: 4px;
+
+    /* Foco */
+    --cor-foco: rgba(33, 150, 243, 0.3);
+}
+
+/* ====== DARK MODE ====== */
+body.dark-mode {
+    --cor-fundo: #121218;
+    --cor-superficie: #1e1e2a;
+    --cor-secao: #252536;
+    --cor-borda: #333348;
+    --cor-separador: #333348;
+
+    --cor-texto: #e2e8f0;
+    --cor-texto-secundario: #94a3b8;
+    --cor-texto-claro: #64748b;
+
+    --cor-cabecalho: #161622;
+    --cor-cabecalho-texto: #e2e8f0;
+
+    --sombra-card: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --sombra-elevada: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* ====== RESET E BASE ====== */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Inter', Arial, sans-serif;
     padding: 20px;
     padding-top: 80px;
-    background: #f0f2f5;
+    background: var(--cor-fundo);
+    color: var(--cor-texto);
 }
 
 h1 {
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--cor-texto);
+    letter-spacing: -0.02em;
+    text-align: center;
 }
-
 
 .topo {
     display: flex;
@@ -36,86 +105,154 @@ h1 {
     flex: 1;
 }
 
+.topo .campo-data {
+    flex: 0 0 180px;
+}
 
+.topo input.invalido {
+    border-color: var(--cor-perigo);
+    box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.15);
+}
+
+.campo-erro {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--cor-perigo);
+}
 
 label {
-    font-weight: bold;
+    font-weight: 600;
     display: block;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--cor-texto-secundario);
 }
 
 input,
 select,
 textarea {
     width: 100%;
-    padding: 6px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 8px 10px;
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio-borda-sm);
     box-sizing: border-box;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 14px;
+    color: var(--cor-texto);
+    background: var(--cor-superficie);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0 3px var(--cor-foco);
+}
+
+[hidden] {
+    display: none !important;
+}
+
+/* Campo "SaÃºde (%)" abaixo dos selects */
+.saude {
+    margin-top: 5px;
+}
+
+input[type="checkbox"] {
+    width: auto;
+    margin-right: 6px;
 }
 
 textarea {
-  field-sizing: content;
-  resize: none; /* Opcional: remove a barra de puxar com o mouse */
-
+    field-sizing: content;
+    resize: vertical;
+    min-height: 2.5em;
 }
-
-
 
 .label-tecnico {
     display: flex;
     align-items: center;
     justify-content: center;
-    justify-items: space-between;
     flex-direction: column;
-
-
-
 }
 
 .input-tecnico {
-    display: flex;
-    padding: 1px;
+    padding: 3px 6px;
     width: 60%;
-    border-radius: 4px;
+    border-radius: var(--raio-borda-sm);
     box-sizing: border-box;
-
+    text-align: center;
+    font-size: 12px;
+    margin-top: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--cor-cabecalho-texto);
 }
 
+.input-tecnico:focus {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+/* ====== TABELA ====== */
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;
-    background: #fff;
+    background: var(--cor-superficie);
+    border-radius: var(--raio-borda);
+    overflow: hidden;
+    box-shadow: var(--sombra-card);
 }
 
 th,
 td {
-    border: 1px solid #ccc;
+    border: 1px solid var(--cor-borda);
     padding: 8px;
     text-align: left;
 }
 
 th {
-    background: #333;
-    color: #fff;
+    background: var(--cor-cabecalho);
+    color: var(--cor-cabecalho-texto);
     text-align: center;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
 }
 
 .secao {
-    background: #eaeaea;
-    font-weight: bold;
+    background: var(--cor-secao);
+    font-weight: 700;
     text-align: center;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--cor-texto-secundario);
+    border-left: 3px solid var(--cor-primaria);
 }
 
 hr {
     margin: 5px 0;
-    background-color: #e0e0e0;
+    background-color: var(--cor-separador);
     border: 0;
     height: 1px;
 }
 
-/* Botões Adicionar/Remover Armazenamento */
+/* ====== BOTÃ•ES ARMAZENAMENTO ====== */
+.table-responsive .armazenamento-acoes {
+    text-align: center;
+    padding: 4px;
+}
+
 .btn-add-armazenamento,
 .btn-remove-armazenamento {
     margin: 4px 6px;
@@ -131,7 +268,7 @@ hr {
 
 .btn-add-armazenamento {
     background: rgba(76, 175, 80, 0.1);
-    color: #388E3C;
+    color: #2e7d32;
     border-color: rgba(76, 175, 80, 0.3);
 }
 
@@ -161,30 +298,64 @@ button {
     cursor: pointer;
 }
 
-.btn-salvar {
-    background: #4CAF50;
-    color: #fff;
+/* ====== SWITCH TEMA (DARK/LIGHT) ====== */
+.switch {
+  font-size: 11px;
+  position: relative;
+  display: inline-block;
+  width: 3.5em;
+  height: 2em;
 }
 
-.btn-print {
-    background: #2196F3;
-    color: #fff;
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
-.btn-pdf {
-    background: #f44336;
-    color: #fff;
+.switch .slider {
+  --background: #522ba7; /* Fundo claro (Sol) */
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--background);
+  transition: .5s;
+  border-radius: 30px;
 }
 
-/* APP BAR STYLES */
+.switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 1.4em;
+  width: 1.4em;
+  border-radius: 50%;
+  left: 10%;
+  bottom: 15%;
+  /* Sombra cobrindo todo o cÃ­rculo para fazer o Sol */
+  box-shadow: inset 15px -4px 0px 15px #fff000;
+  background: var(--background);
+  transition: .5s;
+}
+
+.switch input:checked + .slider {
+  background-color: #28096b; /* Fundo escuro (Lua) */
+}
+
+.switch input:checked + .slider:before {
+  transform: translateX(100%);
+  /* Sombra parcial para formar a Lua crescente */
+  box-shadow: inset 8px -4px 0px 0px #fff000;
+}
+
+/* ====== APP BAR ====== */
 .app-bar {
     display: flex;
     align-items: center;
     gap: 0;
-    background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 50%, #1e1e2e 100%);
-    padding: 0;
-    margin-bottom: 0;
-    border-radius: 0;
+    background: linear-gradient(135deg, var(--cor-appbar-inicio) 0%, var(--cor-appbar-fim) 50%, var(--cor-appbar-inicio) 100%);
     position: fixed;
     top: 0;
     left: 0;
@@ -208,10 +379,30 @@ button {
     justify-content: flex-end;
 }
 
+.app-bar-group.app-bar-tema {
+    padding-left: 20px;
+}
+
+.app-bar-aviso {
+    display: inline-block;
+    white-space: nowrap;
+    margin-right: 10px;
+    padding: 4px 8px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #f44336;
+    background: rgba(244, 67, 54, 0.1);
+    border: 1px solid rgba(244, 67, 54, 0.3);
+    border-radius: 4px;
+}
+
+
+
+
 .app-bar-label {
     font-size: 10px;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(255, 255, 255, 0.55);
     text-transform: uppercase;
     letter-spacing: 1.2px;
     margin-right: 10px;
@@ -228,7 +419,7 @@ button {
 
 .app-bar button {
     background: rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 0.8);
     margin-top: 0;
     border: 1px solid rgba(255, 255, 255, 0.08);
     font-size: 13px;
@@ -250,6 +441,11 @@ button {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
+.app-bar button:focus-visible {
+    outline: 2px solid var(--cor-primaria);
+    outline-offset: 2px;
+}
+
 .app-bar button:active {
     transform: translateY(0px);
     box-shadow: none;
@@ -262,15 +458,59 @@ button {
     box-shadow: 0 0 12px rgba(76, 175, 80, 0.3);
 }
 
+/* BotÃµes de aÃ§Ã£o na app-bar */
+.btn-exportar {
+    background: rgba(33, 150, 243, 0.15) !important;
+    color: #64b5f6 !important;
+    border-color: rgba(33, 150, 243, 0.25) !important;
+}
+
+.btn-exportar:hover {
+    background: rgba(33, 150, 243, 0.3) !important;
+    color: #90caf9 !important;
+}
+
+.btn-importar {
+    background: rgba(255, 152, 0, 0.15) !important;
+    color: #ffb74d !important;
+    border-color: rgba(255, 152, 0, 0.25) !important;
+}
+
+.btn-importar:hover {
+    background: rgba(255, 152, 0, 0.3) !important;
+    color: #ffd54f !important;
+}
+
+.btn-imprimir {
+    background: rgba(76, 175, 80, 0.15) !important;
+    color: #81c784 !important;
+    border-color: rgba(76, 175, 80, 0.25) !important;
+}
+
+.btn-imprimir:hover {
+    background: rgba(76, 175, 80, 0.3) !important;
+    color: #a5d6a7 !important;
+}
+
+.btn-novo {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.btn-novo:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+}
+
 .app-bar button.btn-vazio {
     background: rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.6);
-    border: 1px dashed rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.7);
+    border: 1px dashed rgba(255, 255, 255, 0.2);
 }
 
 .app-bar button.btn-vazio:hover {
     background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.95);
     border-style: solid;
 }
 
@@ -298,45 +538,6 @@ button {
     color: #e57373;
     border-color: rgba(239, 83, 80, 0.4);
     box-shadow: 0 0 12px rgba(239, 83, 80, 0.15);
-}
-
-.app-bar button.btn-salvar {
-    background: rgba(76, 175, 80, 0.12);
-    color: #66bb6a;
-    border-color: rgba(76, 175, 80, 0.2);
-}
-
-.app-bar button.btn-salvar:hover {
-    background: rgba(76, 175, 80, 0.25);
-    color: #81c784;
-    border-color: rgba(76, 175, 80, 0.4);
-    box-shadow: 0 0 12px rgba(76, 175, 80, 0.15);
-}
-
-.app-bar button.btn-print {
-    background: rgba(33, 150, 243, 0.12);
-    color: #42a5f5;
-    border-color: rgba(33, 150, 243, 0.2);
-}
-
-.app-bar button.btn-print:hover {
-    background: rgba(33, 150, 243, 0.25);
-    color: #64b5f6;
-    border-color: rgba(33, 150, 243, 0.4);
-    box-shadow: 0 0 12px rgba(33, 150, 243, 0.15);
-}
-
-.app-bar button.btn-pdf {
-    background: rgba(244, 67, 54, 0.12);
-    color: #ef5350;
-    border-color: rgba(244, 67, 54, 0.2);
-}
-
-.app-bar button.btn-pdf:hover {
-    background: rgba(244, 67, 54, 0.25);
-    color: #e57373;
-    border-color: rgba(244, 67, 54, 0.4);
-    box-shadow: 0 0 12px rgba(244, 67, 54, 0.15);
 }
 
 .app-bar select {
@@ -367,7 +568,7 @@ button {
 .app-bar select:focus {
     outline: none;
     border-color: rgba(100, 180, 255, 0.5);
-    box-shadow: 0 0 0 2px rgba(100, 180, 255, 0.15);
+    box-shadow: 0 0 0 2px rgba(100, 180, 255, 0.2);
 }
 
 .app-bar select option {
@@ -375,134 +576,184 @@ button {
     color: #fff;
 }
 
-/* Regras de impressão — ativadas por @media print E pela classe .print-mode */
+/* ====== IMPRESSÃƒO ====== */
 @media print {
+    /* ForÃ§ar modo claro na impressÃ£o, independente do tema ativo */
+    body, body.dark-mode {
+        --cor-fundo: #f0f2f5;
+        --cor-superficie: #ffffff;
+        --cor-secao: #f1f5f9;
+        --cor-borda: #dde1e6;
+        --cor-separador: #e0e0e0;
+        --cor-texto: #1e293b;
+        --cor-texto-secundario: #64748b;
+        --cor-texto-claro: #94a3b8;
+        --cor-cabecalho: #1e293b;
+        --cor-cabecalho-texto: #ffffff;
+        --cor-perigo: #f44336;
+        --cor-alerta: #ff9800;
+        --sombra-card: none;
+        --sombra-elevada: none;
+    }
 
     button,
     .app-bar,
     title,
-    .no-print {
-    display: none !important;
+    .no-print,
+    .avisos-pendencia,
+    #appBarAviso {
+        display: none !important;
     }
 
     input,
     select,
     textarea {
-    border: none !important;
-    background: transparent !important;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
+        border: none !important;
+        background: transparent !important;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
     }
 
     .topo input {
-    padding: 0px;
-    border-bottom: 1px solid #000 !important;
-    border-radius: 0px  !important;
-
-}
+        padding: 0px;
+        border-bottom: 1px solid #000 !important;
+        border-radius: 0px !important;
+    }
 
     .backup-input {
-    border: 1px solid #ccc !important;
+        border: 1px solid #ccc !important;
     }
 
     body {
-    background: #fff;
-    padding-top: 0 !important;
-    transform: scale(0.95);
-    transform-origin: top left;
+        background: #fff;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        transform: scale(0.98);
+        transform-origin: top center;
+        color: #000;
+    }
+
+    /* Comprimir a tabela para caber em 1 pÃ¡gina sempre */
+    table th, table td {
+        padding: 4px 6px !important;
+        font-size: 11px !important;
+        line-height: 1.2 !important;
+    }
+
+    .secao {
+        padding: 4px !important;
+        font-size: 11px !important;
+    }
+
+    .assinatura-linha {
+        margin: 25px auto 4px !important; /* Menos espaÃ§o vazio na assinatura */
+    }
+
+    h1 {
+        font-size: 16px !important;
+        margin-bottom: 4px !important;
+    }
+
+    select[data-print-hide-text] {
+        color: transparent !important;
+    }
+
+    .defeito-obs-row[data-print-hide],
+    .input-tecnico[data-print-hide] {
+        display: none !important;
+    }
+
+    .defeito-obs-input {
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+    }
+
+    .input-tecnico {
+        color: inherit !important;
+    }
+
+    .table-responsive {
+        overflow-x: visible !important;
+        box-shadow: none !important;
     }
 }
 
-/* Mesmas regras, ativadas via JS ao adicionar .print-mode no body */
-body.print-mode button,
-body.print-mode .app-bar,
-body.print-mode title,
-body.print-mode .no-print {
-    display: none !important;
+/* ====== CAMPOS CONTENTEDITABLE (Parecer TÃ©cnico / Defeito Encontrado) ====== */
+#PARECERTECNICOField,
+#DEFEITOENCONTRADOField {
+    min-height: 60px;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: pre-wrap;
+    max-width: 100%;
+    line-height: 1.5;
 }
 
-body.print-mode {
-    background: #fff;
-    padding-top: 0 !important;
-    transform: scale(0.95);
-    transform-origin: top left;
-}
-
-body.print-mode input,
-body.print-mode select,
-body.print-mode textarea {
-    border: none !important;
-    background: transparent !important;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-}
-
-body.print-mode .backup-input {
-    border: 1px solid #ccc !important;
-}
-
-/* DEFEITOS ENCONTRADOS */
+/* ====== DEFEITOS ENCONTRADOS ====== */
 .defeito-card {
-    padding: 8px 12px;
+    padding: 10px 14px;
     margin-bottom: 6px;
     font-size: 14px;
     line-height: 1.5;
     display: flex;
     flex-direction: column;
     gap: 4px;
+    border-left: 3px solid var(--cor-perigo);
+    background: rgba(244, 67, 54, 0.03);
+    border-radius: 0 var(--raio-borda-sm) var(--raio-borda-sm) 0;
 }
 
 .defeito-card .defeito-texto {
-    color: #333;
+    color: var(--cor-texto);
 }
 
 .defeito-card .defeito-extra {
     font-size: 12px;
-    color: #888;
+    color: var(--cor-texto-secundario);
     font-style: italic;
 }
 
 .defeito-card .defeito-obs-row {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 6px;
     margin-top: 2px;
 }
 
 .defeito-card .defeito-obs-row strong {
-    color: #555;
+    color: var(--cor-texto-secundario);
     white-space: nowrap;
     font-size: 13px;
+    padding-top: 4px;
 }
 
 .defeito-card .defeito-obs-input {
     flex: 1;
-    border: 1px dashed #ccc;
-    border-radius: 4px;
+    border: 1px dashed var(--cor-borda);
+    border-radius: var(--raio-borda-sm);
     padding: 3px 8px;
     font-size: 13px;
-    background: #fff;
+    background: var(--cor-superficie);
     outline: none;
     transition: border-color 0.2s;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    resize: vertical;
+    min-height: 28px;
+    font-family: inherit;
 }
 
 .defeito-card .defeito-obs-input:focus {
-    border-color: #ff9800;
+    border-color: var(--cor-alerta);
     border-style: solid;
+    box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.15);
 }
 
-.defeito-display-section {
-    padding: 8px 12px;
-    margin-top: 8px;
-}
-
-.defeito-display-section strong {
-    color: #c62828;
-}
-
-/* MODAL */
+/* ====== MODAL ====== */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -514,35 +765,7 @@ body.print-mode .backup-input {
     z-index: 2000;
     justify-content: center;
     align-items: center;
-}
-
-/* AVISOS PENDENCIA */
-.avisos-pendencia {
-    background: #ffebee;
-    border-left: 4px solid #f44336;
-    padding: 10px 15px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    color: #c62828;
-}
-
-@media print {
-    .avisos-pendencia {
-    display: none !important;
-    }
-
-    #appBarAviso {
-    display: none !important;
-    }
-
-    select[data-print-hide-text="true"] {
-    color: transparent !important;
-    }
-
-    .defeito-obs-row[data-print-hide="true"] {
-    display: none !important;
-    }
+    backdrop-filter: blur(4px);
 }
 
 .modal-overlay.show {
@@ -550,26 +773,38 @@ body.print-mode .backup-input {
 }
 
 .modal-box {
-    background: #fff;
-    border-radius: 12px;
-    padding: 24px 28px;
+    background: var(--cor-superficie);
+    border-radius: 16px;
+    padding: 28px 32px;
     max-width: 420px;
     width: 90%;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     text-align: center;
     font-family: 'Inter', Arial, sans-serif;
+    animation: modalEntrar 0.2s ease-out;
+}
+
+@keyframes modalEntrar {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 .modal-box h3 {
     margin: 0 0 8px;
     font-size: 18px;
-    color: #e65100;
+    color: var(--cor-alerta);
 }
 
 .modal-box p {
     margin: 0 0 20px;
     font-size: 14px;
-    color: #555;
+    color: var(--cor-texto-secundario);
     line-height: 1.5;
 }
 
@@ -580,8 +815,8 @@ body.print-mode .backup-input {
 }
 
 .modal-box .modal-actions button {
-    padding: 8px 20px;
-    border-radius: 6px;
+    padding: 10px 24px;
+    border-radius: var(--raio-borda);
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -591,12 +826,12 @@ body.print-mode .backup-input {
 }
 
 .modal-btn-cancel {
-    background: #eee;
-    color: #333;
+    background: var(--cor-secao);
+    color: var(--cor-texto);
 }
 
 .modal-btn-cancel:hover {
-    background: #ddd;
+    background: var(--cor-borda);
 }
 
 .modal-btn-confirm {
@@ -608,36 +843,660 @@ body.print-mode .backup-input {
     background: #c62828;
 }
 
+/* ====== AVISOS PENDÃŠNCIA ====== */
+.avisos-pendencia {
+    background: #ffebee;
+    border-left: 4px solid var(--cor-perigo);
+    padding: 10px 15px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #c62828;
+    border-radius: 0 var(--raio-borda-sm) var(--raio-borda-sm) 0;
+}
+
+.pendencia-link {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+}
+
+.pendencia-link:hover {
+    text-decoration-thickness: 2px;
+}
+
+/* Pisca o campo quando se chega nele pelo aviso de pendÃªncias */
+.destaque {
+    animation: destacar 1.6s ease-out;
+}
+
+@keyframes destacar {
+    0%, 40% {
+        box-shadow: 0 0 0 4px rgba(244, 67, 54, 0.45);
+        border-color: var(--cor-perigo);
+    }
+    100% {
+        box-shadow: 0 0 0 4px rgba(244, 67, 54, 0);
+    }
+}
+
+body.dark-mode .avisos-pendencia {
+    background: rgba(244, 67, 54, 0.1);
+    color: #ef9a9a;
+}
+
+/* ====== CORES DOS RESULTADOS ====== */
+@media screen {
+    .table-responsive select[data-status="ok"] {
+        border-color: rgba(76, 175, 80, 0.6);
+        background-color: rgba(76, 175, 80, 0.12);
+        color: #2e7d32;
+        font-weight: 600;
+    }
+
+    .table-responsive select[data-status="defeito"] {
+        border-color: rgba(244, 67, 54, 0.6);
+        background-color: rgba(244, 67, 54, 0.12);
+        color: #c62828;
+        font-weight: 600;
+    }
+
+    .table-responsive select[data-status="vazio"] {
+        background-color: var(--cor-secao);
+        color: var(--cor-texto-claro);
+    }
+
+    body.dark-mode .table-responsive select[data-status="ok"] {
+        color: #81c784;
+    }
+
+    body.dark-mode .table-responsive select[data-status="defeito"] {
+        color: #ef9a9a;
+    }
+
+    /* A lista aberta mantÃ©m as cores normais */
+    .table-responsive select option {
+        background: var(--cor-superficie);
+        color: var(--cor-texto);
+        font-weight: normal;
+    }
+}
+
+/* ====== ASSINATURAS ====== */
+.assinatura-area {
+    margin-top: 30px;
+}
+
+.assinatura-celula {
+    text-align: center;
+    padding: 0 30px 10px !important;
+    border: none !important;
+    vertical-align: bottom;
+}
+
+.assinatura-linha {
+    width: 220px;
+    border-top: 1px solid var(--cor-texto-claro);
+    margin: 50px auto 8px;
+}
+
+.assinatura-nome {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--cor-texto-secundario);
+}
+
+/* ====== MENU FLUTUANTE ====== */
+body {
+    padding-bottom: 96px; /* espaÃ§o para o botÃ£o nÃ£o cobrir o fim da pÃ¡gina */
+}
+
+.fab {
+    position: fixed;
+    right: 20px;
+    bottom: calc(20px + env(safe-area-inset-bottom));
+    z-index: 1500;
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+.fab button {
+    margin-top: 0;
+    font-family: inherit;
+}
+
+.fab-botao {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: linear-gradient(135deg, var(--cor-appbar-inicio), var(--cor-appbar-fim));
+    color: #fff;
+    font-size: 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    transition: transform 0.2s ease;
+}
+
+.fab-botao:hover {
+    transform: scale(1.05);
+}
+
+.fab-botao:focus-visible {
+    outline: 2px solid var(--cor-primaria);
+    outline-offset: 3px;
+}
+
+.fab-icone-fechar,
+.fab.aberto .fab-icone-abrir {
+    display: none;
+}
+
+.fab.aberto .fab-icone-fechar {
+    display: inline;
+}
+
+/* Bolinha vermelha quando o laudo estÃ¡ incompleto */
+.fab.com-aviso .fab-botao::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--cor-perigo);
+    border: 2px solid var(--cor-fundo);
+}
+
+.fab-menu {
+    position: absolute;
+    right: 0;
+    bottom: 68px;
+    width: 270px;
+    max-width: calc(100vw - 40px);
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px) scale(0.98);
+    transform-origin: bottom right;
+    transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+}
+
+.fab.aberto .fab-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+}
+
+.fab-aviso {
+    display: none;
+    padding: 8px 10px;
+    margin-bottom: 4px;
+    border-radius: var(--raio-borda-sm);
+    background: rgba(244, 67, 54, 0.1);
+    color: var(--cor-perigo);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.fab.com-aviso .fab-aviso {
+    display: block;
+}
+
+.fab-titulo {
+    padding: 2px 4px 4px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--cor-texto-secundario);
+}
+
+.fab-colunas {
+    display: flex;
+    padding: 3px;
+    border-radius: 8px;
+    background: var(--cor-secao);
+}
+
+.fab-colunas button {
+    flex: 1;
+    padding: 8px 4px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--cor-texto-secundario);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.fab-colunas button.active {
+    background: var(--cor-superficie);
+    color: var(--cor-texto);
+    box-shadow: var(--sombra-card);
+}
+
+.fab-preencher {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.fab-preencher button {
+    flex: 1;
+    min-height: 44px;
+    padding: 8px 6px;
+    border: 1px solid;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.fab-ok {
+    background: rgba(76, 175, 80, 0.12);
+    border-color: rgba(76, 175, 80, 0.35) !important;
+    color: #2e7d32;
+}
+
+.fab-vazio {
+    grid-column: 1 / -1;
+    min-height: 38px !important;
+    background: transparent;
+    border-style: dashed !important;
+    border-color: var(--cor-borda) !important;
+    color: var(--cor-texto-secundario);
+}
+
+.fab-defeito {
+    background: rgba(244, 67, 54, 0.1);
+    border-color: rgba(244, 67, 54, 0.35) !important;
+    color: #c62828;
+}
+
+body.dark-mode .fab-ok {
+    color: #81c784;
+}
+
+body.dark-mode .fab-defeito {
+    color: #ef9a9a;
+}
+
+.fab-separador {
+    height: 1px;
+    margin: 6px 0;
+    background: var(--cor-separador);
+}
+
+.fab-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--cor-texto);
+    font-size: 14px;
+    text-align: left;
+}
+
+.fab-item i {
+    width: 18px;
+    text-align: center;
+    color: var(--cor-texto-secundario);
+}
+
+.fab-item:hover,
+.fab-colunas button:hover {
+    background: var(--cor-secao);
+}
+
+.fab-colunas button.active:hover {
+    background: var(--cor-superficie);
+}
+
+/* ====== RESPONSIVIDADE ====== */
+@media screen and (max-width: 1700px) {
+    /* App bar deixa de ser fixa e quebra em linhas, sem cobrir o conteÃºdo */
+    body {
+        padding: 10px 10px 96px;
+    }
+
+    .app-bar {
+        position: static;
+        height: auto;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: var(--raio-borda);
+    }
+
+    .app-bar-group {
+        flex-wrap: wrap;
+        padding: 0 6px;
+        height: auto;
+    }
+
+    .app-bar-group.grow {
+        flex-basis: 100%;
+        justify-content: flex-start;
+    }
+
+    .app-bar-separator:has(+ .grow) {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    h1 {
+        font-size: 18px;
+    }
+
+    .app-bar-separator,
+    .app-bar-label {
+        display: none;
+    }
+
+    .app-bar-group {
+        flex: 1 1 100%;
+        gap: 6px;
+        padding: 0;
+    }
+
+    /* Tema + tipo de equipamento dividem a primeira linha */
+    .app-bar-group:first-child {
+        flex: 0 0 auto;
+    }
+
+    .app-bar-group:nth-child(3) {
+        flex: 1 1 0;
+    }
+
+    .app-bar button,
+    .app-bar select {
+        flex: 1 1 auto;
+        font-size: 13px;
+        padding: 8px 10px;
+        min-height: 44px;
+    }
+
+    .app-bar select {
+        flex-basis: 100%;
+    }
+
+    /* AÃ§Ãµes e preenchimento rÃ¡pido ficam no menu flutuante (.fab) */
+    .app-bar-group:nth-child(5),
+    .app-bar-group.grow {
+        display: none;
+    }
+
+    .topo {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .topo .campo-data {
+        flex: 1;
+    }
+
+    .modal-box {
+        padding: 22px 20px;
+    }
+
+    .modal-box .modal-actions button {
+        flex: 1;
+    }
+
+    .assinatura-celula {
+        padding: 0 8px 10px !important;
+    }
+
+    .assinatura-linha {
+        width: 100%;
+    }
+}
+
+/* Tabela vira "cartÃµes": nome do item em cima, TÃ©cnico e Testes lado a lado */
+@media screen and (max-width: 600px) {
+    .table-responsive table,
+    .table-responsive thead,
+    .table-responsive tbody {
+        display: block;
+    }
+
+    .table-responsive tr {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-bottom: 1px solid var(--cor-borda);
+    }
+
+    .table-responsive th,
+    .table-responsive td {
+        display: block;
+        min-width: 0;
+        border: none;
+        padding: 6px 8px;
+    }
+
+    .table-responsive th:first-child {
+        display: none;
+    }
+
+    .table-responsive .input-tecnico {
+        width: 100%;
+    }
+
+    .table-responsive td:first-child,
+    .table-responsive td[colspan] {
+        grid-column: 1 / -1;
+    }
+
+    .table-responsive td:first-child:not(.secao) {
+        padding-bottom: 0;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .table-responsive td:first-child:not([colspan]) + td[colspan] {
+        padding-top: 6px;
+    }
+
+    .table-responsive tbody td:nth-child(2):not([colspan])::before,
+    .table-responsive tbody td:nth-child(3)::before {
+        display: block;
+        margin-bottom: 3px;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--cor-texto-secundario);
+    }
+
+    .table-responsive tbody td:nth-child(2):not([colspan])::before {
+        content: "TÃ©cnico";
+    }
+
+    .table-responsive tbody td:nth-child(3)::before {
+        content: "Testes";
+    }
+
+    .table-responsive select,
+    .table-responsive input,
+    .table-responsive textarea {
+        font-size: 16px; /* evita o zoom automÃ¡tico do iPhone ao tocar no campo */
+        min-height: 40px;
+    }
+
+    .secao {
+        padding: 8px !important;
+    }
+}
+
+/* ====== BARRA DE FORMATAÇÃO ====== */
+#barraFormatacao {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    position: fixed;
+    left: 8px;
+    top: 50%;
+    min-width: 50px;
+    padding: 4px;
+    background: var(--cor-superficie, #fff);
+    border: 1px solid var(--cor-borda, #ddd);
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    transform: translate(-150%, -50%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 0.25s ease, opacity 0.25s ease, visibility 0s linear 0.25s;
+}
+
+#barraFormatacao.visivel {
+    transform: translate(0, -50%);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: transform 0.25s ease, opacity 0.25s ease, visibility 0s;
+}
+
+#barraFormatacao button {
+    height: 26px;
+    padding: 0 4px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background 0.15s;
+}
+
+#barraFormatacao button:hover {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+#barraFormatacao hr {
+    width: 60%;
+    margin: 2px auto;
+    border: none;
+    border-top: 1px solid var(--cor-borda, #ddd);
+}
+
+#barraFormatacao .cor-atual {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--cor-borda, #ccc);
+    vertical-align: middle;
+}
+
+#paletaCores {
+    display: none;
+    position: absolute;
+    left: calc(100% + 8px);
+    bottom: 0;
+    width: 150px;
+    padding: 8px;
+    flex-direction: column;
+    gap: 6px;
+    background: var(--cor-superficie, #fff);
+    border: 1px solid var(--cor-borda, #ddd);
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+}
+
+#paletaCores.aberta {
+    display: flex;
+}
+
+#paletaCores .grade {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+}
+
+#barraFormatacao #paletaCores .grade button {
+    height: auto;
+    aspect-ratio: 1;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+#barraFormatacao #paletaCores .grade button:hover {
+    transform: scale(1.15);
+}
+
+#paletaCores .personalizada {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+#paletaCores input[type="color"] {
+    width: 28px;
+    height: 22px;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+#barraFormatacao #paletaCores .limpar {
+    font-size: 11px;
+    height: 22px;
+    border: 1px solid var(--cor-borda, #ddd);
+}
+
+.defeito-obs-input:empty::before {
+    content: attr(data-placeholder);
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+#PARECERTECNICOField h1, .defeito-obs-input h1 { font-size: 1.6em; margin: 4px 0; }
+#PARECERTECNICOField h2, .defeito-obs-input h2 { font-size: 1.3em; margin: 4px 0; }
+#PARECERTECNICOField h3, .defeito-obs-input h3 { font-size: 1.1em; margin: 4px 0; }
+
+/* Não aparece em celulares nem na impressão */
+@media (max-width: 768px), (pointer: coarse) {
+    #barraFormatacao { display: none !important; }
+}
+
 @media print {
-    .defeito-obs-input {
-    border: none !important;
-    background: transparent !important;
-    padding: 0 !important;
-    }
-
-    .input-tecnico {
-    color: #ffff;
-    }
+    #barraFormatacao { display: none !important; }
 }
 
-body.print-mode .defeito-obs-input {
-    border: none !important;
-    background: transparent !important;
-    padding: 0 !important;
-}
-
-/* Escala do PDF gerado pelo botão PDF */
-body.pdf-scale-95 {
-    transform: scale(0.9);
-    transform-origin: top left;
-}
-
-body.pdf-scale-95 .app-bar,
-body.pdf-scale-95 button,
-body.pdf-scale-95 title {
-    display: none !important;
-}
   </style>
+
 
 </head>
 
@@ -646,12 +1505,22 @@ body.pdf-scale-95 title {
   <!-- APP BAR (Oculta na impressão) -->
   <div class="app-bar" id="appBar">
 
+    <!-- Grupo: Tema (Esquerda Total) -->
+    <div class="app-bar-group app-bar-tema">
+      <label class="switch" title="Trocar Tema">
+        <input type="checkbox" id="themeSwitch" onchange="toggleDarkMode()">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="app-bar-separator"></div>
+
     <!-- Grupo: Tipo de Equipamento -->
     <div class="app-bar-group">
       <span class="app-bar-label">Tipo</span>
-      <button onclick="mudarModo('pc')" id="btn-pc">💻 PC</button>
-      <button onclick="mudarModo('notebook')" id="btn-notebook">💻 Notebook</button>
-      <button onclick="mudarModo('tv')" id="btn-tv">📺 TV</button>
+      <button onclick="mudarModo('pc')" id="btn-pc"><i class="fa-solid fa-desktop"></i> PC</button>
+      <button onclick="mudarModo('notebook')" id="btn-notebook"><i class="fa-solid fa-laptop"></i> Notebook</button>
+      <button onclick="mudarModo('tv')" id="btn-tv"><i class="fa-solid fa-tv"></i> TV</button>
     </div>
 
     <div class="app-bar-separator"></div>
@@ -659,8 +1528,11 @@ body.pdf-scale-95 title {
     <!-- Grupo: Ações (Salvar, Imprimir, PDF) -->
     <div class="app-bar-group">
       <span class="app-bar-label">Ações</span>
-      <button class="btn-salvar" onclick="salvar()">💾 Salvar</button>
-      <button class="btn-print" onclick="imprimir()">🖨️ Imprimir</button>
+      <button class="btn-exportar" onclick="exportarJSON()"><i class="fa-solid fa-download"></i> Exportar</button>
+      <input type="file" id="importFile" accept=".json,.txt,application/json,text/plain" hidden onchange="importarJSON(event)">
+      <button class="btn-importar" onclick="document.getElementById('importFile').click()"><i class="fa-solid fa-upload"></i> Importar</button>
+      <button class="btn-imprimir" onclick="imprimir()"><i class="fa-solid fa-print"></i> Imprimir</button>
+      <button class="btn-novo" onclick="novoLaudo()"><i class="fa-solid fa-file-circle-plus"></i> Novo laudo</button>
       
     </div>
 
@@ -668,20 +1540,18 @@ body.pdf-scale-95 title {
 
     <!-- Grupo: Preenchimento Rápido -->
     <div class="app-bar-group grow">
-      <span id="appBarAviso"
-        style="display:none; color:#f44336; margin-right:10px; font-weight:bold; font-size:14px; background:rgba(244,67,54,0.1); padding:4px 8px; border-radius:4px; border:1px solid rgba(244,67,54,0.3);">
-        ⚠️ Incompleto
+      <span id="appBarAviso" class="app-bar-aviso" hidden>
+        <i class="fa-solid fa-triangle-exclamation"></i> Incompleto
       </span>
       <span class="app-bar-label">Preencher</span>
-      <select id="colunaSelect">
-        <option value="0">📋 Todos</option>
-        <option value="1">📥 Entrada</option>
-        <option value="2">🔧 Técnico</option>
-        <option value="3">🧪 Testes</option>
+      <select id="colunaSelect" onchange="sincronizarColunaFab()">
+        <option value="0">Todos</option>
+        <option value="1">Técnico</option>
+        <option value="2">Testes</option>
       </select>
-      <button class="btn-vazio" onclick="preencherColunaApp('Selecione')">⬜ Vazio</button>
-      <button class="btn-ok" onclick="preencherColunaApp('Funcionando')">✅ Funcionando</button>
-      <button class="btn-defeito" onclick="preencherColunaApp('Com defeito')">❌ Com defeito</button>
+      <button class="btn-vazio" onclick="preencherColunaApp('Selecione')"><i class="fa-regular fa-square"></i> Vazio</button>
+      <button class="btn-ok" onclick="preencherColunaApp('Funcionando')"><i class="fa-solid fa-check"></i> Funcionando</button>
+      <button class="btn-defeito" onclick="preencherColunaApp('Com defeito')"><i class="fa-solid fa-xmark"></i> Com defeito</button>
     </div>
 
   </div>
@@ -692,34 +1562,38 @@ body.pdf-scale-95 title {
   <div class="topo">
     <div>
       <label>CLIENTE</label>
-      <input type="text" class="save" id="clienteField">
+      <input type="text" class="save" id="clienteField" data-id="campo_1">
+    </div>
+
+    <div class="campo-data">
+      <label>DATA</label>
+      <input type="text" class="save" id="dataField" data-id="campo_data" inputmode="numeric" placeholder="dd/mm/aaaa" maxlength="10">
+      <small class="campo-erro" id="dataErro" hidden>Data inválida</small>
     </div>
   </div>
 
   <div class="topo">
     <div>
       <label>EQUIPAMENTO</label>
-      <input type="text" class="save" id="equipamentoField">
+      <input type="text" class="save" id="equipamentoField" data-id="campo_2">
     </div>
 
     <div>
       <label>OS</label>
-      <input type="text" id="osField">
+      <input type="text" class="save" id="osField" data-id="campo_os" inputmode="numeric">
     </div>
   </div>
 
+  <div class="table-responsive">
   <table>
     <thead>
       <tr>
         <th>ITEM</th>
         <th>
-          <div class="label-tecnico"> ENTRADA<input class="input-tecnico" type="text"></div>
+          <div class="label-tecnico"> TÉCNICO <input class="input-tecnico save" type="text" data-id="campo_tecnico_tecnico"> </div>
         </th>
         <th>
-          <div class="label-tecnico"> TÉCNICO <input class="input-tecnico" type="text"> </div>
-        </th>
-        <th>
-          <div class="label-tecnico"> TESTES <input class="input-tecnico" type="text"></div>
+          <div class="label-tecnico"> TESTES <input class="input-tecnico save" type="text" data-id="campo_tecnico_testes"></div>
         </th>
       </tr>
     </thead>
@@ -728,430 +1602,407 @@ body.pdf-scale-95 title {
 
       <!-- ENERGIA -->
       <tr data-device="pc,notebook,tv">
-        <td colspan="4" class="secao">ENERGIA</td>
+        <td colspan="3" class="secao">ENERGIA</td>
       </tr>
 
       <tr data-device="pc,notebook,tv">
         <td>FONTE / PLACA FONTE</td>
-        <td>
-          <select class="save" data-opt="opt1"></select>
-        </td>
-
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_4"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_5"></select></td>
       </tr>
 
       <tr data-device="notebook">
         <td>BATERIA</td>
         <td>
-          <select class="save" data-opt="opt1"></select>
+          <select class="save" data-opt="opt1" data-id="campo_9"></select>
           <hr>
-          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+          <input type="text" class="save saude" placeholder="Saúde (%)" data-id="campo_10">
         </td>
         <td>
-          <select class="save" data-opt="opt1"></select>
+          <select class="save" data-opt="opt1" data-id="campo_11"></select>
           <hr>
-          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
-        </td>
-        <td>
-          <select class="save" data-opt="opt1"></select>
-          <hr>
-          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+          <input type="text" class="save saude" placeholder="Saúde (%)" data-id="campo_13">
         </td>
       </tr>
 
       <tr data-device="notebook">
         <td>CONECTOR POWER JACK</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_15"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_16"></select></td>
       </tr>
 
       <!-- ACIONAMENTO -->
       <tr data-device="pc,notebook,tv">
-        <td colspan="4" class="secao">ACIONAMENTO</td>
+        <td colspan="3" class="secao">ACIONAMENTO</td>
       </tr>
 
       <tr data-device="pc,notebook,tv">
         <td>BOTÃO POWER</td>
-        <td><select class="save" data-opt="opt2"></select></td>
-        <td><select class="save" data-opt="opt2"></select></td>
-        <td><select class="save" data-opt="opt2"></select></td>
+        <td><select class="save" data-opt="opt2" data-id="campo_19"></select></td>
+        <td><select class="save" data-opt="opt2" data-id="campo_20"></select></td>
       </tr>
 
       <!-- CARCAÇA -->
       <tr data-device="pc,notebook,tv">
-        <td colspan="4" class="secao">CARCAÇA</td>
+        <td colspan="3" class="secao">CARCAÇA</td>
       </tr>
 
       <tr data-device="pc,notebook,tv">
         <td>CARCAÇA</td>
-        <td><select class="save" data-opt="opt3"></select></td>
-        <td><select class="save" data-opt="opt3"></select></td>
-        <td><select class="save" data-opt="opt3"></select></td>
+        <td><select class="save" data-opt="opt3" data-id="campo_23"></select></td>
+        <td><select class="save" data-opt="opt3" data-id="campo_24"></select></td>
       </tr>
 
       <!-- PLACA / PROCESSAMENTO -->
       <tr data-device="pc,notebook,tv">
-        <td colspan="4" class="secao">PLACA / PROCESSAMENTO</td>
+        <td colspan="3" class="secao">PLACA / PROCESSAMENTO</td>
       </tr>
 
       <tr data-device="pc,notebook,tv">
         <td>PLACA MÃE / PLACA PRINCIPAL</td>
-        <td><select class="save" data-opt="opt2"></select></td>
-        <td><select class="save" data-opt="opt2"></select></td>
-        <td><select class="save" data-opt="opt2"></select></td>
+        <td><select class="save" data-opt="opt2" data-id="campo_27"></select></td>
+        <td><select class="save" data-opt="opt2" data-id="campo_28"></select></td>
       </tr>
 
       <tr data-device="pc,notebook">
         <td>PROCESSADOR</td>
         <td>
-          <select class="save" data-opt="opt2"></select>
+          <select class="save" data-opt="opt2" data-id="campo_33"></select>
           <hr>
-          <select class="save" data-opt="opt4"></select>
+          <select class="save" data-opt="opt4" data-id="campo_34"></select>
           <hr>
-          <select class="save" data-opt="opt19"></select>
+          <select class="save" data-opt="opt19" data-id="campo_35"></select>
         </td>
         <td>
-          <select class="save" data-opt="opt2"></select>
+          <select class="save" data-opt="opt2" data-id="campo_36"></select>
           <hr>
-          <select class="save" data-opt="opt4"></select>
+          <select class="save" data-opt="opt4" data-id="campo_38"></select>
           <hr>
-          <select class="save" data-opt="opt19"></select>
-        </td>
-        <td>
-          <select class="save" data-opt="opt2"></select>
-          <hr>
-          <select class="save" data-opt="opt4"></select>
-          <hr>
-          <select class="save" data-opt="opt19"></select>
+          <select class="save" data-opt="opt19" data-id="campo_39"></select>
         </td>
       </tr>
 
       <tr data-device="pc,notebook">
         <td>MEMÓRIA</td>
         <td>
-          <select class="save" data-opt="opt2"></select>
+          <select class="save" data-opt="opt2" data-id="campo_42"></select>
           <hr>
-          <select class="save" data-opt="opt5"></select>
+          <select class="save" data-opt="opt5" data-id="campo_43"></select>
         </td>
         <td>
-          <select class="save" data-opt="opt2"></select>
+          <select class="save" data-opt="opt2" data-id="campo_44"></select>
           <hr>
-          <select class="save" data-opt="opt5"></select>
-        </td>
-        <td>
-          <select class="save" data-opt="opt2"></select>
-          <hr>
-          <select class="save" data-opt="opt5"></select>
+          <select class="save" data-opt="opt5" data-id="campo_46"></select>
         </td>
       </tr>
 
       <!-- DISPLAY -->
       <tr data-device="notebook,tv">
-        <td colspan="4" class="secao">DISPLAY</td>
+        <td colspan="3" class="secao">DISPLAY</td>
       </tr>
       <tr data-device="notebook,tv">
         <td>TELA (ESTADO)</td>
         <td>
-          <select class="save display-check" data-opt="opt6"></select>
+          <select class="save display-check" data-opt="opt6" data-id="campo_48"></select>
         </td>
         <td>
-          <select class="save display-check" data-opt="opt6"></select>
-        </td>
-        <td>
-          <select class="save display-check" data-opt="opt6"></select>
+          <select class="save display-check" data-opt="opt6" data-id="campo_49"></select>
         </td>
       </tr>
 
       <tr data-device="notebook,tv">
         <td>TIPO DE PAINEL</td>
         <td>
-          <select class="save" data-opt="opt7"></select>
+          <select class="save" data-opt="opt7" data-id="campo_52"></select>
         </td>
         <td>
-          <select class="save" data-opt="opt7"></select>
-        </td>
-        <td>
-          <select class="save" data-opt="opt7"></select>
+          <select class="save" data-opt="opt7" data-id="campo_53"></select>
         </td>
       </tr>
 
       <tr data-device="notebook,tv">
         <td>RESOLUÇÃO</td>
         <td>
-          <select class="save" data-opt="opt8"></select>
+          <select class="save" data-opt="opt8" data-id="campo_56"></select>
         </td>
         <td>
-          <select class="save" data-opt="opt8"></select>
-        </td>
-        <td>
-          <select class="save" data-opt="opt8"></select>
+          <select class="save" data-opt="opt8" data-id="campo_57"></select>
         </td>
       </tr>
 
       <tr data-device="notebook,tv">
         <td>TAXA DE ATUALIZAÇÃO</td>
         <td>
-          <select class="save" data-opt="opt9"></select>
+          <select class="save" data-opt="opt9" data-id="campo_60"></select>
         </td>
         <td>
-          <select class="save" data-opt="opt9"></select>
-        </td>
-        <td>
-          <select class="save" data-opt="opt9"></select>
+          <select class="save" data-opt="opt9" data-id="campo_61"></select>
         </td>
       </tr>
 
       <tr data-device="notebook,tv">
         <td>BACKLIGHT (ILUMINAÇÃO)</td>
-        <td><select class="save display-check" data-opt="opt10"></select></td>
-        <td><select class="save display-check" data-opt="opt10"></select></td>
-        <td><select class="save display-check" data-opt="opt10"></select></td>
+        <td><select class="save display-check" data-opt="opt10" data-id="campo_64"></select></td>
+        <td><select class="save display-check" data-opt="opt10" data-id="campo_65"></select></td>
       </tr>
 
       <tr data-device="tv">
         <td>BARRA DE LEDS</td>
-        <td><select class="save display-check" data-opt="opt11"></select></td>
-        <td><select class="save display-check" data-opt="opt11"></select></td>
-        <td><select class="save display-check" data-opt="opt11"></select></td>
+        <td><select class="save display-check" data-opt="opt11" data-id="campo_68"></select></td>
+        <td><select class="save display-check" data-opt="opt11" data-id="campo_69"></select></td>
       </tr>
 
       <tr data-device="notebook,tv">
         <td>CABO FLAT (LVDS/eDP)</td>
-        <td><select class="save display-check" data-opt="opt12"></select></td>
-        <td><select class="save display-check" data-opt="opt12"></select></td>
-        <td><select class="save display-check" data-opt="opt12"></select></td>
+        <td><select class="save display-check" data-opt="opt12" data-id="campo_72"></select></td>
+        <td><select class="save display-check" data-opt="opt12" data-id="campo_73"></select></td>
       </tr>
 
       <tr data-device="notebook,tv">
         <td>SINTOMA VISUAL</td>
-        <td colspan="3">
-          <select class="save display-check" data-opt="opt13"></select>
+        <td colspan="2">
+          <select class="save display-check" data-opt="opt13" data-id="campo_75"></select>
         </td>
       </tr>
 
       <!-- PORTAS / PERIFÉRICOS -->
       <tr data-device="pc,notebook,tv">
-        <td colspan="4" class="secao">PORTAS / PERIFÉRICOS</td>
+        <td colspan="3" class="secao">PORTAS / PERIFÉRICOS</td>
+      </tr>
+
+
+      <tr data-device="pc,notebook,tv">
+        <td>PAINEL</td>
+        <td><select class="save" data-opt="opt1" data-id="campo_77"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_78"></select></td>
+
       </tr>
 
       <tr data-device="pc,notebook,tv">
         <td>HDMI</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_77h"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_78h"></select></td>
       </tr>
 
       <tr data-device="pc,notebook,tv">
         <td>USB / USB-C</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_81"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_82"></select></td>
       </tr>
 
       <tr data-device="pc,notebook">
         <td>VGA</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_85"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_86"></select></td>
       </tr>
       <tr data-device="pc,notebook">
         <td>LAN</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_89"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_90"></select></td>
       </tr>
 
       <tr data-device="pc,notebook">
         <td>WIFI</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_93"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_94"></select></td>
       </tr>
 
       <tr data-device="pc,notebook">
         <td>BLUETOOTH</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_97"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_98"></select></td>
       </tr>
 
 
       <tr data-device="notebook">
         <td>TECLADO</td>
         <td>
-          <select class="save" data-opt="opt1"></select>
+          <select class="save" data-opt="opt1" data-id="campo_102"></select>
           <hr>
-          <select class="save" data-opt="opt15"></select>
+          <select class="save" data-opt="opt15" data-id="campo_103"></select>
         </td>
         <td>
-          <select class="save" data-opt="opt1"></select>
+          <select class="save" data-opt="opt1" data-id="campo_104"></select>
           <hr>
-          <select class="save" data-opt="opt15"></select>
-        </td>
-        <td>
-          <select class="save" data-opt="opt1"></select>
-          <hr>
-          <select class="save" data-opt="opt15"></select>
+          <select class="save" data-opt="opt15" data-id="campo_106"></select>
         </td>
       </tr>
 
       <tr data-device="notebook">
         <td>TOUCHPAD</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_108"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_109"></select></td>
       </tr>
 
       <tr data-device="notebook">
         <td>CÂMERA</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_112"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_113"></select></td>
       </tr>
 
       <tr data-device="notebook">
         <td>MICROFONE</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_116"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_117"></select></td>
       </tr>
 
       <tr data-device="notebook,tv">
         <td>AUDIO INTERNO</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_120"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_121"></select></td>
       </tr>
 
       <tr data-device="pc,notebook,tv">
         <td>CONECTOR P2</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_124"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_125"></select></td>
       </tr>
 
       <tr data-device="pc,notebook">
         <td>SISTEMA OPERACIONAL</td>
-        <td><select class="save" data-opt="opt16"></select></td>
-        <td><select class="save" data-opt="opt16"></select></td>
-        <td><select class="save" data-opt="opt16"></select></td>
+        <td><select class="save" data-opt="opt16" data-id="campo_128"></select></td>
+        <td><select class="save" data-opt="opt16" data-id="campo_129"></select></td>
       </tr>
 
       <!-- PLACA GRÁFICA -->
       <tr data-device="pc,notebook">
         <td>PLACA GRÁFICA</td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
-        <td><select class="save" data-opt="opt1"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_132"></select></td>
+        <td><select class="save" data-opt="opt1" data-id="campo_133"></select></td>
       </tr>
 
       <!-- ARMAZENAMENTO -->
       <tr data-device="pc,notebook">
-        <td colspan="4" class="secao">ARMAZENAMENTO</td>
+        <td colspan="3" class="secao">ARMAZENAMENTO</td>
       </tr>
 
       <tr data-device="pc,notebook" class="armazenamento-row">
         <td>SSD/NVMe/HD</td>
         <td>
-          <select class="save" data-opt="opt1"></select>
+          <select class="save" data-opt="opt1" data-id="campo_138"></select>
           <hr>
-          <select class="save" data-opt="opt17"></select>
+          <select class="save" data-opt="opt17" data-id="campo_139"></select>
           <hr>
-          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+          <input type="text" class="save saude" placeholder="Saúde (%)" data-id="campo_140">
         </td>
         <td>
-          <select class="save" data-opt="opt1"></select>
+          <select class="save" data-opt="opt1" data-id="campo_141"></select>
           <hr>
-          <select class="save" data-opt="opt17"></select>
+          <select class="save" data-opt="opt17" data-id="campo_143"></select>
           <hr>
-          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
-        </td>
-        <td>
-          <select class="save" data-opt="opt1"></select>
-          <hr>
-          <select class="save" data-opt="opt17"></select>
-          <hr>
-          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
+          <input type="text" class="save saude" placeholder="Saúde (%)" data-id="campo_144">
         </td>
       </tr>
 
       <tr data-device="pc,notebook" class="armazenamento-btn-row no-print">
-        <td colspan="4" style="text-align:center; padding:4px;">
-          <button type="button" class="btn-add-armazenamento" onclick="adicionarArmazenamento()">➕ Adicionar Armazenamento</button>
-          <button type="button" class="btn-remove-armazenamento" id="btnRemoverArmazenamento" onclick="removerArmazenamento()" style="display:none;">➖ Remover Último</button>
+        <td colspan="3" class="armazenamento-acoes">
+          <button type="button" class="btn-add-armazenamento" onclick="adicionarArmazenamento()"><i class="fa-solid fa-plus"></i> Adicionar Armazenamento</button>
+          <button type="button" class="btn-remove-armazenamento" id="btnRemoverArmazenamento" onclick="removerArmazenamento()" hidden><i class="fa-solid fa-minus"></i> Remover Último</button>
         </td>
       </tr>
 
       <!-- BACKUP -->
       <tr data-device="pc,notebook">
-        <td colspan="4" class="secao">BACKUP</td>
+        <td colspan="3" class="secao">BACKUP</td>
       </tr>
 
       <tr data-device="pc,notebook">
         <td>BACKUP</td>
-        <td colspan="3">
-          <textarea class="backup-input" rows="2" placeholder="Disco C"></textarea>
-          <textarea class="backup-input" rows="2" placeholder="Usuário"></textarea>
-          <textarea class="backup-input" rows="2" placeholder="Disco D"></textarea>
+        <td colspan="2">
+          <textarea class="backup-input save" rows="2" placeholder="Disco C" data-id="campo_backup_c"></textarea>
+          <textarea class="backup-input save" rows="2" placeholder="Usuário" data-id="campo_backup_usuario"></textarea>
+          <textarea class="backup-input save" rows="2" placeholder="Disco D" data-id="campo_backup_d"></textarea>
         </td>
       </tr>
 
       <!-- FINALIZAÇÃO -->
       <tr data-device="pc,notebook,tv">
-        <td colspan="4" class="secao">FINALIZAÇÃO</td>
+        <td colspan="3" class="secao">FINALIZAÇÃO</td>
       </tr>
 
       <tr data-device="pc,notebook,tv">
         <td>PREVENTIVA</td>
-        <td><select class="save" data-opt="opt18"></select></td>
-        <td><select class="save" data-opt="opt18"></select></td>
-        <td><select class="save" data-opt="opt18"></select></td>
+        <td><select class="save" data-opt="opt18" data-id="campo_146"></select></td>
+        <td><select class="save" data-opt="opt18" data-id="campo_147"></select></td>
       </tr>
 
       <!-- RESULTADO -->
       <tr data-device="pc,notebook,tv">
-        <td colspan="4" class="secao">RESULTADO</td>
+        <td colspan="3" class="secao">RESULTADO</td>
       </tr>
 
       <tr data-device="pc,notebook,tv">
         <td>DEFEITO ENCONTRADO</td>
-        <td colspan="3">
-          <div id="DEFEITOENCONTRADOField" style="min-height:60px;"></div>
+        <td colspan="2">
+          <div id="DEFEITOENCONTRADOField"></div>
         </td>
       </tr>
 
       <tr data-device="pc,notebook,tv">
         <td>PARECER TÉCNICO</td>
-        <td colspan="3">
-          <div id="PARECERTECNICOField" contenteditable="true" class="save" style="min-height:60px;"></div>
+        <td colspan="2">
+          <div id="PARECERTECNICOField" contenteditable="true" class="save"></div>
         </td>
       </tr>
 
     </tbody>
   </table>
+  </div>
 
-  <div id="avisosPendencia" class="avisos-pendencia" style="display:none;"></div>
+  <div id="avisosPendencia" class="avisos-pendencia" hidden></div>
 
   <!-- ASSINATURAS -->
+  <div class="assinatura-area">
   <table>
     <tr>
-      <td style="text-align:center; height:80px;">
-        _______________________________<br>
-        ASSINATURA DO TÉCNICO
+      <td class="assinatura-celula">
+        <div class="assinatura-linha"></div>
+        <div class="assinatura-nome">ASSINATURA DO TÉCNICO</div>
       </td>
-      <td style="text-align:center;">
-        _______________________________<br>
-        ASSINATURA DO CLIENTE
+      <td class="assinatura-celula">
+        <div class="assinatura-linha"></div>
+        <div class="assinatura-nome">ASSINATURA DO CLIENTE</div>
       </td>
     </tr>
   </table>
+  </div>
+
+  <!-- MENU FLUTUANTE (canto inferior direito) -->
+  <div class="fab no-print" id="fab">
+    <div class="fab-menu" id="fabMenu">
+      <div class="fab-aviso"><i class="fa-solid fa-triangle-exclamation"></i> Laudo incompleto</div>
+
+      <div class="fab-titulo">Preencher</div>
+      <div class="fab-colunas">
+        <button type="button" data-col="0" onclick="escolherColunaFab('0')">Todos</button>
+        <button type="button" data-col="1" onclick="escolherColunaFab('1')">Técnico</button>
+        <button type="button" data-col="2" onclick="escolherColunaFab('2')">Testes</button>
+      </div>
+      <div class="fab-preencher">
+        <button type="button" class="fab-ok" onclick="preencherColunaApp('Funcionando')"><i class="fa-solid fa-check"></i> Funcionando</button>
+        <button type="button" class="fab-defeito" onclick="preencherColunaApp('Com defeito')"><i class="fa-solid fa-xmark"></i> Com defeito</button>
+        <button type="button" class="fab-vazio" onclick="preencherColunaApp('Selecione')"><i class="fa-regular fa-square"></i> Vazio</button>
+      </div>
+
+      <div class="fab-separador"></div>
+
+      <button type="button" class="fab-item" onclick="fabAcao(imprimir)"><i class="fa-solid fa-print"></i> Imprimir</button>
+      <button type="button" class="fab-item" onclick="fabAcao(exportarJSON)"><i class="fa-solid fa-download"></i> Exportar</button>
+      <button type="button" class="fab-item" onclick="fabAcao(() => document.getElementById('importFile').click())"><i class="fa-solid fa-upload"></i> Importar</button>
+      <button type="button" class="fab-item" onclick="fabAcao(novoLaudo)"><i class="fa-solid fa-file-circle-plus"></i> Novo laudo</button>
+      <button type="button" class="fab-item" onclick="fabAcao(() => window.scrollTo({ top: 0, behavior: 'smooth' }))"><i class="fa-solid fa-arrow-up"></i> Voltar ao topo</button>
+    </div>
+
+    <button type="button" class="fab-botao" id="fabBotao" onclick="alternarFab()" aria-expanded="false" aria-controls="fabMenu" title="Menu">
+      <i class="fa-solid fa-bars fab-icone-abrir"></i>
+      <i class="fa-solid fa-xmark fab-icone-fechar"></i>
+    </button>
+  </div>
 
   <!-- MODAL DE AVISO -->
   <div class="modal-overlay" id="modalAviso">
     <div class="modal-box">
-      <h3>⚠️ Atenção</h3>
+      <h3><i class="fa-solid fa-triangle-exclamation"></i> Atenção</h3>
       <p id="modalMsg">Existem observações em defeitos que serão apagadas. Deseja continuar?</p>
       <div class="modal-actions">
         <button class="modal-btn-cancel" onclick="fecharModal(false)">Cancelar</button>
@@ -1160,693 +2011,1068 @@ body.pdf-scale-95 title {
     </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
   <script>
-    // --- Opções Dinâmicas ---
-    const optionsData = {
-      'opt1': ['Selecione', 'Funcionando', 'Com defeito', 'Não Testado', 'Não Se Aplica'],
-      'opt2': ['Selecione', 'Funcionando', 'Com defeito', 'Não Testado'],
-      'opt3': ['Selecione', 'Funcionando', 'Com defeito'],
+// =====================================================================
+// DADOS
+// =====================================================================
 
-      'opt4': ['Modelo', 'Intel Celeron', 'Intel Pentium', 'Core i3', 'Core i5', 'Core i7', 'Core i9', 'AMD Ryzen 3', 'AMD Ryzen 5', 'AMD Ryzen 7', 'AMD Ryzen 9'],
-      'opt5': ['Capacidade', '2GB', '4GB', '6GB', '8GB', '10GB', '12GB', '16GB', '32GB', '64GB'],
+// Opções de cada select (data-opt). A primeira opção de cada lista é o
+// "vazio" do campo (Selecione, Modelo, Capacidade, Tipo, Vídeo integrado).
+const optionsData = {
+  'opt1': ['Selecione', 'Funcionando', 'Com defeito', 'Não Testado', 'Não Se Aplica'],
+  'opt2': ['Selecione', 'Funcionando', 'Com defeito', 'Não Testado'],
+  'opt3': ['Selecione', 'Funcionando', 'Com defeito'],
 
-      'opt6': ['Selecione', 'Funcionando', 'Com defeito', 'Sem Imagem', 'Imagem com Defeito', 'Não Testado'],
-      'opt7': ['Selecione', 'TN', 'IPS', 'VA', 'OLED'],
-      'opt8': ['Selecione', 'HD', 'FULL HD', '2K (QHD)', '4K (UHD)'],
-      'opt9': ['Selecione', '60Hz', '75Hz', '120Hz', '144Hz', '165Hz', '240Hz'],
-      'opt10': ['Selecione', 'Funcionando', 'Com defeito', 'Sem Iluminação', 'Oscilando', 'Não Testado'],
-      'opt11': ['Selecione', 'Funcionando', 'Com defeito', 'Aberta', 'Em Curto', 'Não Testado'],
-      'opt12': ['Selecione', 'Funcionando', 'Com defeito', 'Mau Contato', 'Rompido', 'Não Testado'],
-      'opt13': ['Selecione', 'Imagem Normal', 'Tela Escura com Imagem', 'Sem Imagem Total', 'Listras / Artefatos', 'Imagem Piscando'],
-      // 'opt14': ['Selecione', 'Funcionando', 'Com defeito', 'Não Testado', 'Não Se Aplica'],
+  'opt4': ['Modelo', 'Intel Celeron', 'Intel Pentium', 'Core i3', 'Core i5', 'Core i7', 'Core i9', 'AMD Ryzen 3', 'AMD Ryzen 5', 'AMD Ryzen 7', 'AMD Ryzen 9'],
+  'opt5': ['Capacidade', '2GB', '4GB', '6GB', '8GB', '10GB', '12GB', '16GB', '32GB', '64GB'],
+
+  'opt6': ['Selecione', 'Funcionando', 'Com defeito', 'Sem Imagem', 'Imagem com Defeito', 'Não Testado'],
+  'opt7': ['Selecione', 'TN', 'IPS', 'VA', 'OLED'],
+  'opt8': ['Selecione', 'HD', 'FULL HD', '2K (QHD)', '4K (UHD)'],
+  'opt9': ['Selecione', '60Hz', '75Hz', '120Hz', '144Hz', '165Hz', '240Hz'],
+  'opt10': ['Selecione', 'Funcionando', 'Com defeito', 'Sem Iluminação', 'Oscilando', 'Não Testado'],
+  'opt11': ['Selecione', 'Funcionando', 'Com defeito', 'Aberta', 'Em Curto', 'Não Testado'],
+  'opt12': ['Selecione', 'Funcionando', 'Com defeito', 'Mau Contato', 'Rompido', 'Não Testado'],
+  'opt13': ['Selecione', 'Imagem Normal', 'Tela Escura com Imagem', 'Sem Imagem Total', 'Listras / Artefatos', 'Imagem Piscando'],
+
+  'opt15': ['Selecione', 'Simples', 'Completo'],
+  'opt16': ['Selecione', 'Funcionando', 'Com defeito', 'Corrompido', 'Não Inicializa', 'Não Testado', 'Não Se Aplica'],
+  'opt17': ['Tipo', 'SSD', 'NVMe', 'HD', 'NGFF(M2)'],
+  'opt18': ['Selecione', 'Necessário', 'Realizada', 'Não necessária', 'Não realizada'],
+
+  'opt19': ['Vídeo integrado', 'Com vídeo integrado', 'Sem vídeo integrado']
+};
+
+// Valores que indicam problema em selects de display
+const valoresDisplayProblema = [
+  'sem iluminação', 'oscilando', 'aberta', 'em curto',
+  'mau contato', 'rompido', 'tela escura com imagem',
+  'sem imagem total', 'listras / artefatos', 'imagem piscando',
+  'sem imagem', 'imagem com defeito'
+];
+
+// Valores padrão de defeito
+const valoresDeDefeito = ['com defeito', 'corrompido', 'não inicializa'];
+
+// Valores pintados de verde
+const valoresOk = ['funcionando', 'imagem normal'];
+
+// Índice da célula de cada coluna dentro da linha (0 é o nome do item)
+const COLUNAS = [1, 2];
+const NOMES_COLUNAS = { 1: 'Técnico', 2: 'Testes' };
+
+// Valor usado pelo botão Vazio no preenchimento rápido
+const VALOR_VAZIO = 'Selecione';
+
+let armazenamentoCount = 0;
+
+// Observações dos defeitos (persistidas no localStorage)
+let defeitosObs = JSON.parse(localStorage.getItem('defeitosObs') || '{}');
 
 
-      'opt15': ['Selecione', 'Simples', 'Completo'],
-      'opt16': ['Selecione', 'Funcionando', 'Com defeito', 'Corrompido', 'Não Inicializa', 'Não Testado', 'Não Se Aplica'],
-      'opt17': ['Tipo', 'SSD', 'NVMe', 'HD', 'NGFF(M2)'],
-      'opt18': ['Selecione', 'Necessário', 'Realizada', 'Não necessária', 'Não realizada'],
+// =====================================================================
+// UTILITÁRIOS
+// =====================================================================
 
-      'opt19': ['Vídeo integrado', 'Com vídeo integrado', 'Sem vídeo integrado']
-    };
+function nomeDoItem(linha) {
+  return linha?.querySelector('td')?.innerText.trim();
+}
 
-    let armazenamentoCount = 0;
+function linhaVisivel(tr) {
+  return tr.style.display !== 'none';
+}
 
-    function injetarOpcoes() {
-      document.querySelectorAll('select[data-opt]').forEach(select => {
-        const optKey = select.getAttribute('data-opt');
-        const items = optionsData[optKey];
-        if (items) {
-          select.innerHTML = ''; // Limpa antes de injetar
-          items.forEach(item => {
-            const option = document.createElement('option');
-            option.textContent = item;
-            select.appendChild(option);
-          });
-        }
-      });
+// A primeira opção de todo select é o "vazio"
+function selectVazio(select) {
+  return select.selectedIndex <= 0;
+}
+
+function ehValorDeDefeito(valor) {
+  const v = valor.toLowerCase();
+  return valoresDeDefeito.includes(v) || valoresDisplayProblema.includes(v);
+}
+
+function temObs(item) {
+  return Boolean(item && defeitosObs[item] && defeitosObs[item].trim() !== '');
+}
+
+function escaparHtml(texto) {
+  return String(texto)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// Data de hoje no formato brasileiro (dd/mm/aaaa)
+function dataDeHoje() {
+  const hoje = new Date();
+  const doisDigitos = n => String(n).padStart(2, '0');
+  return `${doisDigitos(hoje.getDate())}/${doisDigitos(hoje.getMonth() + 1)}/${hoje.getFullYear()}`;
+}
+
+// Coloca as barras enquanto digita: 03102026 -> 03/10/2026
+function mascararData(campo) {
+  const digitos = campo.value.replace(/\D/g, '').slice(0, 8);
+  campo.value = [digitos.slice(0, 2), digitos.slice(2, 4), digitos.slice(4)].filter(Boolean).join('/');
+}
+
+// Confere se dd/mm/aaaa é uma data que existe (ex.: 31/02/2026 não existe)
+function dataValida(texto) {
+  const partes = texto.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (!partes) return false;
+  const [dia, mes, ano] = partes.slice(1).map(Number);
+  const data = new Date(ano, mes - 1, dia);
+  return data.getFullYear() === ano && data.getMonth() === mes - 1 && data.getDate() === dia;
+}
+
+// Mostra o aviso de data inválida (campo vazio não é marcado enquanto se digita)
+function conferirData() {
+  const campo = document.getElementById('dataField');
+  const invalida = campo.value !== '' && !dataValida(campo.value);
+  campo.classList.toggle('invalido', invalida);
+  document.getElementById('dataErro').hidden = !invalida;
+  return !invalida;
+}
+
+// Laudo sem data (novo, antigo ou vindo do diagnostico.ps1) recebe a data de hoje.
+// Datas salvas no formato antigo (aaaa-mm-dd) são convertidas.
+function preencherDataSeVazia() {
+  const campo = document.getElementById('dataField');
+  const iso = campo.value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (iso) campo.value = `${iso[3]}/${iso[2]}/${iso[1]}`;
+  if (!campo.value) campo.value = dataDeHoje();
+  salvar();
+}
+
+// Remove caracteres que não podem ir em nome de arquivo
+function nomeDeArquivoSeguro(texto, padrao) {
+  return (texto || '').trim().replace(/[\\/:*?"<>|]/g, '_') || padrao;
+}
+
+function injetarOpcoes(raiz) {
+  raiz.querySelectorAll('select[data-opt]').forEach(select => {
+    const items = optionsData[select.getAttribute('data-opt')];
+    if (!items) return;
+    select.innerHTML = '';
+    items.forEach(item => {
+      const option = document.createElement('option');
+      option.textContent = item;
+      select.appendChild(option);
+    });
+  });
+}
+
+
+// =====================================================================
+// CAMPOS: ler, escrever, salvar e carregar
+// =====================================================================
+
+function idDoCampo(el) {
+  return el.getAttribute('data-id') || el.id;
+}
+
+function ehCampoDeValor(el) {
+  return el.tagName === 'SELECT' || el.tagName === 'INPUT' || el.tagName === 'TEXTAREA';
+}
+
+function lerCampo(el) {
+  if (el.type === 'checkbox') return el.checked;
+  if (ehCampoDeValor(el)) return el.value;
+  return el.innerHTML;
+}
+
+function escreverCampo(el, valor) {
+  if (el.type === 'checkbox') {
+    el.checked = valor === true || valor === 'true';
+  } else if (ehCampoDeValor(el)) {
+    el.value = valor || '';
+    if (el.tagName === 'SELECT') {
+      // Valor salvo que não existe mais no menu volta para a primeira opção
+      if (el.selectedIndex === -1) el.selectedIndex = 0;
+      el.dataset.anterior = el.value;
+    }
+  } else {
+    el.innerHTML = valor || '';
+  }
+}
+
+function coletarDados() {
+  const dados = {};
+  document.querySelectorAll('.save').forEach(el => {
+    const id = idDoCampo(el);
+    if (id) dados[id] = lerCampo(el);
+  });
+  dados._armazenamentoCount = armazenamentoCount;
+  return dados;
+}
+
+// Quantas linhas extras de armazenamento o laudo tem (null = não informado)
+function quantidadeDeArmazenamentos(dados) {
+  if (dados._armazenamentoCount !== undefined) {
+    return parseInt(dados._armazenamentoCount, 10) || 0;
+  }
+  // JSONs exportados por versões antigas não guardavam a quantidade:
+  // deduz pelos campos campo_arm2_*, campo_arm3_*... (a linha N é a extra N - 1)
+  const numeros = Object.keys(dados)
+    .map(chave => chave.match(/^campo_arm(\d+)_/))
+    .filter(Boolean)
+    .map(m => parseInt(m[1], 10));
+  return numeros.length > 0 ? Math.max(...numeros) - 1 : null;
+}
+
+// Usado ao abrir a página (dados do localStorage) e ao importar um JSON
+function aplicarDados(dados) {
+  const armazenamentos = quantidadeDeArmazenamentos(dados);
+  if (armazenamentos !== null) recriarArmazenamentos(armazenamentos);
+  document.querySelectorAll('.save').forEach(el => {
+    const id = idDoCampo(el);
+    if (id && dados[id] !== undefined) escreverCampo(el, dados[id]);
+  });
+}
+
+function salvar() {
+  localStorage.setItem('laudo', JSON.stringify(coletarDados()));
+}
+
+function salvarObs() {
+  localStorage.setItem('defeitosObs', JSON.stringify(defeitosObs));
+}
+
+// Liga o salvamento automático e a atualização da tela em um campo .save
+function prepararCampo(el) {
+  el.addEventListener('change', salvar);
+
+  if (el.tagName === 'SELECT') {
+    prepararSelect(el);
+    return;
+  }
+
+  el.addEventListener('input', () => {
+    salvar();
+    atualizarResumo();
+  });
+}
+
+// Ao tirar um item de "defeito", avisa antes de apagar a observação dele
+function prepararSelect(select) {
+  select.dataset.anterior = select.value;
+  select.addEventListener('focus', () => {
+    select.dataset.anterior = select.value;
+  });
+
+  select.addEventListener('change', () => {
+    const anterior = select.dataset.anterior;
+    const novoValor = select.value;
+    const item = nomeDoItem(select.closest('tr'));
+
+    if (!(ehValorDeDefeito(anterior) && !ehValorDeDefeito(novoValor) && temObs(item))) {
+      select.dataset.anterior = novoValor;
+      atualizarResumo();
+      return;
     }
 
-    function adicionarArmazenamento() {
-      armazenamentoCount++;
-      const btnRow = document.querySelector('.armazenamento-btn-row');
-      if (!btnRow) return;
-
-      const newRow = document.createElement('tr');
-      newRow.setAttribute('data-device', 'pc,notebook');
-      newRow.classList.add('armazenamento-row', 'armazenamento-extra');
-
-      newRow.innerHTML = `
-        <td>SSD/NVMe/HD (${armazenamentoCount + 1})</td>
-        <td>
-          <select class="save" data-opt="opt1"></select>
-          <hr>
-          <select class="save" data-opt="opt17"></select>
-          <hr>
-          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
-        </td>
-        <td>
-          <select class="save" data-opt="opt1"></select>
-          <hr>
-          <select class="save" data-opt="opt17"></select>
-          <hr>
-          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
-        </td>
-        <td>
-          <select class="save" data-opt="opt1"></select>
-          <hr>
-          <select class="save" data-opt="opt17"></select>
-          <hr>
-          <input type="text" class="save" placeholder="Saúde (%)" style="margin-top:5px;">
-        </td>
-      `;
-
-      btnRow.parentNode.insertBefore(newRow, btnRow);
-
-      // Injetar opções nos novos selects
-      newRow.querySelectorAll('select[data-opt]').forEach(select => {
-        const optKey = select.getAttribute('data-opt');
-        const items = optionsData[optKey];
-        if (items) {
-          select.innerHTML = '';
-          items.forEach(item => {
-            const option = document.createElement('option');
-            option.textContent = item;
-            select.appendChild(option);
-          });
-        }
-      });
-
-      // Adicionar listeners nos novos selects
-      newRow.querySelectorAll('.save').forEach(el => {
-        if (el.tagName === 'SELECT') {
-          let valorAnterior = el.value;
-          el.addEventListener('focus', function() { valorAnterior = this.value; });
-          el.addEventListener('change', function() {
-            const select = this;
-            const novoValor = select.value;
-            if (ehValorDeDefeito(valorAnterior) && !ehValorDeDefeito(novoValor)) {
-              const linha = select.closest('tr');
-              if (linha) {
-                const item = linha.querySelector('td')?.innerText.trim();
-                if (item && defeitosObs[item] && defeitosObs[item].trim() !== '') {
-                  abrirModal(
-                    'O item "' + item + '" possui uma observação que será apagada. Deseja continuar?',
-                    (confirmou) => {
-                      if (confirmou) {
-                        delete defeitosObs[item];
-                        salvarObs();
-                        valorAnterior = novoValor;
-                        capturarDefeitos();
-                      } else {
-                        select.value = valorAnterior;
-                      }
-                    }
-                  );
-                  return;
-                }
-              }
-            }
-            valorAnterior = novoValor;
-            capturarDefeitos();
-          });
+    abrirModal(
+      'O item "' + item + '" possui uma observação que será apagada. Deseja continuar?',
+      (confirmou) => {
+        if (confirmou) {
+          delete defeitosObs[item];
+          salvarObs();
+          select.dataset.anterior = novoValor;
+          atualizarResumo();
         } else {
-          el.addEventListener('change', capturarDefeitos);
-          el.addEventListener('keyup', capturarDefeitos);
-        }
-      });
-
-      // Mostrar botão remover
-      document.getElementById('btnRemoverArmazenamento').style.display = 'inline-block';
-
-      // Aplicar modo atual
-      const modoAtual = localStorage.getItem('modo_equipamento') || 'notebook';
-      const devices = newRow.getAttribute('data-device');
-      if (devices && !devices.includes(modoAtual)) {
-        newRow.style.display = 'none';
-      }
-    }
-
-    function removerArmazenamento() {
-      const extras = document.querySelectorAll('.armazenamento-extra');
-      if (extras.length > 0) {
-        const ultimo = extras[extras.length - 1];
-        ultimo.remove();
-        armazenamentoCount--;
-      }
-      if (document.querySelectorAll('.armazenamento-extra').length === 0) {
-        document.getElementById('btnRemoverArmazenamento').style.display = 'none';
-      }
-      capturarDefeitos();
-    }
-    // ------------------------
-
-
-    // Armazena OBS dos defeitos (persistido no localStorage)
-    let defeitosObs = JSON.parse(localStorage.getItem('defeitosObs') || '{}');
-
-    // Callback do modal
-    let _modalCallback = null;
-
-    function abrirModal(msg, callback) {
-      document.getElementById('modalMsg').textContent = msg;
-      document.getElementById('modalAviso').classList.add('show');
-      _modalCallback = callback;
-    }
-
-    function fecharModal(confirmou) {
-      document.getElementById('modalAviso').classList.remove('show');
-      if (_modalCallback) _modalCallback(confirmou);
-      _modalCallback = null;
-    }
-
-    function salvarObs() {
-      localStorage.setItem('defeitosObs', JSON.stringify(defeitosObs));
-    }
-
-    // Verifica se algum defeito com OBS está prestes a ser removido
-    function temObsEmRisco(selectsAfetados, novoValor) {
-      // Se o novo valor ainda é um defeito, não tem risco
-      if (ehValorDeDefeito(novoValor)) return [];
-
-      let itensEmRisco = [];
-      selectsAfetados.forEach(select => {
-        const valorAtual = select.value?.toLowerCase() || '';
-        if (!ehValorDeDefeito(valorAtual)) return;
-        const linha = select.closest('tr');
-        if (!linha) return;
-        const item = linha.querySelector('td')?.innerText.trim();
-        if (item && defeitosObs[item] && defeitosObs[item].trim() !== '') {
-          if (!itensEmRisco.includes(item)) itensEmRisco.push(item);
-        }
-      });
-      return itensEmRisco;
-    }
-
-    // Valores que indicam problema em selects de display
-    const valoresDisplayProblema = [
-      'sem iluminação', 'oscilando', 'aberta', 'em curto',
-      'mau contato', 'rompido', 'tela escura com imagem',
-      'sem imagem total', 'listras / artefatos', 'imagem piscando',
-      'sem imagem', 'imagem com defeito'
-    ];
-
-    // Valores padrão de defeito
-    const valoresDeDefeito = ['com defeito', 'corrompido', 'não inicializa'];
-
-    function ehValorDeDefeito(valor) {
-      const v = valor.toLowerCase();
-      return valoresDeDefeito.includes(v) || valoresDisplayProblema.includes(v);
-    }
-
-    function obterInfoExtra(item, linha) {
-      // Para SSD/NVMe/HD, busca saúde e tipo
-      if (item === 'SSD/NVMe/HD') {
-        const inputs = linha.querySelectorAll('input[placeholder*="Sa\u00fade"]');
-        let saude = '';
-        inputs.forEach(inp => {
-          if (inp.value && inp.value.trim() !== '') saude = inp.value.trim();
-        });
-        const tipoSelects = linha.querySelectorAll('select[data-opt="opt17"]');
-        let tipo = '';
-        tipoSelects.forEach(sel => {
-          if (sel.value && sel.value !== 'Tipo') tipo = sel.value;
-        });
-        let extra = '';
-        if (tipo) extra += tipo;
-        if (saude) extra += (extra ? ' ' : '') + 'com ' + saude + ' de sa\u00fade';
-        return extra;
-      }
-
-      // Para itens de display, mostra os sintomas espec\u00edficos selecionados
-      const displaySelects = linha.querySelectorAll('.display-check');
-      if (displaySelects.length > 0) {
-        let sintomas = [];
-        displaySelects.forEach(sel => {
-          const v = sel.value?.toLowerCase() || '';
-          if (valoresDisplayProblema.includes(v)) {
-            sintomas.push(sel.value);
-          }
-        });
-        if (sintomas.length > 0) {
-          return sintomas.join(', ');
+          select.value = anterior;
+          salvar();
         }
       }
+    );
+  });
+}
 
-      return '';
+
+// =====================================================================
+// ARMAZENAMENTO (linhas extras de SSD/NVMe/HD)
+// =====================================================================
+
+function celulaArmazenamento(n, primeiroCampo) {
+  return `
+        <td>
+          <select class="save" data-opt="opt1" data-id="campo_arm${n}_${primeiroCampo}"></select>
+          <hr>
+          <select class="save" data-opt="opt17" data-id="campo_arm${n}_${primeiroCampo + 1}"></select>
+          <hr>
+          <input type="text" class="save saude" placeholder="Saúde (%)" data-id="campo_arm${n}_${primeiroCampo + 2}">
+        </td>`;
+}
+
+function adicionarArmazenamento() {
+  const btnRow = document.querySelector('.armazenamento-btn-row');
+  if (!btnRow) return;
+
+  armazenamentoCount++;
+  const n = armazenamentoCount + 1;
+
+  const linha = document.createElement('tr');
+  linha.setAttribute('data-device', 'pc,notebook');
+  linha.classList.add('armazenamento-row', 'armazenamento-extra');
+  linha.innerHTML = `
+        <td>SSD/NVMe/HD (${n})</td>` + celulaArmazenamento(n, 4) + celulaArmazenamento(n, 7);
+
+  btnRow.parentNode.insertBefore(linha, btnRow);
+  injetarOpcoes(linha);
+  linha.querySelectorAll('.save').forEach(prepararCampo);
+
+  const modoAtual = localStorage.getItem('modo_equipamento') || 'notebook';
+  if (!linha.getAttribute('data-device').split(',').includes(modoAtual)) {
+    linha.style.display = 'none';
+  }
+
+  document.getElementById('btnRemoverArmazenamento').hidden = false;
+  atualizarCoresSelects();
+}
+
+function removerArmazenamento() {
+  const extras = document.querySelectorAll('.armazenamento-extra');
+  if (extras.length > 0) {
+    extras[extras.length - 1].remove();
+    armazenamentoCount--;
+  }
+  document.getElementById('btnRemoverArmazenamento').hidden = armazenamentoCount === 0;
+  atualizarResumo();
+}
+
+function recriarArmazenamentos(quantidade) {
+  document.querySelectorAll('.armazenamento-extra').forEach(linha => linha.remove());
+  armazenamentoCount = 0;
+  document.getElementById('btnRemoverArmazenamento').hidden = true;
+  for (let i = 0; i < quantidade; i++) {
+    adicionarArmazenamento();
+  }
+}
+
+
+// =====================================================================
+// RESUMO: defeitos encontrados, cores e pendências
+// =====================================================================
+
+// Recalcula tudo o que depende dos valores da tabela
+function atualizarResumo() {
+  capturarDefeitos();
+  atualizarCoresSelects();
+  verificarPendencias();
+}
+
+function obterInfoExtra(item, linha) {
+  // Para SSD/NVMe/HD (e os extras "SSD/NVMe/HD (2)", "(3)"...), busca saúde e tipo
+  if (item.startsWith('SSD/NVMe/HD')) {
+    let saude = '';
+    linha.querySelectorAll('.saude').forEach(inp => {
+      if (inp.value.trim() !== '') saude = inp.value.trim();
+    });
+    let tipo = '';
+    linha.querySelectorAll('select[data-opt="opt17"]').forEach(sel => {
+      if (!selectVazio(sel)) tipo = sel.value;
+    });
+    let extra = tipo;
+    if (saude) extra += (extra ? ' ' : '') + 'com ' + saude + ' de saúde';
+    return extra;
+  }
+
+  // Para itens de display, mostra os sintomas específicos selecionados
+  const sintomas = [];
+  linha.querySelectorAll('.display-check').forEach(sel => {
+    if (valoresDisplayProblema.includes(sel.value.toLowerCase())) sintomas.push(sel.value);
+  });
+  return sintomas.join(', ');
+}
+
+function capturarDefeitos() {
+  const defeitos = []; // { item, extra }
+  const itensAdicionados = [];
+
+  document.querySelectorAll('.save').forEach(el => {
+    const valor = ehCampoDeValor(el) ? el.value : el.innerText;
+    if (!valor) return;
+
+    const linha = el.closest('tr');
+    const item = nomeDoItem(linha);
+    if (!item || itensAdicionados.includes(item)) return;
+
+    if (ehValorDeDefeito(valor)) {
+      itensAdicionados.push(item);
+      defeitos.push({ item, extra: obterInfoExtra(item, linha) });
+    } else if (item === 'PREVENTIVA' && valor === 'Necessário' && el.tagName === 'SELECT') {
+      // Preventiva: quando "Necessário" é selecionado, aparece na área de problemas
+      itensAdicionados.push(item);
+      defeitos.push({ item, extra: 'Limpeza preventiva necessária' });
     }
+  });
 
-    function capturarDefeitos() {
-      let defeitos = []; // { item, extra }
-      let itensAdicionados = [];
+  // Remove OBS de itens que não são mais defeito
+  Object.keys(defeitosObs).forEach(item => {
+    if (!itensAdicionados.includes(item)) delete defeitosObs[item];
+  });
+  salvarObs();
 
-      document.querySelectorAll('.save').forEach((el) => {
-        let valor;
-        if (el.tagName === 'SELECT' || el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-          valor = el.value;
-        } else {
-          valor = el.innerText;
-        }
+  renderizarDefeitos(defeitos);
+}
 
-        if (valor && ehValorDeDefeito(valor)) {
-          let linha = el.closest('tr');
-          if (linha) {
-            let item = linha.querySelector('td')?.innerText.trim();
-            if (item && !itensAdicionados.includes(item)) {
-              itensAdicionados.push(item);
-              const extra = obterInfoExtra(item, linha);
-              defeitos.push({ item, extra });
-            }
-          }
-        }
+function renderizarDefeitos(defeitos) {
+  const campo = document.getElementById('DEFEITOENCONTRADOField');
+  if (!campo) return;
 
-        // Preventiva: quando "Necessário" é selecionado, aparece na área de problemas
-        if (valor && valor === 'Necessário' && el.tagName === 'SELECT') {
-          let linha = el.closest('tr');
-          if (linha) {
-            let item = linha.querySelector('td')?.innerText.trim();
-            if (item === 'PREVENTIVA' && !itensAdicionados.includes(item)) {
-              itensAdicionados.push(item);
-              defeitos.push({ item: 'PREVENTIVA', extra: 'Limpeza preventiva necessária' });
-            }
-          }
-        }
-      });
+  // Sem espaços entre as tags: o campo usa white-space: pre-wrap
+  campo.innerHTML = defeitos.map(d =>
+    '<div class="defeito-card">' +
+      `<div class="defeito-texto">Problema encontrado: <strong>${escaparHtml(d.item)}</strong></div>` +
+      (d.extra ? `<div class="defeito-extra">${escaparHtml(d.extra)}</div>` : '') +
+      '<div class="defeito-obs-row">' +
+        '<strong>OBS:</strong>' +
+        `<div class="defeito-obs-input" contenteditable="true" data-rich="true" data-placeholder="Adicionar observação..." data-item="${escaparHtml(d.item)}" oninput="atualizarObs(this)">${defeitosObs[d.item] || ''}</div>` +
+      '</div>' +
+    '</div>'
+  ).join('');
+}
 
-      // Remove OBS de itens que n\u00e3o s\u00e3o mais defeito
-      Object.keys(defeitosObs).forEach(key => {
-        if (!itensAdicionados.includes(key)) {
-          delete defeitosObs[key];
-        }
-      });
+function atualizarObs(textarea) {
+  defeitosObs[textarea.getAttribute('data-item')] = textarea.innerText.trim() === '' ? '' : textarea.innerHTML;
+  salvarObs();
+}
+
+// Pinta cada select da tabela conforme o resultado: ok, defeito ou ainda não preenchido
+function atualizarCoresSelects() {
+  document.querySelectorAll('.table-responsive tbody select').forEach(sel => {
+    const v = sel.value.toLowerCase();
+    if (selectVazio(sel)) {
+      sel.dataset.status = 'vazio';
+    } else if (valoresOk.includes(v)) {
+      sel.dataset.status = 'ok';
+    } else if (ehValorDeDefeito(v)) {
+      sel.dataset.status = 'defeito';
+    } else {
+      delete sel.dataset.status;
+    }
+  });
+}
+
+// Campos referenciados pelos links do aviso de pendências
+let camposPendentes = [];
+
+function irParaPendencia(campo) {
+  campo.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  campo.focus({ preventScroll: true });
+  campo.classList.remove('destaque');
+  void campo.offsetWidth; // reinicia a animação se clicar de novo
+  campo.classList.add('destaque');
+  setTimeout(() => campo.classList.remove('destaque'), 1600);
+}
+
+// Avisa quando uma coluna foi começada mas ficou com itens sem selecionar
+function verificarPendencias() {
+  const pendentes = { 1: [], 2: [] };
+  const comecada = { 1: false, 2: false };
+
+  document.querySelectorAll('tbody tr').forEach(tr => {
+    const tds = tr.querySelectorAll('td');
+    // Linhas de item têm uma célula por coluna; seções e campos largos têm menos
+    if (!linhaVisivel(tr) || tds.length !== COLUNAS.length + 1) return;
+
+    COLUNAS.forEach(col => {
+      const selects = Array.from(tds[col].querySelectorAll('select'));
+      if (selects.some(sel => !selectVazio(sel))) comecada[col] = true;
+      const primeiroVazio = selects.find(selectVazio);
+      if (primeiroVazio) pendentes[col].push({ item: nomeDoItem(tr), campo: primeiroVazio });
+    });
+  });
+
+  // Cada item pendente vira um link que leva até o campo que falta
+  camposPendentes = [];
+  const link = ({ item, campo }) => {
+    camposPendentes.push(campo);
+    return `<button type="button" class="pendencia-link" data-pendencia="${camposPendentes.length - 1}">${escaparHtml(item)}</button>`;
+  };
+
+  const msgs = COLUNAS
+    .filter(col => comecada[col] && pendentes[col].length > 0)
+    .map(col => `<strong><i class="fa-solid fa-triangle-exclamation"></i> Coluna ${NOMES_COLUNAS[col]} incompleta:</strong> Faltou selecionar em: ${pendentes[col].map(link).join(', ')}`);
+
+  const incompleto = msgs.length > 0;
+  const avisoDiv = document.getElementById('avisosPendencia');
+  avisoDiv.innerHTML = msgs.join('<br><br>');
+  avisoDiv.hidden = !incompleto;
+  document.getElementById('appBarAviso').hidden = !incompleto;
+  document.getElementById('fab').classList.toggle('com-aviso', incompleto);
+}
+
+
+// =====================================================================
+// MODO (PC / Notebook / TV) E TEMA
+// =====================================================================
+
+function mudarModo(modo) {
+  document.querySelectorAll('.app-bar button').forEach(btn => btn.classList.remove('active'));
+  document.getElementById('btn-' + modo)?.classList.add('active');
+
+  document.querySelectorAll('tbody tr[data-device]').forEach(tr => {
+    tr.style.display = tr.getAttribute('data-device').split(',').includes(modo) ? '' : 'none';
+  });
+
+  localStorage.setItem('modo_equipamento', modo);
+}
+
+function toggleDarkMode() {
+  const escuro = document.getElementById('themeSwitch').checked;
+  document.body.classList.toggle('dark-mode', escuro);
+  localStorage.setItem('tema_escuro', String(escuro));
+}
+
+function aplicarTemaSalvo() {
+  const escuro = localStorage.getItem('tema_escuro') === 'true';
+  document.body.classList.toggle('dark-mode', escuro);
+  document.getElementById('themeSwitch').checked = escuro;
+}
+
+
+// =====================================================================
+// PREENCHIMENTO RÁPIDO (Funcionando / Com defeito / Vazio)
+// =====================================================================
+
+// Colunas escolhidas em "Preencher": Todos (0), Técnico (1) ou Testes (2)
+function colunasEscolhidas() {
+  const escolha = parseInt(document.getElementById('colunaSelect').value, 10);
+  return escolha === 0 ? COLUNAS : [escolha];
+}
+
+function celulasDaColuna(col) {
+  return Array.from(document.querySelectorAll('tbody tr'))
+    .filter(linhaVisivel)
+    .map(tr => tr.querySelectorAll('td')[col])
+    .filter(Boolean);
+}
+
+function preencherColunaApp(valorProcurado) {
+  const colunas = colunasEscolhidas();
+  const selectsAfetados = colunas.flatMap(col =>
+    celulasDaColuna(col).flatMap(td => Array.from(td.querySelectorAll('select'))));
+
+  // Itens que deixariam de ser defeito e têm observação escrita
+  const itensEmRisco = ehValorDeDefeito(valorProcurado) ? [] : [...new Set(
+    selectsAfetados
+      .filter(sel => ehValorDeDefeito(sel.value))
+      .map(sel => nomeDoItem(sel.closest('tr')))
+      .filter(temObs)
+  )];
+
+  if (itensEmRisco.length === 0) {
+    executarPreenchimento(colunas, valorProcurado);
+    return;
+  }
+
+  abrirModal(
+    'Os seguintes itens têm observações que serão apagadas: ' + itensEmRisco.join(', ') + '. Deseja continuar?',
+    (confirmou) => {
+      if (!confirmou) return;
+      itensEmRisco.forEach(item => delete defeitosObs[item]);
       salvarObs();
-
-      renderizarDefeitos(defeitos);
+      executarPreenchimento(colunas, valorProcurado);
     }
+  );
+}
 
-    function renderizarDefeitos(defeitos) {
-      let campo = document.getElementById('DEFEITOENCONTRADOField');
-      if (!campo) return;
+function executarPreenchimento(colunas, valorProcurado) {
+  const limpar = valorProcurado === VALOR_VAZIO;
 
-      let html = '';
+  // Vazio em "Todos" também limpa os campos largos, que pertencem às duas colunas (Backup, Parecer)
+  if (limpar && colunas.length > 1) {
+    document.querySelectorAll('tbody td[colspan] textarea').forEach(campo => {
+      campo.value = '';
+    });
+    document.getElementById('PARECERTECNICOField').innerHTML = '';
+  }
 
-      defeitos.forEach(d => {
-        const obsVal = defeitosObs[d.item] || '';
-        html += '<div class="defeito-card">';
-        html += '  <div class="defeito-texto">Problema encontrado: <strong>' + d.item + '</strong></div>';
-        if (d.extra) {
-          html += '  <div class="defeito-extra">' + d.extra + '</div>';
-        }
-        html += '  <div class="defeito-obs-row">';
-        html += '    <strong>OBS:</strong>';
-        html += '    <textarea class="defeito-obs-input" data-item="' + d.item + '" placeholder="Adicionar observa\u00e7\u00e3o..." onchange="atualizarObs(this)" oninput="atualizarObs(this)">' + obsVal.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</textarea>';
-        // html += '    <input class="defeito-obs-input" type="text" value="' + obsVal.replace(/"/g, '&quot;') + '" data-item="' + d.item + '" placeholder="Adicionar observa\u00e7\u00e3o..." onchange="atualizarObs(this)" oninput="atualizarObs(this)">';
-        html += '  </div>';
-        html += '</div>';
-      });
-
-      campo.innerHTML = html;
-      verificarPendencias();
-    }
-
-    function atualizarObs(input) {
-      const item = input.getAttribute('data-item');
-      defeitosObs[item] = input.value;
-      salvarObs();
-    }
-
-
-
-    // 💾 SALVAR
-    function salvar() {
-      let dados = [];
-
-      document.querySelectorAll(".save").forEach((el, i) => {
-        if (el.tagName === "SELECT" || el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
-          dados[i] = el.value;
-        } else {
-          dados[i] = el.innerHTML;
-        }
-      });
-
-      localStorage.setItem("laudo", JSON.stringify(dados));
-    }
-
-    // 🔄 CARREGAR + MONITORAMENTO AUTOMÁTICO
-    function padronizarSelects() {
-      document.querySelectorAll("select").forEach(select => {
-
-        let temSelecione = false;
-
-        for (let i = 0; i < select.options.length; i++) {
-          if (select.options[i].text === "Selecione") {
-            temSelecione = true;
-            break;
-          }
-        }
-
-        if (!temSelecione) {
-          let option = document.createElement("option");
-          option.text = "Selecione";
-          option.value = "";
-
-          select.insertBefore(option, select.firstChild);
-        }
-      });
-    }
-
-    function mudarModo(modo) {
-      // Atualiza botões
-      document.querySelectorAll('.app-bar button').forEach(btn => btn.classList.remove('active'));
-      let btn = document.getElementById('btn-' + modo);
-      if (btn) btn.classList.add('active');
-
-      // Filtra linhas da tabela
-      document.querySelectorAll('tbody tr').forEach(tr => {
-        const devices = tr.getAttribute('data-device');
-        if (devices) {
-          if (devices.includes(modo)) {
-            tr.style.display = 'table-row';
-          } else {
-            tr.style.display = 'none';
-          }
-        }
-      });
-
-      // Salva no localStorage
-      localStorage.setItem("modo_equipamento", modo);
-    }
-
-    function preencherColunaApp(valorProcurado) {
-      const colIndex = parseInt(document.getElementById('colunaSelect').value, 10);
-
-      // Se "Todos" e "Vazio" (valorProcurado === 'Selecione')
-      if (colIndex === 0 && valorProcurado === 'Selecione') {
-        abrirModal('Deseja realmente resetar o cache e apagar todos os dados da tela?', (confirmou) => {
-          if (confirmou) {
-            localStorage.removeItem('laudo');
-            localStorage.removeItem('defeitosObs');
-            location.reload();
-          }
-        });
-        return;
-      }
-
-      // Coleta todos os selects afetados
-      let selectsAfetados = [];
-      const colunas = colIndex === 0 ? [1, 2, 3] : [colIndex];
-      colunas.forEach(ci => {
-        document.querySelectorAll('tbody tr').forEach(tr => {
-          if (tr.style.display !== 'none') {
-            const td = tr.querySelectorAll('td')[ci];
-            if (td) {
-              td.querySelectorAll('select').forEach(sel => selectsAfetados.push(sel));
-            }
-          }
-        });
-      });
-
-      const itensEmRisco = temObsEmRisco(selectsAfetados, valorProcurado);
-      if (itensEmRisco.length > 0) {
-        abrirModal(
-          'Os seguintes itens t\u00eam observa\u00e7\u00f5es que ser\u00e3o apagadas: ' + itensEmRisco.join(', ') + '. Deseja continuar?',
-          (confirmou) => {
-            if (confirmou) {
-              itensEmRisco.forEach(item => delete defeitosObs[item]);
-              salvarObs();
-              executarPreenchimento(colunas, valorProcurado);
-            }
-          }
-        );
+  colunas.forEach(col => {
+    celulasDaColuna(col).forEach(td => {
+      if (limpar) {
+        limparCelula(td);
       } else {
-        executarPreenchimento(colunas, valorProcurado);
+        preencherCelula(td, valorProcurado);
+      }
+    });
+  });
+
+  atualizarResumo();
+  salvar();
+}
+
+function preencherCelula(td, valor) {
+  td.querySelectorAll('select').forEach(select => {
+    const existe = Array.from(select.options).some(opt => opt.value === valor || opt.text === valor);
+    if (existe) select.value = valor;
+  });
+}
+
+// Volta os selects para a primeira opção e limpa os textos da célula (ex.: Saúde %).
+// Células largas (Backup, Sintoma Visual...) só têm os selects resetados.
+function limparCelula(td) {
+  td.querySelectorAll('select').forEach(select => {
+    select.selectedIndex = 0;
+  });
+  if (!td.hasAttribute('colspan')) {
+    td.querySelectorAll('input[type="text"], textarea').forEach(campo => {
+      campo.value = '';
+    });
+  }
+}
+
+
+// =====================================================================
+// AÇÕES: novo laudo, imprimir, exportar, importar
+// =====================================================================
+
+function novoLaudo() {
+  abrirModal('Iniciar um novo laudo? Todos os dados preenchidos na tela serão apagados.', (confirmou) => {
+    if (confirmou) {
+      localStorage.removeItem('laudo');
+      localStorage.removeItem('defeitosObs');
+      location.reload();
+    }
+  });
+}
+
+function validarObrigatorios() {
+  const falta = [];
+  if (!document.getElementById('clienteField').value.trim()) falta.push('CLIENTE');
+  if (!document.getElementById('equipamentoField').value.trim()) falta.push('EQUIPAMENTO');
+  if (!document.getElementById('osField').value.trim()) falta.push('OS');
+  if (!document.getElementById('dataField').value.trim()) falta.push('DATA');
+
+  const temTecnico = Array.from(document.querySelectorAll('.input-tecnico')).some(inp => inp.value.trim());
+  if (!temTecnico) falta.push('TÉCNICO (pelo menos um nome)');
+
+  if (falta.length > 0) {
+    abrirModal('Os seguintes campos são obrigatórios: ' + falta.join(', '));
+    return false;
+  }
+  if (!conferirData()) {
+    abrirModal('A data do laudo não existe. Confira o dia e o mês (formato dd/mm/aaaa).');
+    return false;
+  }
+  return true;
+}
+
+// Marca o que não deve sair no papel (selects vazios, OBS e nomes em branco)
+function prepararImpressao() {
+  document.querySelectorAll('select:not(#colunaSelect)').forEach(sel => {
+    sel.toggleAttribute('data-print-hide-text', selectVazio(sel));
+  });
+
+  document.querySelectorAll('.defeito-obs-input').forEach(inp => {
+    inp.closest('.defeito-obs-row').toggleAttribute('data-print-hide', inp.innerText.trim() === '');
+  });
+
+  document.querySelectorAll('.input-tecnico').forEach(inp => {
+    inp.toggleAttribute('data-print-hide', inp.value.trim() === '');
+  });
+}
+
+function imprimir() {
+  if (!validarObrigatorios()) return;
+  prepararImpressao();
+
+  const os = nomeDeArquivoSeguro(document.getElementById('osField').value, 'SemOS');
+  const cliente = nomeDeArquivoSeguro(document.getElementById('clienteField').value, 'SemCliente');
+
+  // O título vira o nome sugerido do PDF
+  const tituloOriginal = document.title;
+  document.title = os + ' Diagnóstico Técnico ' + cliente;
+  window.print();
+  setTimeout(() => {
+    document.title = tituloOriginal;
+  }, 1000);
+}
+
+// Compartilha o laudo pela tela de compartilhar do sistema. Só em telas de toque
+// e em https; devolve false quando não dá, para o Exportar baixar o arquivo.
+async function compartilharArquivo(conteudo, nomeArquivo) {
+  if (!navigator.canShare || !window.matchMedia('(pointer: coarse)').matches) return false;
+
+  // Chrome/Brave no Android não compartilham .json: manda o mesmo conteúdo como .txt
+  const candidatos = [
+    new File([conteudo], nomeArquivo, { type: 'application/json' }),
+    new File([conteudo], nomeArquivo.replace(/\.json$/, '.txt'), { type: 'text/plain' }),
+  ];
+  const arquivo = candidatos.find(f => navigator.canShare({ files: [f] }));
+  if (!arquivo) return false;
+
+  try {
+    await navigator.share({ files: [arquivo], title: nomeArquivo });
+  } catch (err) {
+    // Cancelar a tela de compartilhar não é erro; outras falhas caem no download
+    if (err.name !== 'AbortError') return false;
+  }
+  return true;
+}
+
+async function exportarJSON() {
+  const dadosJSON = coletarDados();
+  dadosJSON.defeitosObs = defeitosObs;
+  dadosJSON._modo = localStorage.getItem('modo_equipamento') || 'notebook';
+
+  const os = nomeDeArquivoSeguro(document.getElementById('osField').value, 'OS');
+  const cliente = nomeDeArquivoSeguro(document.getElementById('clienteField').value, 'Cliente');
+  const nomeArquivo = `${os} - Diagnostico - ${cliente}.json`;
+  const conteudoJSON = JSON.stringify(dadosJSON, null, 2);
+
+  try {
+    // No celular, abre a tela de compartilhar (Drive, Arquivos, WhatsApp, e-mail...)
+    if (await compartilharArquivo(conteudoJSON, nomeArquivo)) return;
+
+    // Tenta usar a API moderna do navegador para abrir a janela "Salvar Como"
+    if (window.showSaveFilePicker) {
+      const handle = await window.showSaveFilePicker({
+        suggestedName: nomeArquivo,
+        types: [{
+          description: 'Arquivo JSON',
+          accept: { 'application/json': ['.json'] },
+        }],
+      });
+      const writable = await handle.createWritable();
+      await writable.write(conteudoJSON);
+      await writable.close();
+    } else {
+      // Fallback para navegadores sem a API (ex.: Firefox ou arquivo local sem HTTPS)
+      const link = document.createElement('a');
+      link.href = 'data:text/json;charset=utf-8,' + encodeURIComponent(conteudoJSON);
+      link.download = nomeArquivo;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }
+  } catch (err) {
+    // Ignora o erro se o usuário apenas clicou em "Cancelar" na janela
+    if (err.name !== 'AbortError') {
+      console.error('Erro ao salvar:', err);
+      alert('Não foi possível salvar o arquivo.');
+    }
+  }
+}
+
+function importarJSON(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    try {
+      const dadosJSON = JSON.parse(e.target.result);
+
+      if (dadosJSON.defeitosObs) {
+        defeitosObs = dadosJSON.defeitosObs;
+        salvarObs();
+      }
+
+      // _modo vem do Exportar ou do diagnostico.ps1
+      if (['pc', 'notebook', 'tv'].includes(dadosJSON._modo)) {
+        mudarModo(dadosJSON._modo);
+      }
+
+      if (dadosJSON.campo_data === undefined) document.getElementById('dataField').value = '';
+      aplicarDados(dadosJSON);
+      preencherDataSeVazia();
+      atualizarResumo();
+      salvar();
+      alert('Dados carregados com sucesso!');
+    } catch (error) {
+      alert('Erro ao ler o arquivo JSON. O arquivo pode estar corrompido.');
+      console.error(error);
+    }
+
+    // Permite importar o mesmo arquivo de novo
+    event.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
+
+// =====================================================================
+// MODAL
+// =====================================================================
+
+let _modalCallback = null;
+
+function abrirModal(msg, callback) {
+  document.getElementById('modalMsg').textContent = msg;
+  document.getElementById('modalAviso').classList.add('show');
+  _modalCallback = callback;
+}
+
+function fecharModal(confirmou) {
+  document.getElementById('modalAviso').classList.remove('show');
+  if (_modalCallback) _modalCallback(confirmou);
+  _modalCallback = null;
+}
+
+
+// =====================================================================
+// MENU FLUTUANTE
+// =====================================================================
+
+function alternarFab(abrir) {
+  const fab = document.getElementById('fab');
+  const aberto = typeof abrir === 'boolean' ? abrir : !fab.classList.contains('aberto');
+  fab.classList.toggle('aberto', aberto);
+  document.getElementById('fabBotao').setAttribute('aria-expanded', aberto);
+}
+
+// Ações que não são de preenchimento fecham o menu antes de rodar
+function fabAcao(acao) {
+  alternarFab(false);
+  acao();
+}
+
+// O menu e a app bar compartilham o mesmo #colunaSelect
+function escolherColunaFab(col) {
+  document.getElementById('colunaSelect').value = col;
+  sincronizarColunaFab();
+}
+
+function sincronizarColunaFab() {
+  const col = document.getElementById('colunaSelect').value;
+  document.querySelectorAll('.fab-colunas button').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.col === col);
+  });
+}
+
+function configurarFab() {
+  document.addEventListener('click', e => {
+    const fab = document.getElementById('fab');
+    if (fab.classList.contains('aberto') && !fab.contains(e.target)) alternarFab(false);
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') alternarFab(false);
+  });
+}
+
+
+// =====================================================================
+// NAVEGAÇÃO POR TECLADO (Tab, Alt/Ctrl + setas)
+// =====================================================================
+
+function camposFocaveis(celula) {
+  return Array.from(celula.querySelectorAll('input:not([type="hidden"]), select, textarea'));
+}
+
+function configurarNavegacaoTeclado() {
+  document.addEventListener('keydown', function (e) {
+    const isTab = e.key === 'Tab';
+    const isSeta = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key);
+
+    // Exigir Tab ou (Alt/Ctrl + Seta)
+    if (!isTab && !(isSeta && (e.altKey || e.ctrlKey))) return;
+
+    const atual = document.activeElement;
+    // Só navegar se estiver focando em algum campo do laudo
+    if (!atual || (!atual.classList.contains('save') && !atual.classList.contains('input-tecnico'))) return;
+
+    const td = atual.closest('td');
+    const tr = td ? td.closest('tr') : null;
+    if (!td || !tr) return;
+
+    const irmaos = camposFocaveis(td);
+    const indexNestaCelula = irmaos.indexOf(atual);
+    const colIndex = td.cellIndex;
+    let alvo = null;
+
+    function pegarFocavel(linha, pegarUltimo) {
+      const celula = linha?.cells[colIndex];
+      if (!celula) return null;
+      const itens = camposFocaveis(celula);
+      if (itens.length === 0) return null;
+      return pegarUltimo ? itens[itens.length - 1] : itens[0];
+    }
+
+    // Ignora linhas invisíveis ou de cabeçalho
+    function proximaLinha(linha, direcao) {
+      let atualLinha = linha[direcao];
+      while (atualLinha && (atualLinha.style.display === 'none' || atualLinha.querySelector('th'))) {
+        atualLinha = atualLinha[direcao];
+      }
+      return atualLinha;
+    }
+
+    function campoNaCelulaVizinha(direcao) {
+      let vizinha = td[direcao];
+      while (vizinha) {
+        const itens = camposFocaveis(vizinha);
+        if (itens.length > 0) return itens[Math.min(Math.max(indexNestaCelula, 0), itens.length - 1)];
+        vizinha = vizinha[direcao];
+      }
+      return null;
+    }
+
+    // Tab normal se comporta igual ArrowDown. Shift+Tab igual ArrowUp
+    const indoParaBaixo = (e.key === 'ArrowDown') || (isTab && !e.shiftKey);
+    const indoParaCima = (e.key === 'ArrowUp') || (isTab && e.shiftKey);
+
+    if (indoParaBaixo) {
+      // Desce pro próximo item na MESMA célula (ex: combos do SSD) ou pra próxima linha
+      alvo = (indexNestaCelula >= 0 && indexNestaCelula < irmaos.length - 1)
+        ? irmaos[indexNestaCelula + 1]
+        : pegarFocavel(proximaLinha(tr, 'nextElementSibling'), false);
+    } else if (indoParaCima) {
+      alvo = indexNestaCelula > 0
+        ? irmaos[indexNestaCelula - 1]
+        : pegarFocavel(proximaLinha(tr, 'previousElementSibling'), true);
+    } else if (e.key === 'ArrowRight') {
+      alvo = campoNaCelulaVizinha('nextElementSibling');
+    } else if (e.key === 'ArrowLeft') {
+      alvo = campoNaCelulaVizinha('previousElementSibling');
+    }
+
+    // Se achou um alvo, foca nele e previne o comportamento padrão do navegador
+    if (alvo) {
+      e.preventDefault();
+      alvo.focus();
+      if (alvo.tagName === 'INPUT' && typeof alvo.select === 'function') {
+        alvo.select();
       }
     }
+  });
+}
 
-    function executarPreenchimento(colunas, valorProcurado) {
-      colunas.forEach(colIndex => {
-        preencherColuna(colIndex, valorProcurado);
-      });
+
+// =====================================================================
+// INICIALIZAÇÃO
+// =====================================================================
+
+window.addEventListener('load', () => {
+  injetarOpcoes(document);
+  // A máscara roda antes do salvamento automático do campo
+  const campoData = document.getElementById('dataField');
+  campoData.addEventListener('input', () => {
+    mascararData(campoData);
+    // Enquanto digita, só some com o aviso; ele volta ao sair do campo se continuar errado
+    if (dataValida(campoData.value)) conferirData();
+  });
+  campoData.addEventListener('blur', conferirData);
+  document.querySelectorAll('.save').forEach(prepararCampo);
+  configurarNavegacaoTeclado();
+  configurarFab();
+  sincronizarColunaFab();
+
+  mudarModo(localStorage.getItem('modo_equipamento') || 'notebook');
+  aplicarTemaSalvo();
+
+  const dados = JSON.parse(localStorage.getItem('laudo'));
+  if (dados) aplicarDados(dados);
+  preencherDataSeVazia();
+
+  document.getElementById('avisosPendencia').addEventListener('click', e => {
+    const link = e.target.closest('.pendencia-link');
+    if (link) irParaPendencia(camposPendentes[link.dataset.pendencia]);
+  });
+
+  atualizarResumo();
+});
+
+// ====== BARRA DE FORMATAÇÃO (Parecer Técnico e OBS dos defeitos) ======
+(function () {
+  const SELETOR = '#PARECERTECNICOField, .defeito-obs-input';
+  const paleta = [
+    '#000000', '#555555', '#999999', '#ffffff',
+    '#d32f2f', '#e91e63', '#f57c00', '#fbc02d',
+    '#388e3c', '#00897b', '#1976d2', '#3949ab',
+    '#7b1fa2', '#6d4c41', '#00acc1', '#8bc34a'
+  ];
+  const btn = (cmd, val, html, titulo, extra) =>
+    `<button type="button" data-cmd="${cmd}" data-val="${val || ''}" title="${titulo}" ${extra || ''}>${html}</button>`;
+
+  const barra = document.createElement('div');
+  barra.id = 'barraFormatacao';
+  barra.innerHTML =
+    btn('formatBlock', 'H1', 'T1', 'Título 1') +
+    btn('formatBlock', 'H2', 'T2', 'Título 2') +
+    btn('formatBlock', 'H3', 'T3', 'Título 3') +
+    btn('formatBlock', 'DIV', 'T', 'Texto normal') +
+    '<hr>' +
+    btn('justifyLeft', '', '<i class="fas fa-align-left"></i>', 'Esquerda') +
+    btn('justifyCenter', '', '<i class="fas fa-align-center"></i>', 'Centro') +
+    btn('justifyRight', '', '<i class="fas fa-align-right"></i>', 'Direita') +
+    btn('justifyFull', '', '<i class="fas fa-align-justify"></i>', 'Justificar') +
+    '<hr>' +
+    btn('bold', '', '<b>N</b>', 'Negrito') +
+    btn('italic', '', '<i>I</i>', 'Itálico') +
+    '<hr>' +
+    '<button type="button" id="btnCor" title="Cor do texto"><span class="cor-atual"></span></button>' +
+    '<div id="paletaCores">' +
+      '<div class="grade">' + paleta.map(c => btn('foreColor', c, '', c, `style="background:${c}"`)).join('') + '</div>' +
+      '<label class="personalizada">Personalizada<input type="color" id="corLivre" value="#000000"></label>' +
+      btn('removeFormat', '', 'Limpar formatação', 'Limpar formatação', 'class="limpar"') +
+    '</div>';
+  document.body.appendChild(barra);
+
+  const paletaEl = barra.querySelector('#paletaCores');
+  const corAtual = barra.querySelector('.cor-atual');
+  const corLivre = barra.querySelector('#corLivre');
+  corAtual.style.background = '#000000';
+
+  // Guarda a seleção para restaurar ao usar o seletor de cor nativo
+  let faixa = null;
+  document.addEventListener('selectionchange', () => {
+    const s = window.getSelection();
+    if (s.rangeCount && s.anchorNode) {
+      const el = s.anchorNode.nodeType === 1 ? s.anchorNode : s.anchorNode.parentElement;
+      if (el && el.closest(SELETOR)) faixa = s.getRangeAt(0).cloneRange();
     }
+  });
 
-    function preencherColuna(colIndex, valorProcurado) {
-      document.querySelectorAll('tbody tr').forEach(tr => {
-        if (tr.style.display !== 'none') {
-          const td = tr.querySelectorAll('td')[colIndex];
-          if (td) {
-            td.querySelectorAll('select').forEach(select => {
-              if (valorProcurado === 'Selecione') {
-                // Para o botão Vazio, sempre volta pro primeiro item que é o padrão (Selecione, Tipo, Modelo, Capacidade)
-                select.selectedIndex = 0;
-              } else {
-                let optionExists = false;
-                for (let i = 0; i < select.options.length; i++) {
-                  if (select.options[i].value === valorProcurado || select.options[i].text === valorProcurado) {
-                    optionExists = true;
-                    break;
-                  }
-                }
-                if (optionExists) {
-                  select.value = valorProcurado;
-                }
-              }
-            });
-          }
-        }
-      });
-      capturarDefeitos();
+  function aplicar(cmd, val) {
+    if (faixa) {
+      const alvo = faixa.startContainer.nodeType === 1 ? faixa.startContainer : faixa.startContainer.parentElement;
+      const campo = alvo && alvo.closest(SELETOR);
+      if (campo && document.activeElement !== campo) campo.focus();
+      const s = window.getSelection();
+      s.removeAllRanges();
+      s.addRange(faixa);
     }
+    document.execCommand('styleWithCSS', false, false);
+    document.execCommand(cmd, false, val || null);
+  }
 
-    window.onload = function () {
-      injetarOpcoes(); // Injeta as opções assim que a página carrega
-
-      // Recuperar modo do localStorage ou 'notebook' por padrão
-      let modoSalvo = localStorage.getItem("modo_equipamento") || "notebook";
-      mudarModo(modoSalvo);
-
-      let dados = JSON.parse(localStorage.getItem("laudo"));
-
-      document.querySelectorAll(".save").forEach((el, i) => {
-        if (dados) {
-          if (el.tagName === "SELECT" || el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
-            el.value = dados[i] || "";
-          } else {
-            el.innerHTML = dados[i] || "";
-          }
-        }
-
-        // Para selects: verificar se tem OBS em risco ao mudar
-        if (el.tagName === "SELECT") {
-          let valorAnterior = el.value;
-          el.addEventListener("focus", function () {
-            valorAnterior = this.value;
-          });
-          el.addEventListener("change", function () {
-            const select = this;
-            const novoValor = select.value;
-
-            // Se estava em defeito e agora não está mais
-            if (ehValorDeDefeito(valorAnterior) && !ehValorDeDefeito(novoValor)) {
-              const linha = select.closest('tr');
-              if (linha) {
-                const item = linha.querySelector('td')?.innerText.trim();
-                if (item && defeitosObs[item] && defeitosObs[item].trim() !== '') {
-                  abrirModal(
-                    'O item "' + item + '" possui uma observação que será apagada. Deseja continuar?',
-                    (confirmou) => {
-                      if (confirmou) {
-                        delete defeitosObs[item];
-                        salvarObs();
-                        valorAnterior = novoValor;
-                        capturarDefeitos();
-                      } else {
-                        select.value = valorAnterior;
-                      }
-                    }
-                  );
-                  return;
-                }
-              }
-            }
-            valorAnterior = novoValor;
-            capturarDefeitos();
-          });
-        } else {
-          el.addEventListener("change", capturarDefeitos);
-          el.addEventListener("keyup", capturarDefeitos);
-        }
-      });
-
-      padronizarSelects();
-      capturarDefeitos();
-    };
-
-    function validarObrigatorios() {
-      let falta = [];
-      if (!document.getElementById('clienteField').value.trim()) falta.push("CLIENTE");
-      if (!document.getElementById('equipamentoField').value.trim()) falta.push("EQUIPAMENTO");
-      if (!document.getElementById('osField').value.trim()) falta.push("OS");
-
-      let temTecnico = false;
-      document.querySelectorAll('.input-tecnico').forEach(inp => {
-        if (inp.value.trim()) temTecnico = true;
-      });
-      if (!temTecnico) falta.push("TÉCNICO (pelo menos um nome)");
-
-      if (falta.length > 0) {
-        abrirModal("Os seguintes campos são obrigatórios: " + falta.join(', '));
-        return false;
-      }
-      return true;
+  // Botões não tiram o foco do campo (exceto o seletor de cor nativo)
+  barra.addEventListener('mousedown', e => {
+    if (!e.target.closest('input')) e.preventDefault();
+  });
+  barra.addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    if (b.id === 'btnCor') { paletaEl.classList.toggle('aberta'); return; }
+    aplicar(b.dataset.cmd, b.dataset.val);
+    if (b.dataset.cmd === 'foreColor') {
+      corAtual.style.background = b.dataset.val;
+      corLivre.value = b.dataset.val;
+      paletaEl.classList.remove('aberta');
     }
+  });
+  corLivre.addEventListener('input', () => {
+    aplicar('foreColor', corLivre.value);
+    corAtual.style.background = corLivre.value;
+  });
 
-    function verificarPendencias() {
-      let pendenciasColunas = [[], [], []]; // 0: Entrada, 1: Técnico, 2: Testes
-      let tevePreenchimentoColunas = [false, false, false];
-
-      document.querySelectorAll('tbody tr').forEach(tr => {
-        if (tr.style.display !== 'none') {
-          const tds = tr.querySelectorAll('td');
-          // Linhas normais tem 4 tds
-          if (tds.length === 4) {
-            const itemNome = tds[0].innerText.trim();
-            for (let i = 0; i < 3; i++) {
-              const colTd = tds[i + 1];
-              if (!colTd) continue;
-              const selects = colTd.querySelectorAll('select');
-              let temValor = false;
-              let temSelecione = false;
-
-              selects.forEach(sel => {
-                const v = sel.value;
-                const placeholders = ['Selecione', 'Vazio', 'Tipo', 'Modelo', 'Capacidade'];
-                
-                if (v && !placeholders.includes(v) && v !== '') {
-                  temValor = true;
-                }
-                if (placeholders.includes(v)) {
-                  temSelecione = true;
-                }
-              });
-
-              if (temValor) {
-                tevePreenchimentoColunas[i] = true;
-              }
-              if (temSelecione) {
-                pendenciasColunas[i].push(itemNome);
-              }
-            }
-          }
-        }
-      });
-
-      let msgs = [];
-      const nomesColunas = ['Entrada', 'Técnico', 'Testes'];
-      for (let i = 0; i < 3; i++) {
-        if (tevePreenchimentoColunas[i] && pendenciasColunas[i].length > 0) {
-          msgs.push(`<strong>⚠️ Coluna ${nomesColunas[i]} incompleta:</strong> Faltou selecionar em: ${pendenciasColunas[i].join(', ')}`);
-        }
-      }
-
-      const avisoDiv = document.getElementById('avisosPendencia');
-      const appBarAviso = document.getElementById('appBarAviso');
-
-      if (msgs.length > 0) {
-        avisoDiv.innerHTML = msgs.join('<br><br>');
-        avisoDiv.style.display = 'block';
-        if (appBarAviso) appBarAviso.style.display = 'inline-block';
-      } else {
-        avisoDiv.style.display = 'none';
-        if (appBarAviso) appBarAviso.style.display = 'none';
-      }
-    }
-
-    function prepararImpressao() {
-      const placeholders = ['Selecione', 'Vazio', 'Tipo', 'Modelo', 'Capacidade'];
-      
-      document.querySelectorAll('select:not(#colunaSelect)').forEach(sel => {
-        if (placeholders.includes(sel.value)) {
-          sel.setAttribute('data-print-hide-text', 'true');
-        } else {
-          sel.removeAttribute('data-print-hide-text');
-        }
-      });
-
-      document.querySelectorAll('.defeito-obs-input').forEach(inp => {
-        if (inp.value.trim() === '') {
-          inp.closest('.defeito-obs-row').setAttribute('data-print-hide', 'true');
-        } else {
-          inp.closest('.defeito-obs-row').removeAttribute('data-print-hide');
-        }
-      });
-    }
-
-    function imprimir() {
-      if (!validarObrigatorios()) return;
-      prepararImpressao();
-
-      const os = (document.getElementById('osField').value || 'SemOS').trim().replace(/[\\/:*?"<>|]/g, '_');
-      const cliente = (document.getElementById('clienteField').value || 'SemCliente').trim().replace(/[\\/:*?"<>|]/g, '_');
-      const tituloDesejado = os + ' Diagnóstico Técnico ' + cliente;
-      
-      const originalTitle = document.title;
-      document.title = tituloDesejado;
-
-      window.print();
-
-      setTimeout(() => {
-        document.title = originalTitle;
-      }, 1000);
-    }
-
-    function aplicarMediaPrintDynamic() {
-      let printStyle = document.createElement('style');
-      printStyle.id = 'temp-print-styles';
-      let rules = '';
-      
-      for (let i = 0; i < document.styleSheets.length; i++) {
-        let sheet = document.styleSheets[i];
-        try {
-          for (let j = 0; j < sheet.cssRules.length; j++) {
-            let rule = sheet.cssRules[j];
-            if (rule.conditionText === 'print') {
-              for (let k = 0; k < rule.cssRules.length; k++) {
-                rules += rule.cssRules[k].cssText + '\n';
-              }
-            }
-          }
-        } catch (e) { }
-      }
-      
-      printStyle.innerHTML = rules;
-      document.head.appendChild(printStyle);
-    }
-
-    function removerMediaPrintDynamic() {
-      let el = document.getElementById('temp-print-styles');
-      if (el) el.remove();
-    }
+  let timer;
+  function atualizar() {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      const a = document.activeElement;
+      const ativo = a && (a.matches(SELETOR) || barra.contains(a));
+      barra.classList.toggle('visivel', Boolean(ativo));
+      if (!ativo) paletaEl.classList.remove('aberta');
+    }, 120);
+  }
+  document.addEventListener('focusin', atualizar);
+  document.addEventListener('focusout', atualizar);
+})();
   </script>
 
 </body>

@@ -414,14 +414,14 @@ function renderizarDefeitos(defeitos) {
       (d.extra ? `<div class="defeito-extra">${escaparHtml(d.extra)}</div>` : '') +
       '<div class="defeito-obs-row">' +
         '<strong>OBS:</strong>' +
-        `<textarea class="defeito-obs-input" data-item="${escaparHtml(d.item)}" placeholder="Adicionar observação..." oninput="atualizarObs(this)">${escaparHtml(defeitosObs[d.item] || '')}</textarea>` +
+        `<div class="defeito-obs-input" contenteditable="true" data-rich="true" data-placeholder="Adicionar observação..." data-item="${escaparHtml(d.item)}" oninput="atualizarObs(this)">${defeitosObs[d.item] || ''}</div>` +
       '</div>' +
     '</div>'
   ).join('');
 }
 
 function atualizarObs(textarea) {
-  defeitosObs[textarea.getAttribute('data-item')] = textarea.value;
+  defeitosObs[textarea.getAttribute('data-item')] = textarea.innerText.trim() === '' ? '' : textarea.innerHTML;
   salvarObs();
 }
 
@@ -653,7 +653,7 @@ function prepararImpressao() {
   });
 
   document.querySelectorAll('.defeito-obs-input').forEach(inp => {
-    inp.closest('.defeito-obs-row').toggleAttribute('data-print-hide', inp.value.trim() === '');
+    inp.closest('.defeito-obs-row').toggleAttribute('data-print-hide', inp.innerText.trim() === '');
   });
 
   document.querySelectorAll('.input-tecnico').forEach(inp => {
@@ -961,3 +961,101 @@ window.addEventListener('load', () => {
 
   atualizarResumo();
 });
+
+// ====== BARRA DE FORMATAÇÃO (Parecer Técnico e OBS dos defeitos) ======
+(function () {
+  const SELETOR = '#PARECERTECNICOField, .defeito-obs-input';
+  const paleta = [
+    '#000000', '#555555', '#999999', '#ffffff',
+    '#d32f2f', '#e91e63', '#f57c00', '#fbc02d',
+    '#388e3c', '#00897b', '#1976d2', '#3949ab',
+    '#7b1fa2', '#6d4c41', '#00acc1', '#8bc34a'
+  ];
+  const btn = (cmd, val, html, titulo, extra) =>
+    `<button type="button" data-cmd="${cmd}" data-val="${val || ''}" title="${titulo}" ${extra || ''}>${html}</button>`;
+
+  const barra = document.createElement('div');
+  barra.id = 'barraFormatacao';
+  barra.innerHTML =
+    btn('formatBlock', 'H1', 'T1', 'Título 1') +
+    btn('formatBlock', 'H2', 'T2', 'Título 2') +
+    btn('formatBlock', 'H3', 'T3', 'Título 3') +
+    btn('formatBlock', 'DIV', 'T', 'Texto normal') +
+    '<hr>' +
+    btn('justifyLeft', '', '<i class="fas fa-align-left"></i>', 'Esquerda') +
+    btn('justifyCenter', '', '<i class="fas fa-align-center"></i>', 'Centro') +
+    btn('justifyRight', '', '<i class="fas fa-align-right"></i>', 'Direita') +
+    btn('justifyFull', '', '<i class="fas fa-align-justify"></i>', 'Justificar') +
+    '<hr>' +
+    btn('bold', '', '<b>N</b>', 'Negrito') +
+    btn('italic', '', '<i>I</i>', 'Itálico') +
+    '<hr>' +
+    '<button type="button" id="btnCor" title="Cor do texto"><span class="cor-atual"></span></button>' +
+    '<div id="paletaCores">' +
+      '<div class="grade">' + paleta.map(c => btn('foreColor', c, '', c, `style="background:${c}"`)).join('') + '</div>' +
+      '<label class="personalizada">Personalizada<input type="color" id="corLivre" value="#000000"></label>' +
+      btn('removeFormat', '', 'Limpar formatação', 'Limpar formatação', 'class="limpar"') +
+    '</div>';
+  document.body.appendChild(barra);
+
+  const paletaEl = barra.querySelector('#paletaCores');
+  const corAtual = barra.querySelector('.cor-atual');
+  const corLivre = barra.querySelector('#corLivre');
+  corAtual.style.background = '#000000';
+
+  // Guarda a seleção para restaurar ao usar o seletor de cor nativo
+  let faixa = null;
+  document.addEventListener('selectionchange', () => {
+    const s = window.getSelection();
+    if (s.rangeCount && s.anchorNode) {
+      const el = s.anchorNode.nodeType === 1 ? s.anchorNode : s.anchorNode.parentElement;
+      if (el && el.closest(SELETOR)) faixa = s.getRangeAt(0).cloneRange();
+    }
+  });
+
+  function aplicar(cmd, val) {
+    if (faixa) {
+      const alvo = faixa.startContainer.nodeType === 1 ? faixa.startContainer : faixa.startContainer.parentElement;
+      const campo = alvo && alvo.closest(SELETOR);
+      if (campo && document.activeElement !== campo) campo.focus();
+      const s = window.getSelection();
+      s.removeAllRanges();
+      s.addRange(faixa);
+    }
+    document.execCommand('styleWithCSS', false, false);
+    document.execCommand(cmd, false, val || null);
+  }
+
+  // Botões não tiram o foco do campo (exceto o seletor de cor nativo)
+  barra.addEventListener('mousedown', e => {
+    if (!e.target.closest('input')) e.preventDefault();
+  });
+  barra.addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    if (b.id === 'btnCor') { paletaEl.classList.toggle('aberta'); return; }
+    aplicar(b.dataset.cmd, b.dataset.val);
+    if (b.dataset.cmd === 'foreColor') {
+      corAtual.style.background = b.dataset.val;
+      corLivre.value = b.dataset.val;
+      paletaEl.classList.remove('aberta');
+    }
+  });
+  corLivre.addEventListener('input', () => {
+    aplicar('foreColor', corLivre.value);
+    corAtual.style.background = corLivre.value;
+  });
+
+  let timer;
+  function atualizar() {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      const a = document.activeElement;
+      const ativo = a && (a.matches(SELETOR) || barra.contains(a));
+      barra.classList.toggle('visivel', Boolean(ativo));
+      if (!ativo) paletaEl.classList.remove('aberta');
+    }, 120);
+  }
+  document.addEventListener('focusin', atualizar);
+  document.addEventListener('focusout', atualizar);
+})();

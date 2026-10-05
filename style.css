@@ -1,4 +1,4 @@
-/* ====== VARIÁVEIS DE DESIGN ====== */
+/* ====== VARIÃVEIS DE DESIGN ====== */
 :root {
     /* Cores principais */
     --cor-primaria: #2196F3;
@@ -6,7 +6,7 @@
     --cor-perigo: #f44336;
     --cor-alerta: #ff9800;
 
-    /* Superfícies */
+    /* SuperfÃ­cies */
     --cor-fundo: #f0f2f5;
     --cor-superficie: #ffffff;
     --cor-secao: #f1f5f9;
@@ -18,7 +18,7 @@
     --cor-texto-secundario: #64748b;
     --cor-texto-claro: #94a3b8;
 
-    /* Cabeçalho da tabela */
+    /* CabeÃ§alho da tabela */
     --cor-cabecalho: #1e293b;
     --cor-cabecalho-texto: #ffffff;
 
@@ -30,7 +30,7 @@
     --sombra-card: 0 1px 3px rgba(0, 0, 0, 0.08);
     --sombra-elevada: 0 4px 12px rgba(0, 0, 0, 0.1);
 
-    /* Espaçamento */
+    /* EspaÃ§amento */
     --raio-borda: 8px;
     --raio-borda-sm: 4px;
 
@@ -143,7 +143,7 @@ textarea:focus {
     display: none !important;
 }
 
-/* Campo "Saúde (%)" abaixo dos selects */
+/* Campo "SaÃºde (%)" abaixo dos selects */
 .saude {
     margin-top: 5px;
 }
@@ -231,7 +231,7 @@ hr {
     height: 1px;
 }
 
-/* ====== BOTÕES ARMAZENAMENTO ====== */
+/* ====== BOTÃ•ES ARMAZENAMENTO ====== */
 .table-responsive .armazenamento-acoes {
     text-align: center;
     padding: 4px;
@@ -318,7 +318,7 @@ button {
   border-radius: 50%;
   left: 10%;
   bottom: 15%;
-  /* Sombra cobrindo todo o círculo para fazer o Sol */
+  /* Sombra cobrindo todo o cÃ­rculo para fazer o Sol */
   box-shadow: inset 15px -4px 0px 15px #fff000;
   background: var(--background);
   transition: .5s;
@@ -442,7 +442,7 @@ button {
     box-shadow: 0 0 12px rgba(76, 175, 80, 0.3);
 }
 
-/* Botões de ação na app-bar */
+/* BotÃµes de aÃ§Ã£o na app-bar */
 .btn-exportar {
     background: rgba(33, 150, 243, 0.15) !important;
     color: #64b5f6 !important;
@@ -560,9 +560,9 @@ button {
     color: #fff;
 }
 
-/* ====== IMPRESSÃO ====== */
+/* ====== IMPRESSÃƒO ====== */
 @media print {
-    /* Forçar modo claro na impressão, independente do tema ativo */
+    /* ForÃ§ar modo claro na impressÃ£o, independente do tema ativo */
     body, body.dark-mode {
         --cor-fundo: #f0f2f5;
         --cor-superficie: #ffffff;
@@ -618,7 +618,7 @@ button {
         color: #000;
     }
 
-    /* Comprimir a tabela para caber em 1 página sempre */
+    /* Comprimir a tabela para caber em 1 pÃ¡gina sempre */
     table th, table td {
         padding: 4px 6px !important;
         font-size: 11px !important;
@@ -631,7 +631,7 @@ button {
     }
 
     .assinatura-linha {
-        margin: 25px auto 4px !important; /* Menos espaço vazio na assinatura */
+        margin: 25px auto 4px !important; /* Menos espaÃ§o vazio na assinatura */
     }
 
     h1 {
@@ -664,7 +664,7 @@ button {
     }
 }
 
-/* ====== CAMPOS CONTENTEDITABLE (Parecer Técnico / Defeito Encontrado) ====== */
+/* ====== CAMPOS CONTENTEDITABLE (Parecer TÃ©cnico / Defeito Encontrado) ====== */
 #PARECERTECNICOField,
 #DEFEITOENCONTRADOField {
     min-height: 60px;
@@ -827,7 +827,7 @@ button {
     background: #c62828;
 }
 
-/* ====== AVISOS PENDÊNCIA ====== */
+/* ====== AVISOS PENDÃŠNCIA ====== */
 .avisos-pendencia {
     background: #ffebee;
     border-left: 4px solid var(--cor-perigo);
@@ -855,7 +855,7 @@ button {
     text-decoration-thickness: 2px;
 }
 
-/* Pisca o campo quando se chega nele pelo aviso de pendências */
+/* Pisca o campo quando se chega nele pelo aviso de pendÃªncias */
 .destaque {
     animation: destacar 1.6s ease-out;
 }
@@ -904,7 +904,7 @@ body.dark-mode .avisos-pendencia {
         color: #ef9a9a;
     }
 
-    /* A lista aberta mantém as cores normais */
+    /* A lista aberta mantÃ©m as cores normais */
     .table-responsive select option {
         background: var(--cor-superficie);
         color: var(--cor-texto);
@@ -940,7 +940,7 @@ body.dark-mode .avisos-pendencia {
 
 /* ====== MENU FLUTUANTE ====== */
 body {
-    padding-bottom: 96px; /* espaço para o botão não cobrir o fim da página */
+    padding-bottom: 96px; /* espaÃ§o para o botÃ£o nÃ£o cobrir o fim da pÃ¡gina */
 }
 
 .fab {
@@ -988,7 +988,7 @@ body {
     display: inline;
 }
 
-/* Bolinha vermelha quando o laudo está incompleto */
+/* Bolinha vermelha quando o laudo estÃ¡ incompleto */
 .fab.com-aviso .fab-botao::after {
     content: "";
     position: absolute;
@@ -1161,7 +1161,7 @@ body.dark-mode .fab-defeito {
 
 /* ====== RESPONSIVIDADE ====== */
 @media screen and (max-width: 1700px) {
-    /* App bar deixa de ser fixa e quebra em linhas, sem cobrir o conteúdo */
+    /* App bar deixa de ser fixa e quebra em linhas, sem cobrir o conteÃºdo */
     body {
         padding: 10px 10px 96px;
     }
@@ -1229,7 +1229,7 @@ body.dark-mode .fab-defeito {
         flex-basis: 100%;
     }
 
-    /* Ações e preenchimento rápido ficam no menu flutuante (.fab) */
+    /* AÃ§Ãµes e preenchimento rÃ¡pido ficam no menu flutuante (.fab) */
     .app-bar-group:nth-child(5),
     .app-bar-group.grow {
         display: none;
@@ -1261,7 +1261,7 @@ body.dark-mode .fab-defeito {
     }
 }
 
-/* Tabela vira "cartões": nome do item em cima, Técnico e Testes lado a lado */
+/* Tabela vira "cartÃµes": nome do item em cima, TÃ©cnico e Testes lado a lado */
 @media screen and (max-width: 600px) {
     .table-responsive table,
     .table-responsive thead,
@@ -1318,7 +1318,7 @@ body.dark-mode .fab-defeito {
     }
 
     .table-responsive tbody td:nth-child(2):not([colspan])::before {
-        content: "Técnico";
+        content: "TÃ©cnico";
     }
 
     .table-responsive tbody td:nth-child(3)::before {
@@ -1328,11 +1328,153 @@ body.dark-mode .fab-defeito {
     .table-responsive select,
     .table-responsive input,
     .table-responsive textarea {
-        font-size: 16px; /* evita o zoom automático do iPhone ao tocar no campo */
+        font-size: 16px; /* evita o zoom automÃ¡tico do iPhone ao tocar no campo */
         min-height: 40px;
     }
 
     .secao {
         padding: 8px !important;
     }
+}
+
+/* ====== BARRA DE FORMATAÇÃO ====== */
+#barraFormatacao {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    position: fixed;
+    left: 8px;
+    top: 50%;
+    min-width: 50px;
+    padding: 4px;
+    background: var(--cor-superficie, #fff);
+    border: 1px solid var(--cor-borda, #ddd);
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    transform: translate(-150%, -50%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 0.25s ease, opacity 0.25s ease, visibility 0s linear 0.25s;
+}
+
+#barraFormatacao.visivel {
+    transform: translate(0, -50%);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: transform 0.25s ease, opacity 0.25s ease, visibility 0s;
+}
+
+#barraFormatacao button {
+    height: 26px;
+    padding: 0 4px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background 0.15s;
+}
+
+#barraFormatacao button:hover {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+#barraFormatacao hr {
+    width: 60%;
+    margin: 2px auto;
+    border: none;
+    border-top: 1px solid var(--cor-borda, #ddd);
+}
+
+#barraFormatacao .cor-atual {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--cor-borda, #ccc);
+    vertical-align: middle;
+}
+
+#paletaCores {
+    display: none;
+    position: absolute;
+    left: calc(100% + 8px);
+    bottom: 0;
+    width: 150px;
+    padding: 8px;
+    flex-direction: column;
+    gap: 6px;
+    background: var(--cor-superficie, #fff);
+    border: 1px solid var(--cor-borda, #ddd);
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+}
+
+#paletaCores.aberta {
+    display: flex;
+}
+
+#paletaCores .grade {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+}
+
+#barraFormatacao #paletaCores .grade button {
+    height: auto;
+    aspect-ratio: 1;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+#barraFormatacao #paletaCores .grade button:hover {
+    transform: scale(1.15);
+}
+
+#paletaCores .personalizada {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+#paletaCores input[type="color"] {
+    width: 28px;
+    height: 22px;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+#barraFormatacao #paletaCores .limpar {
+    font-size: 11px;
+    height: 22px;
+    border: 1px solid var(--cor-borda, #ddd);
+}
+
+.defeito-obs-input:empty::before {
+    content: attr(data-placeholder);
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+#PARECERTECNICOField h1, .defeito-obs-input h1 { font-size: 1.6em; margin: 4px 0; }
+#PARECERTECNICOField h2, .defeito-obs-input h2 { font-size: 1.3em; margin: 4px 0; }
+#PARECERTECNICOField h3, .defeito-obs-input h3 { font-size: 1.1em; margin: 4px 0; }
+
+/* Não aparece em celulares nem na impressão */
+@media (max-width: 768px), (pointer: coarse) {
+    #barraFormatacao { display: none !important; }
+}
+
+@media print {
+    #barraFormatacao { display: none !important; }
 }
