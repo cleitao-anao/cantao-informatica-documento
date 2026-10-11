@@ -1,4 +1,19 @@
 {
+  "tecnico": "joao",
+
+  "pastas": {
+    "ferramentas": "Ferramentas",
+    "os": "OS",
+    "musica": "Ferramentas\\Musica"
+  },
+
+  "modoRapido": [
+    "01_HDDScan",
+    "02_CrystalDiskInfo",
+    "05_BatteryInfoView",
+    "04_HWiNFO"
+  ],
+
   "programas": [
     { "nome": "01_HDDScan",         "pasta": "HDDScan",                  "exe": "HDDScan.exe",                          "modo": "fundo",  "maximizar": true, "espera": 6,  "desc": "Leitura do disco",              "rapido": true,  "estresse": false, "perifericos": false, "soF12": false },
     { "nome": "02_CrystalDiskInfo", "pasta": "CrystalDiskInfo9_9_2",     "exe": "DiskInfo64.exe",                       "modo": "auto",   "maximizar": true, "espera": 8,  "desc": "Saude dos discos",              "rapido": true,  "estresse": false, "perifericos": false, "soF12": false },

@@ -13,18 +13,85 @@ $TeclaTela   = 0x77   # F8
 $TeclaProx   = 0x7B   # F12 (usado junto com Alt)
 $LimiteBateria = 80   # saude da bateria abaixo disso: o script sugere "N"
 
-$Ferr = Join-Path $PSScriptRoot "Ferramentas"
-$TodosProgramas = @(
-    [pscustomobject]@{ Nome = "01_HDDScan";         Pasta = "HDDScan";                 Exe = "HDDScan.exe";                          Modo = "fundo";  Maximizar = $true; Espera = 6;  Desc = "Leitura do disco";              Rapido = $true;  Estresse = $false; Perifericos = $false; SoF12 = $false }
-    [pscustomobject]@{ Nome = "02_CrystalDiskInfo"; Pasta = "CrystalDiskInfo9_9_2";    Exe = "DiskInfo64.exe";                       Modo = "auto";   Maximizar = $true; Espera = 8;  Desc = "Saude dos discos";              Rapido = $true;  Estresse = $false; Perifericos = $false; SoF12 = $false }
-    [pscustomobject]@{ Nome = "03_HDSentinel";      Pasta = "hdsentinel_pro_portable"; Exe = "HDSentinel.exe|HDSentinel*.exe";       Modo = "auto";   Maximizar = $true; Espera = 12; Desc = "Saude e desempenho do disco";   Rapido = $false; Estresse = $false; Perifericos = $false; SoF12 = $false }
-    [pscustomobject]@{ Nome = "04_HWiNFO";          Pasta = "hwi_854";                 Exe = "HWiNFO64.exe";                         Modo = "manual"; Maximizar = $true; Espera = 15; Desc = "Informacoes de hardware";       Rapido = $true;  Estresse = $false; Perifericos = $false; SoF12 = $false }
-    [pscustomobject]@{ Nome = "05_BatteryInfoView"; Pasta = "batteryinfoview-x64";     Exe = "BatteryInfoView.exe";                  Modo = "auto";   Maximizar = $true; Espera = 5;  Desc = "Saude da bateria";              Rapido = $false; Estresse = $false; Perifericos = $false; SoF12 = $false }
-    [pscustomobject]@{ Nome = "06_KeyboardTest";    Pasta = "KeyboardTestUtility";     Exe = "KeyboardTest64.exe|KeyboardTest*.exe"; Modo = "manual"; Maximizar = $true; Espera = 4;  Desc = "Teste de teclado";              Rapido = $false; Estresse = $false; Perifericos = $true;  SoF12 = $true  }
-    [pscustomobject]@{ Nome = "07_UsbTreeView";     Pasta = "UsbTreeView_x64";         Exe = "UsbTreeView.exe|UsbTreeView*.exe";     Modo = "manual"; Maximizar = $true; Espera = 4;  Desc = "Portas e dispositivos USB";     Rapido = $false; Estresse = $false; Perifericos = $true;  SoF12 = $false }
-    [pscustomobject]@{ Nome = "08_Victoria";        Pasta = "Victoria537";             Exe = "Victoria*.exe";                        Modo = "manual"; Maximizar = $true; Espera = 6;  Desc = "Diagnostico avancado de disco"; Rapido = $false; Estresse = $false; Perifericos = $false; SoF12 = $false }
-    [pscustomobject]@{ Nome = "09_FurMark";         Pasta = "FurMark_win64";           Exe = "FurMark_GUI.exe";                      Modo = "manual"; Maximizar = $true; Espera = 8;  Desc = "Estresse da GPU";               Rapido = $false; Estresse = $true;  Perifericos = $false; SoF12 = $false }
-)
+# ===== CONFIGURACAO (config.json ao lado deste script) =====
+# Caminhos relativos sao relativos a pasta do script; absolutos (C:\..., D:\..., \\servidor\...)
+# sao usados como estao. Variaveis de ambiente (%USERPROFILE%) tambem funcionam.
+$ArqConfig = Join-Path $PSScriptRoot "config.json"
+if (-not (Test-Path $ArqConfig)) {
+    Write-Host "`n  [ERRO] config.json nao encontrado em: $PSScriptRoot" -ForegroundColor Red
+    Read-Host "  Enter para sair"; exit
+}
+try { $Config = Get-Content $ArqConfig -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop }
+catch {
+    Write-Host "`n  [ERRO] config.json invalido (confira virgulas e aspas): $($_.Exception.Message)" -ForegroundColor Red
+    Read-Host "  Enter para sair"; exit
+}
+
+function Resolver-Caminho($c, $padrao) {
+    if (-not $c) { $c = $padrao }
+    $c = [Environment]::ExpandEnvironmentVariables([string]$c)
+    if ([IO.Path]::IsPathRooted($c)) { return $c }
+    return (Join-Path $PSScriptRoot $c)
+}
+
+$Ferr           = Resolver-Caminho $Config.pastas.ferramentas "Ferramentas"
+$PastaOS        = Resolver-Caminho $Config.pastas.os          "OS"
+$PastaMusicaCfg = Resolver-Caminho $Config.pastas.musica      (Join-Path $Ferr "Musica")
+
+# Lista de softwares do modo rapido definida no config.json (se informada)
+$nomesRapidos = @()
+if ($Config.modoRapido) {
+    $nomesRapidos = @($Config.modoRapido | ForEach-Object { [string]$_ })
+}
+
+# "pasta" de cada programa: relativa a pasta de ferramentas, ou um caminho absoluto proprio
+$TodosProgramas = @($Config.programas | ForEach-Object {
+    $pasta = [Environment]::ExpandEnvironmentVariables([string]$_.pasta)
+    $cam   = if ([IO.Path]::IsPathRooted($pasta)) { $pasta } else { Join-Path $Ferr $pasta }
+    $nomeProg = [string]$_.nome
+    $ehRapido = if ($nomesRapidos.Count -gt 0) {
+        ($nomesRapidos -contains $nomeProg) -or ($nomesRapidos -contains ($nomeProg -replace '^\d+_', ''))
+    } else {
+        [bool]$_.rapido
+    }
+    [pscustomobject]@{
+        Nome = $nomeProg; Pasta = $pasta; Caminho = $cam; Exe = [string]$_.exe; Modo = [string]$_.modo
+        Maximizar = [bool]$_.maximizar; Espera = [int]$_.espera; Desc = [string]$_.desc
+        Rapido = $ehRapido; Estresse = [bool]$_.estresse; Perifericos = [bool]$_.perifericos; SoF12 = [bool]$_.soF12
+    }
+})
+if ($TodosProgramas.Count -eq 0) {
+    Write-Host "`n  [ERRO] Nenhum programa em ""programas"" no config.json" -ForegroundColor Red
+    Read-Host "  Enter para sair"; exit
+}
+
+# acha o exe de um programa (Exe aceita varios padroes separados por "|")
+function Achar-Exe($p) {
+    foreach ($pat in ($p.Exe -split '\|')) {
+        $e = Get-ChildItem $p.Caminho -Recurse -Filter $pat -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($e) { return $e }
+    }
+    return $null
+}
+
+# acha um exe usado nas leituras automaticas (CrystalDiskInfo, BatteryInfoView) pela rota do config
+function Achar-Ferramenta($nomeExe) {
+    $p = $TodosProgramas | Where-Object { ($_.Exe -split '\|') -contains $nomeExe } | Select-Object -First 1
+    $onde = if ($p) { $p.Caminho } else { $Ferr }
+    return (Get-ChildItem $onde -Recurse -Filter $nomeExe -ErrorAction SilentlyContinue | Select-Object -First 1)
+}
+
+# grava o novo tecnico no config.json mexendo so nesse campo (preserva a formatacao do arquivo)
+function Salvar-Tecnico($nome) {
+    try {
+        $txt = [IO.File]::ReadAllText($ArqConfig, [Text.Encoding]::UTF8)
+        $val = ConvertTo-Json ([string]$nome)
+        $rx  = [regex]'("tecnico"\s*:\s*)("(?:[^"\\]|\\.)*"|null)'
+        if ($rx.IsMatch($txt)) { $txt = $rx.Replace($txt, { param($m) $m.Groups[1].Value + $val }, 1) }
+        else { $txt = ([regex]'\{').Replace($txt, "{`r`n  `"tecnico`": $val,", 1) }
+        [IO.File]::WriteAllText($ArqConfig, $txt, (New-Object Text.UTF8Encoding($false)))
+    } catch { Write-Host "  [!] Nao consegui salvar o tecnico no config.json: $($_.Exception.Message)" -ForegroundColor Yellow }
+}
 
 # ===== AMBIENTE: Windows normal ou WinPE (Strelec) =====
 $isPE = Test-Path "HKLM:\SYSTEM\CurrentControlSet\Control\MiniNT"
@@ -125,6 +192,252 @@ $admin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
 # Testes de camera/microfone/som: 0 = offline | 1 = online | 2 = desligado
 $script:ModoPerifericos = 0
 
+# ===== FUNCOES DE RELATORIO E ENCODING =====
+function HEnc($t) { return [System.Net.WebUtility]::HtmlEncode([string]$t) }
+function Linha-Info($rot, $val) { return "<tr><th>$rot</th><td>$val</td></tr>" }
+
+function Gerar-Relatorio-Documento($osNum, $cli, $eq, $fabMod, $ser, $tec, $cpu, $ram, $tela, $vid, $win, $pergTab, $discs, $bateriaObj, $caminhoDir, $caminhoDoc) {
+    $css = @'
+body{font-family:Arial,Helvetica,sans-serif;margin:24px;color:#111}
+h1{margin:0 0 4px}
+h2{margin:28px 0 8px;border-bottom:2px solid #333;padding-bottom:4px}
+h3{margin:18px 0 6px;color:#333}
+table{border-collapse:collapse;width:100%;margin:8px 0}
+td,th{border:1px solid #999;padding:6px 8px;text-align:left;font-size:14px}
+th{background:#eee;width:30%}
+.ok{color:#0a7a2f;font-weight:bold}.bad{color:#c62828;font-weight:bold}.nt{color:#b26a00;font-weight:bold}
+figure{margin:14px 0;page-break-inside:avoid}
+figure img{max-width:100%;border:1px solid #888;display:block}
+figcaption{font-size:12px;color:#555;margin-top:2px}
+.sub{color:#555;font-size:13px}
+@media print{body{margin:10mm}}
+'@
+    $h = New-Object System.Collections.Generic.List[string]
+    $h.Add("<!DOCTYPE html><html lang='pt-BR'><head><meta charset='UTF-8'><title>Relatorio OS $(HEnc $osNum)</title><style>$css</style></head><body>")
+    $h.Add("<h1>Relat&oacute;rio de Diagn&oacute;stico</h1>")
+    $h.Add("<div class='sub'>OS $(HEnc $osNum) &mdash; gerado em $(Get-Date -f 'dd/MM/yyyy HH:mm')</div>")
+
+    $h.Add("<h2>Equipamento</h2><table>")
+    $h.Add((Linha-Info "OS" (HEnc $osNum)))
+    $h.Add((Linha-Info "Cliente" (HEnc $cli)))
+    $h.Add((Linha-Info "Equipamento" (HEnc $eq)))
+    $h.Add((Linha-Info "Fabricante / Modelo" (HEnc $fabMod)))
+    $h.Add((Linha-Info "N&ordm; de s&eacute;rie" (HEnc $ser)))
+    $h.Add((Linha-Info "T&eacute;cnico" (HEnc $tec)))
+    $h.Add((Linha-Info "Processador" (HEnc $cpu)))
+    $h.Add((Linha-Info "Mem&oacute;ria" (HEnc $ram)))
+    $h.Add((Linha-Info "Tela" (HEnc $tela)))
+    $h.Add((Linha-Info "V&iacute;deo" (HEnc $vid)))
+    $h.Add((Linha-Info "Windows" (HEnc $win)))
+    $h.Add("</table>")
+
+    $h.Add("<h2>Resultados</h2><table>")
+    $nomesTab = [ordered]@{ "TECLADO_OK" = "Teclado"; "MICROFONE_OK" = "Microfone"; "AUDIO_OK" = "&Aacute;udio"; "WEBCAM_OK" = "Webcam"; "ARMAZENAMENTO_OK" = "Armazenamento"; "BATERIA_OK" = "Bateria" }
+    foreach ($k in $nomesTab.Keys) {
+        $v = if ($pergTab) { $pergTab[$k] } else { $null }
+        $cls = "nt"; $tx = "N&atilde;o testado"
+        if ($v -eq "SIM")               { $cls = "ok";  $tx = "Funcionando" }
+        elseif ($v -eq "NAO")           { $cls = "bad"; $tx = "Com defeito" }
+        elseif ($v -eq "NAO SE APLICA") { $cls = "nt";  $tx = "N&atilde;o se aplica" }
+        $h.Add((Linha-Info $nomesTab[$k] "<span class='$cls'>$tx</span>"))
+    }
+    $h.Add("</table>")
+
+    $h.Add("<h2>Sa&uacute;de de armazenamento e bateria</h2><table>")
+    if (-not $discs -or $discs.Count -eq 0) {
+        $h.Add((Linha-Info "Armazenamento" "n&atilde;o lido (ver prints)"))
+    } else {
+        foreach ($d in $discs) {
+            $txd = HEnc "$($d.Estado) $($d.Tipo)"
+            if ($d.Pct) { $txd = $txd + " &mdash; " + (HEnc $d.Pct) }
+            $h.Add((Linha-Info (HEnc $d.Modelo) $txd))
+        }
+    }
+    if ($bateriaObj -and $bateriaObj.Tem) {
+        $h.Add((Linha-Info "Bateria" (HEnc "$($bateriaObj.Pct) - $($bateriaObj.Detalhe)")))
+    } elseif ($bateriaObj -and $bateriaObj.Texto) {
+        $h.Add((Linha-Info "Bateria" (HEnc $bateriaObj.Texto)))
+    }
+    $h.Add("</table>")
+
+    # Busca todas as fotos (screenshots e fotos externas tiradas com camera/celular)
+    $extensoes = @('.png', '.jpg', '.jpeg', '.bmp', '.webp')
+    $fotos = @(Get-ChildItem $caminhoDir -File -ErrorAction SilentlyContinue | Where-Object {
+        $extensoes -contains $_.Extension.ToLower()
+    } | Sort-Object { $_.BaseName -replace '_\d+$', '' }, { [int]($_.BaseName -replace '^.*_', '') })
+
+    if ($fotos.Count -gt 0) { $h.Add("<h2>Registros e Capturas de Imagem</h2>") }
+    $grupo = ""
+    foreach ($f in $fotos) {
+        $ext = $f.Extension.ToLower()
+        $mime = switch ($ext) {
+            ".png"  { "image/png" }
+            ".jpg"  { "image/jpeg" }
+            ".jpeg" { "image/jpeg" }
+            ".bmp"  { "image/bmp" }
+            ".webp" { "image/webp" }
+            default { "image/png" }
+        }
+        $g = $f.BaseName -replace '_\d+$', ''
+        if ($g -ne $grupo) {
+            $grupo = $g
+            $h.Add("<h3>" + (HEnc (($g -replace '^\d+_', '') -replace '_', ' ')) + "</h3>")
+        }
+        try {
+            $bytes = [IO.File]::ReadAllBytes($f.FullName)
+            $b64 = [Convert]::ToBase64String($bytes)
+            $h.Add("<figure><img src='data:$mime;base64,$b64'><figcaption>$(HEnc $f.Name)</figcaption></figure>")
+        } catch {
+            Write-Host "    [!] Falha ao incorporar imagem: $($f.Name)" -ForegroundColor Yellow
+        }
+    }
+    $h.Add("</body></html>")
+
+    $arqHtml = Join-Path $caminhoDoc "relatorio_OS_$($osNum -replace '[\\/:*?""<>|\s]', '_').html"
+    $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllText($arqHtml, ($h -join "`n"), $utf8NoBom)
+    Write-Host "  [OK] Relatorio HTML salvo em: $arqHtml" -ForegroundColor Green
+
+    # Gerar PDF via Edge
+    $edge = @("${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe", "$env:ProgramFiles\Microsoft\Edge\Application\msedge.exe") | Where-Object { Test-Path $_ } | Select-Object -First 1
+    if ($edge) {
+        $arqPdf = [IO.Path]::ChangeExtension($arqHtml, ".pdf")
+        $uri = ([System.Uri]$arqHtml).AbsoluteUri
+        try {
+            Start-Process $edge -ArgumentList "--headless", "--disable-gpu", "--no-pdf-header-footer", "--print-to-pdf=`"$arqPdf`"", $uri -Wait -WindowStyle Hidden
+            if (Test-Path $arqPdf) {
+                Write-Host "  [OK] Relatorio PDF salvo em:  $arqPdf" -ForegroundColor Green
+                Remove-Item $arqHtml -Force -ErrorAction SilentlyContinue
+                return $arqPdf
+            }
+        } catch {}
+    }
+    return $arqHtml
+}
+
+function Criar-Relatorio-OS-Existente {
+    Clear-Host
+    Write-Host ""
+    $e = [char]0x2550; $bar = "$e" * 60
+    Write-Host "  $([char]0x2554)$bar$([char]0x2557)" -ForegroundColor Cyan
+    Write-Host "  $([char]0x2551)                  CRIAR / REGENERAR RELATORIO                $([char]0x2551)" -ForegroundColor Cyan
+    Write-Host "  $([char]0x2560)$bar$([char]0x2563)" -ForegroundColor Cyan
+
+    if (-not (Test-Path $PastaOS)) {
+        Write-Host "  [!] Pasta de OS nao encontrada em: $PastaOS" -ForegroundColor Yellow
+        Write-Host "  Pressione Enter para voltar ao menu..." -ForegroundColor DarkGray
+        Read-Host | Out-Null
+        return
+    }
+
+    $pastas = @(Get-ChildItem $PastaOS -Directory | Sort-Object LastWriteTime -Descending)
+    if ($pastas.Count -eq 0) {
+        Write-Host "  [!] Nenhuma pasta de OS encontrada em: $PastaOS" -ForegroundColor Yellow
+        Write-Host "  Pressione Enter para voltar ao menu..." -ForegroundColor DarkGray
+        Read-Host | Out-Null
+        return
+    }
+
+    Write-Host "  Selecione a OS para gerar o relatorio:`n" -ForegroundColor White
+    $extensoes = @('.png', '.jpg', '.jpeg', '.bmp', '.webp')
+    for ($i = 0; $i -lt $pastas.Count; $i++) {
+        $p = $pastas[$i]
+        $qtdFotos = @(Get-ChildItem $p.FullName -File -ErrorAction SilentlyContinue | Where-Object { $extensoes -contains $_.Extension.ToLower() }).Count
+        $dataMod = $p.LastWriteTime.ToString("dd/MM/yyyy HH:mm")
+        $numStr = "[$($i + 1)]".PadRight(5)
+        Write-Host "  $numStr $($p.Name.PadRight(18)) ($qtdFotos fotos)  - $dataMod" -ForegroundColor Cyan
+    }
+    Write-Host ""
+    Write-Host "  [0] Voltar ao menu principal" -ForegroundColor DarkGray
+    Write-Host ""
+
+    $escolha = Read-Host "  Escolha a OS (numero da lista, numero da OS ou 0 para voltar)"
+    if ($escolha -eq "0" -or [string]::IsNullOrWhiteSpace($escolha)) { return }
+
+    $pastaSel = $null
+    $nIdx = 0
+    if ([int]::TryParse($escolha, [ref]$nIdx) -and $nIdx -ge 1 -and $nIdx -le $pastas.Count) {
+        $pastaSel = $pastas[$nIdx - 1]
+    } else {
+        $pastaSel = $pastas | Where-Object { $_.Name -eq $escolha } | Select-Object -First 1
+    }
+
+    if (-not $pastaSel) {
+        Write-Host "  [!] OS '$escolha' nao encontrada." -ForegroundColor Yellow
+        Start-Sleep 2
+        return
+    }
+
+    $dirOS = $pastaSel.FullName
+    $osNum = $pastaSel.Name
+    $dirTxt = Join-Path $dirOS "Textos"
+    $dirDoc = Join-Path $dirOS "Documentos"
+    if (-not (Test-Path $dirDoc)) { New-Item -ItemType Directory -Force $dirDoc | Out-Null }
+
+    Write-Host "`n  [+] Carregando dados da OS $osNum..." -ForegroundColor Cyan
+
+    $dados = @{}
+    $arqResumo = Join-Path $dirTxt "resumo_OS_$osNum.txt"
+    if (Test-Path $arqResumo) {
+        Get-Content $arqResumo -Encoding UTF8 | ForEach-Object {
+            if ($_ -match '^\s*([^:]+)\s*:\s*(.*)$') {
+                $dados[$matches[1].Trim()] = $matches[2].Trim()
+            }
+        }
+    }
+
+    $arqJson = @(Get-ChildItem $dirDoc -Filter "*$osNum*.json" -File -ErrorAction SilentlyContinue | Select-Object -First 1)
+    $objJson = $null
+    if ($arqJson) {
+        try { $objJson = Get-Content $arqJson.FullName -Raw -Encoding UTF8 | ConvertFrom-Json } catch {}
+    }
+
+    $cli    = if ($dados["CLIENTE"]) { $dados["CLIENTE"] } elseif ($objJson -and $objJson.campo_1) { $objJson.campo_1 } else { Read-Host "  Cliente" }
+    $eq     = if ($dados["MODELO"]) { $dados["MODELO"] } elseif ($objJson -and $objJson.campo_2) { $objJson.campo_2 } else { "" }
+    $fabMod = if ($dados["FABRICANTE"] -or $dados["MODELO"]) { "$($dados['FABRICANTE']) $($dados['MODELO'])".Trim() } else { $eq }
+    $ser    = if ($dados["SERIAL"]) { $dados["SERIAL"] } else { "" }
+    $tec    = if ($dados["TECNICO"]) { $dados["TECNICO"] } elseif ($objJson -and $objJson.campo_tecnico_tecnico) { $objJson.campo_tecnico_tecnico } else { [string]$Config.tecnico }
+    $cpu    = if ($dados["PROCESSADOR"]) { $dados["PROCESSADOR"] } else { "" }
+    $ram    = if ($dados["MEMORIA_GB"]) { "$($dados['MEMORIA_GB']) GB" } else { "" }
+    $tela   = if ($dados["TELA"]) { $dados["TELA"] } else { "" }
+    $vid    = if ($dados["VIDEO"]) { $dados["VIDEO"] } else { "" }
+    $win    = if ($dados["WINDOWS"]) { $dados["WINDOWS"] } else { "" }
+
+    $pergTab = [ordered]@{}
+    $pergTab["TECLADO_OK"]       = if ($dados["TECLADO_OK"]) { $dados["TECLADO_OK"] } else { "NAO TESTADO" }
+    $pergTab["MICROFONE_OK"]     = if ($dados["MICROFONE_OK"]) { $dados["MICROFONE_OK"] } else { "NAO TESTADO" }
+    $pergTab["AUDIO_OK"]         = if ($dados["AUDIO_OK"]) { $dados["AUDIO_OK"] } else { "NAO TESTADO" }
+    $pergTab["WEBCAM_OK"]        = if ($dados["WEBCAM_OK"]) { $dados["WEBCAM_OK"] } else { "NAO TESTADO" }
+    $pergTab["ARMAZENAMENTO_OK"] = if ($dados["ARMAZENAMENTO_OK"]) { $dados["ARMAZENAMENTO_OK"] } else { "NAO TESTADO" }
+    $pergTab["BATERIA_OK"]       = if ($dados["BATERIA_OK"]) { $dados["BATERIA_OK"] } else { "NAO SE APLICA" }
+
+    $discs = @()
+    if ($dados["ARMAZENAMENTO_SAUDE"]) {
+        $partes = $dados["ARMAZENAMENTO_SAUDE"] -split ';'
+        foreach ($p in $partes) {
+            if ($p.Trim()) {
+                $sub = $p.Trim() -split '='
+                $mod = $sub[0].Trim()
+                $est = if ($sub.Count -gt 1) { $sub[1].Trim() } else { "" }
+                $discs += [pscustomobject]@{ Modelo = $mod; Estado = $est; Pct = ""; Tipo = "" }
+            }
+        }
+    }
+
+    $bateriaObj = [pscustomobject]@{ Tem = ($dados["BATERIA_SAUDE"] -and $dados["BATERIA_SAUDE"] -ne "sem bateria"); Pct = ""; Detalhe = ""; Texto = [string]$dados["BATERIA_SAUDE"] }
+
+    Write-Host "  Gerando relatorio com fotos e capturas..." -ForegroundColor Cyan
+    $arqFinal = Gerar-Relatorio-Documento $osNum $cli $eq $fabMod $ser $tec $cpu $ram $tela $vid $win $pergTab $discs $bateriaObj $dirOS $dirDoc
+
+    Write-Host "`n  [+] Relatorio gerado com sucesso!" -ForegroundColor Green
+    $abrir = Read-Host "  Deseja abrir a pasta da OS no Explorer? [S/N]"
+    if ($abrir -eq "s" -or $abrir -eq "S") {
+        if (Get-Command explorer.exe -ErrorAction SilentlyContinue) {
+            Start-Process explorer.exe "`"$dirOS`""
+        }
+    }
+}
+
 # ===== MENU DE SELECAO =====
 function Linha-Menu($texto, $cor = "White") {
     $v = [char]0x2551
@@ -222,7 +535,39 @@ function Mostrar-Menu {
     elseif ($script:ModoPerifericos -eq 2) { $txtModo = "DESLIGADO"; $corModo = "Red" }
     Linha-Menu "  Perifericos: $txtModo  [0] alterna" $corModo
     Linha-Menu ""
+    Write-Host "  $([char]0x2560)$bar$([char]0x2563)" -ForegroundColor Cyan
+    Linha-Menu "  [P] Proxima pagina >> (Utilitarios / Relatorios)" "Yellow"
+    Write-Host "  $([char]0x255A)$bar$([char]0x255D)" -ForegroundColor Cyan
+    Write-Host ""
+}
 
+function Mostrar-Menu-Pagina2 {
+    $e = [char]0x2550; $v = [char]0x2551
+    $w = 60; $bar = "$e" * $w
+
+    Clear-Host
+    Write-Host ""
+    Write-Host "  $([char]0x2554)$bar$([char]0x2557)" -ForegroundColor Cyan
+
+    $t1 = "UTILITARIOS E RELATORIOS"
+    $t2 = "Cantao Informatica - Pagina 2"
+    foreach ($t in @($t1, $t2)) {
+        $pl = [math]::Floor(($w - $t.Length) / 2)
+        $pr = $w - $pl - $t.Length
+        Write-Host "  $v$(' ' * $pl)" -ForegroundColor Cyan -NoNewline
+        if ($t -eq $t1) { Write-Host $t -ForegroundColor White -NoNewline }
+        else            { Write-Host $t -ForegroundColor DarkCyan -NoNewline }
+        Write-Host "$(' ' * $pr)$v" -ForegroundColor Cyan
+    }
+
+    Write-Host "  $([char]0x2560)$bar$([char]0x2563)" -ForegroundColor Cyan
+    Linha-Menu ""
+    Linha-Menu "  [1]  Criar / Regenerar Relatorio (PDF/HTML)" "Green"
+    Linha-Menu "       Gera relatorio de uma OS existente com fotos" "DarkGray"
+    Linha-Menu "       (inclui fotos externas da bancada / pecas)" "DarkGray"
+    Linha-Menu ""
+    Write-Host "  $([char]0x2560)$bar$([char]0x2563)" -ForegroundColor Cyan
+    Linha-Menu "  [V]  << Voltar para a pagina anterior" "Yellow"
     Write-Host "  $([char]0x255A)$bar$([char]0x255D)" -ForegroundColor Cyan
     Write-Host ""
 }
@@ -273,46 +618,64 @@ function Mostrar-Personalizado($sel) {
 }
 
 function Escolher-Menu {
+    $pagina = 1
     while ($true) {
-        Mostrar-Menu
-        $r = Read-Host "  Escolha [1-5] ou [0] para alternar online/offline"
-        switch ($r) {
-            "0" { $script:ModoPerifericos = ($script:ModoPerifericos + 1) % 3 }
-            "1" { return (Lista-Opcao 1) }
-            "2" { return (Lista-Opcao 2) }
-            "3" { return (Lista-Opcao 3) }
-            "4" { return (Lista-Opcao 4) }
-            "5" {
-                # Personalizado: comeca com tudo marcado exceto o que e estresse
-                $sel = @(1..$TodosProgramas.Count | ForEach-Object { $false })
-                for ($i = 0; $i -lt $TodosProgramas.Count; $i++) {
-                    $sel[$i] = -not $TodosProgramas[$i].Estresse
+        if ($pagina -eq 1) {
+            Mostrar-Menu
+            $r = Read-Host "  Escolha [1-5], [P] proxima pagina ou [0] online/offline"
+            switch ($r) {
+                "0" { $script:ModoPerifericos = ($script:ModoPerifericos + 1) % 3 }
+                "1" { return (Lista-Opcao 1) }
+                "2" { return (Lista-Opcao 2) }
+                "3" { return (Lista-Opcao 3) }
+                "4" { return (Lista-Opcao 4) }
+                { $_ -eq "p" -or $_ -eq "P" } { $pagina = 2 }
+                "5" {
+                    # Personalizado: comeca com tudo marcado exceto o que e estresse
+                    $sel = @(1..$TodosProgramas.Count | ForEach-Object { $false })
+                    for ($i = 0; $i -lt $TodosProgramas.Count; $i++) {
+                        $sel[$i] = -not $TodosProgramas[$i].Estresse
+                    }
+                    while ($true) {
+                        Mostrar-Personalizado $sel
+                        $pick = Read-Host "  Opcao"
+                        if ($pick -eq "" -or $pick -eq "c" -or $pick -eq "C") {
+                            $resultado = @()
+                            for ($i = 0; $i -lt $TodosProgramas.Count; $i++) {
+                                if ($sel[$i]) { $resultado += $TodosProgramas[$i] }
+                            }
+                            if ($resultado.Count -eq 0) {
+                                Write-Host "  [!] Selecione ao menos um programa." -ForegroundColor Yellow
+                                Start-Sleep 1
+                                continue
+                            }
+                            return $resultado
+                        }
+                        if ($pick -eq "0") { break }  # volta ao menu principal
+                        $n = 0
+                        if ([int]::TryParse($pick, [ref]$n) -and $n -ge 1 -and $n -le $TodosProgramas.Count) {
+                            $sel[$n - 1] = -not $sel[$n - 1]
+                        }
+                    }
                 }
-                while ($true) {
-                    Mostrar-Personalizado $sel
-                    $pick = Read-Host "  Opcao"
-                    if ($pick -eq "" -or $pick -eq "c" -or $pick -eq "C") {
-                        $resultado = @()
-                        for ($i = 0; $i -lt $TodosProgramas.Count; $i++) {
-                            if ($sel[$i]) { $resultado += $TodosProgramas[$i] }
-                        }
-                        if ($resultado.Count -eq 0) {
-                            Write-Host "  [!] Selecione ao menos um programa." -ForegroundColor Yellow
-                            Start-Sleep 1
-                            continue
-                        }
-                        return $resultado
-                    }
-                    if ($pick -eq "0") { break }  # volta ao menu principal
-                    $n = 0
-                    if ([int]::TryParse($pick, [ref]$n) -and $n -ge 1 -and $n -le $TodosProgramas.Count) {
-                        $sel[$n - 1] = -not $sel[$n - 1]
-                    }
+                default {
+                    Write-Host "  [!] Digite de 1 a 5, [P] para proxima pagina ou [0]" -ForegroundColor Yellow
+                    Start-Sleep 1
                 }
             }
-            default {
-                Write-Host "  [!] Digite de 1 a 5 (ou 0)" -ForegroundColor Yellow
-                Start-Sleep 1
+        } elseif ($pagina -eq 2) {
+            Mostrar-Menu-Pagina2
+            $r = Read-Host "  Escolha a opcao ou [V] para voltar"
+            switch ($r) {
+                { $_ -eq "v" -or $_ -eq "V" -or $_ -eq "0" } { $pagina = 1 }
+                "1" {
+                    Criar-Relatorio-OS-Existente
+                    $pagina = 2
+                }
+                default {
+                    Write-Host "  [!] Opcao invalida. Digite [1] ou [V] para voltar." -ForegroundColor Yellow
+                    Start-Sleep 1
+                }
             }
         }
     }
@@ -342,17 +705,16 @@ if (-not $admin -and -not $isPE) { Write-Host "  [!] Rode como administrador par
 
 $os  = Read-Host "Numero da OS"
 $cliente = Read-Host "Nome do cliente"
-$arqTec  = Join-Path $PSScriptRoot "tecnico.txt"
-$tecPad  = ""
-if (Test-Path $arqTec) { $tecPad = (Get-Content $arqTec -TotalCount 1) }
+$tecPad  = [string]$Config.tecnico
 $msgTec  = "Tecnico"
 if ($tecPad) { $msgTec = "Tecnico [$tecPad]" }
 $tecnico = Read-Host $msgTec
-if (-not $tecnico) { $tecnico = $tecPad } else { Set-Content $arqTec $tecnico }
+if (-not $tecnico) { $tecnico = $tecPad }
+elseif ($tecnico -ne $tecPad) { Salvar-Tecnico $tecnico }
 $modeloPad = (Get-CimInstance Win32_ComputerSystem).Model
 $equip   = Read-Host "Equipamento [$modeloPad]"
 if (-not $equip) { $equip = $modeloPad }
-$dir = Join-Path $PSScriptRoot "OS\$os"
+$dir = Join-Path $PastaOS $os
 New-Item -ItemType Directory -Force $dir | Out-Null
 # fotos ficam na raiz da OS; textos e documentos em subpastas
 $dirTxt = Join-Path $dir "Textos";      New-Item -ItemType Directory -Force $dirTxt | Out-Null
@@ -467,7 +829,7 @@ $script:emFundo = @()
 
 function Preparar-App($p, $proc) {
     $script:cache = @{}
-    $script:appPasta = (Join-Path $Ferr $p.Pasta)
+    $script:appPasta = $p.Caminho
     $script:appPid = $proc.Id
 }
 
@@ -513,12 +875,8 @@ function Loop-Foto($p, $proc) {
 
 function Testar($p) {
     # Exe pode ter varios padroes separados por "|": usa o primeiro que existir
-    $exe = $null
-    foreach ($pat in ($p.Exe -split '\|')) {
-        $exe = Get-ChildItem (Join-Path $Ferr $p.Pasta) -Recurse -Filter $pat -ErrorAction SilentlyContinue | Select-Object -First 1
-        if ($exe) { break }
-    }
-    if (-not $exe) { Write-Host "[!] Nao encontrei $($p.Exe) em $($p.Pasta)" -ForegroundColor Yellow; return }
+    $exe = Achar-Exe $p
+    if (-not $exe) { Write-Host "[!] Nao encontrei $($p.Exe) em $($p.Caminho)" -ForegroundColor Yellow; return }
 
     Write-Host "`n[+] $($p.Nome)  (modo $($p.Modo))" -ForegroundColor Cyan
     $script:n = 0
@@ -713,7 +1071,7 @@ public class Mic {
     } while ($de -match '^[sS]')
 
     # --- Teste de audio: toca o mp3 da pasta Ferramentas\Musica (somente leitura, sem rastros) ---
-    $pastaMusica = Join-Path $Ferr "Musica"
+    $pastaMusica = $PastaMusicaCfg
     $mp3 = Get-ChildItem $pastaMusica -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Extension -in ".mp3", ".wav", ".wma" } | Select-Object -First 1
     Write-Host "`n=== TESTE DE AUDIO ===" -ForegroundColor Cyan
     if ($mp3) { try {
@@ -791,7 +1149,7 @@ function Perguntar($texto, $sug = "", $motivo = "") {
 # Saude dos discos: le o relatorio do CrystalDiskInfo (/CopyExit)
 function Saude-Discos {
     $lista = @()
-    $ci = Get-ChildItem (Join-Path $Ferr "CrystalDiskInfo9_9_2") -Recurse -Filter "DiskInfo64.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
+    $ci = Achar-Ferramenta "DiskInfo64.exe"
     if (-not $ci) { return $lista }
     $txt = Join-Path $ci.DirectoryName "DiskInfo.txt"
     Remove-Item $txt -ErrorAction SilentlyContinue
@@ -820,7 +1178,7 @@ function Saude-Discos {
 # Saude da bateria: salva o texto do BatteryInfoView e calcula a % (capacidade atual / projeto)
 function Saude-Bateria {
     $res = [pscustomobject]@{ Tem = $false; Pct = ""; PctNum = 0; Detalhe = "" }
-    $bi = Get-ChildItem (Join-Path $Ferr "batteryinfoview-x64") -Recurse -Filter "BatteryInfoView.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
+    $bi = Achar-Ferramenta "BatteryInfoView.exe"
     if ($bi) { Start-Process $bi.FullName -ArgumentList "/stext `"$dirTxt\bateriainfo.txt`"" -WorkingDirectory $bi.DirectoryName -Wait -WindowStyle Hidden }
     try {
         $proj  = (Get-CimInstance -Namespace root\wmi -ClassName BatteryStaticData -ErrorAction Stop | Select-Object -First 1).DesignedCapacity
@@ -1207,100 +1565,10 @@ $utf8 = New-Object System.Text.UTF8Encoding($false)
 [System.IO.File]::WriteAllText($arqJson, ($j | ConvertTo-Json -Depth 5), $utf8)
 Write-Host "JSON para a pagina salvo em: $arqJson" -ForegroundColor Green
 
-# ===== RELATORIO UNICO COM TODOS OS PRINTS (HTML autocontido + PDF se tiver Edge) =====
-function Linha-Info($rot, $val) { return "<tr><th>$rot</th><td>$val</td></tr>" }
+# ===== RELATORIO UNICO COM TODOS OS PRINTS E FOTOS (HTML + PDF via Edge) =====
+Write-Host "`nGerando relatorio final..." -ForegroundColor Cyan
+Gerar-Relatorio-Documento $os $cliente $equip "$($sis.Manufacturer) $($sis.Model)" $bios.SerialNumber $tecnico $sist.CpuNome "$($sist.RamGB) GB" "$($sist.Res) @ $($sist.Hz) Hz" $sist.Gpus $(if ($sist.WindowsAtivado -eq $true) { "Ativado" } elseif ($sist.WindowsAtivado -eq $false) { "Nao ativado" } else { "Nao identificado" }) $perg $discosJson $bat $dir $dirDoc | Out-Null
 
-function Gerar-Relatorio {
-    $css = @'
-body{font-family:Arial,Helvetica,sans-serif;margin:24px;color:#111}
-h1{margin:0 0 4px}
-h2{margin:28px 0 8px;border-bottom:2px solid #333;padding-bottom:4px}
-table{border-collapse:collapse;width:100%;margin:8px 0}
-td,th{border:1px solid #999;padding:6px 8px;text-align:left;font-size:14px}
-th{background:#eee;width:30%}
-.ok{color:#0a7a2f;font-weight:bold}.bad{color:#c62828;font-weight:bold}.nt{color:#b26a00;font-weight:bold}
-figure{margin:14px 0;page-break-inside:avoid}
-figure img{max-width:100%;border:1px solid #888}
-figcaption{font-size:12px;color:#555;margin-top:2px}
-.sub{color:#555;font-size:13px}
-@media print{body{margin:10mm}}
-'@
-    $h = New-Object System.Collections.Generic.List[string]
-    $h.Add("<!DOCTYPE html><html lang='pt-BR'><head><meta charset='UTF-8'><title>Relatorio OS $(HEnc $os)</title><style>$css</style></head><body>")
-    $h.Add("<h1>Relat&oacute;rio de Diagn&oacute;stico</h1>")
-    $h.Add("<div class='sub'>OS $(HEnc $os) &mdash; gerado em $(Get-Date -f 'dd/MM/yyyy HH:mm')</div>")
-
-    $h.Add("<h2>Equipamento</h2><table>")
-    $h.Add((Linha-Info "OS" (HEnc $os)))
-    $h.Add((Linha-Info "Cliente" (HEnc $cliente)))
-    $h.Add((Linha-Info "Equipamento" (HEnc $equip)))
-    $h.Add((Linha-Info "Fabricante / Modelo" (HEnc "$($sis.Manufacturer) $($sis.Model)")))
-    $h.Add((Linha-Info "N&ordm; de s&eacute;rie" (HEnc $bios.SerialNumber)))
-    $h.Add((Linha-Info "T&eacute;cnico" (HEnc $tecnico)))
-    $h.Add((Linha-Info "Processador" (HEnc $sist.CpuNome)))
-    $h.Add((Linha-Info "Mem&oacute;ria" (HEnc "$($sist.RamGB) GB")))
-    $h.Add((Linha-Info "Tela" (HEnc "$($sist.Res) @ $($sist.Hz) Hz")))
-    $h.Add((Linha-Info "V&iacute;deo" (HEnc $sist.Gpus)))
-    $wtxt = "N&atilde;o identificado"
-    if ($sist.WindowsAtivado -eq $true) { $wtxt = "Ativado" } elseif ($sist.WindowsAtivado -eq $false) { $wtxt = "N&atilde;o ativado" }
-    $h.Add((Linha-Info "Windows" $wtxt))
-    $h.Add("</table>")
-
-    $h.Add("<h2>Resultados</h2><table>")
-    $nomesTab = [ordered]@{ "TECLADO_OK" = "Teclado"; "MICROFONE_OK" = "Microfone"; "AUDIO_OK" = "&Aacute;udio"; "WEBCAM_OK" = "Webcam"; "ARMAZENAMENTO_OK" = "Armazenamento"; "BATERIA_OK" = "Bateria" }
-    foreach ($k in $nomesTab.Keys) {
-        $v = $perg[$k]
-        $cls = "nt"; $tx = "N&atilde;o testado"
-        if ($v -eq "SIM")           { $cls = "ok";  $tx = "Funcionando" }
-        elseif ($v -eq "NAO")       { $cls = "bad"; $tx = "Com defeito" }
-        elseif ($v -eq "NAO SE APLICA") { $cls = "nt"; $tx = "N&atilde;o se aplica" }
-        $h.Add((Linha-Info $nomesTab[$k] "<span class='$cls'>$tx</span>"))
-    }
-    $h.Add("</table>")
-
-    $h.Add("<h2>Sa&uacute;de de armazenamento e bateria</h2><table>")
-    if ($discosJson.Count -eq 0) { $h.Add((Linha-Info "Armazenamento" "n&atilde;o lido (ver prints)")) }
-    foreach ($d in $discosJson) {
-        $txd = HEnc "$($d.Estado) $($d.Tipo)"
-        if ($d.Pct) { $txd = $txd + " &mdash; " + (HEnc $d.Pct) }
-        $h.Add((Linha-Info (HEnc $d.Modelo) $txd))
-    }
-    if ($bat.Tem) { $h.Add((Linha-Info "Bateria" (HEnc "$($bat.Pct) - $($bat.Detalhe)"))) }
-    $h.Add("</table>")
-
-    $pngs = @(Get-ChildItem $dir -Filter *.png | Sort-Object { $_.BaseName -replace '_\d+$', '' }, { [int]($_.BaseName -replace '^.*_', '') })
-    if ($pngs.Count -gt 0) { $h.Add("<h2>Capturas de tela</h2>") }
-    $grupo = ""
-    foreach ($f in $pngs) {
-        $g = $f.BaseName -replace '_\d+$', ''
-        if ($g -ne $grupo) {
-            $grupo = $g
-            $h.Add("<h3>" + (HEnc (($g -replace '^\d+_', '') -replace '_', ' ')) + "</h3>")
-        }
-        $b64 = [Convert]::ToBase64String([IO.File]::ReadAllBytes($f.FullName))
-        $h.Add("<figure><img src='data:image/png;base64,$b64'><figcaption>$(HEnc $f.BaseName)</figcaption></figure>")
-    }
-    $h.Add("</body></html>")
-
-    $arqHtml = Join-Path $dirDoc "relatorio_OS_$($os -replace '[\\/:*?""<>|\s]', '_').html"
-    [System.IO.File]::WriteAllText($arqHtml, ($h -join "`n"), $utf8)
-    Write-Host "Relatorio HTML salvo em: $arqHtml" -ForegroundColor Green
-
-    # PDF (melhor esforco, usa o Edge que ja vem no Windows)
-    $edge = @("${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe", "$env:ProgramFiles\Microsoft\Edge\Application\msedge.exe") | Where-Object { Test-Path $_ } | Select-Object -First 1
-    if ($edge) {
-        $arqPdf = [IO.Path]::ChangeExtension($arqHtml, ".pdf")
-        $uri = ([System.Uri]$arqHtml).AbsoluteUri
-        try {
-            Start-Process $edge -ArgumentList "--headless", "--disable-gpu", "--no-pdf-header-footer", "--print-to-pdf=`"$arqPdf`"", $uri -Wait -WindowStyle Hidden
-            if (Test-Path $arqPdf) {
-                Write-Host "Relatorio PDF salvo em:  $arqPdf" -ForegroundColor Green
-                Remove-Item $arqHtml -Force -ErrorAction SilentlyContinue
-            }
-        } catch {}
-    }
-}
-Gerar-Relatorio
 
 # erros nao criticos (principalmente no WinPE) ficam registrados
 try {
