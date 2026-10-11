@@ -264,7 +264,11 @@ figcaption{font-size:12px;color:#555;margin-top:2px}
     $extensoes = @('.png', '.jpg', '.jpeg', '.bmp', '.webp')
     $fotos = @(Get-ChildItem $caminhoDir -File -ErrorAction SilentlyContinue | Where-Object {
         $extensoes -contains $_.Extension.ToLower()
-    } | Sort-Object { $_.BaseName -replace '_\d+$', '' }, { [int]($_.BaseName -replace '^.*_', '') })
+    } | Sort-Object { $_.BaseName -replace '_\d+$', '' }, {
+        $num = 0
+        if ($_.BaseName -match '_(\d+)$') { [int]::TryParse($matches[1], [ref]$num) | Out-Null }
+        $num
+    }, { $_.Name })
 
     if ($fotos.Count -gt 0) { $h.Add("<h2>Registros e Capturas de Imagem</h2>") }
     $grupo = ""
@@ -278,10 +282,13 @@ figcaption{font-size:12px;color:#555;margin-top:2px}
             ".webp" { "image/webp" }
             default { "image/png" }
         }
-        $g = $f.BaseName -replace '_\d+$', ''
+        # Identifica se e um print padrao de ferramenta (ex: 01_HDDScan_1) ou foto avulsa/externa
+        $ehProg = ($f.BaseName -match '^\d+_[A-Za-z0-9]+')
+        $g = if ($ehProg) { $f.BaseName -replace '_\d+$', '' } else { "Fotos e Registros Externos" }
         if ($g -ne $grupo) {
             $grupo = $g
-            $h.Add("<h3>" + (HEnc (($g -replace '^\d+_', '') -replace '_', ' ')) + "</h3>")
+            $tituloGrupo = if ($ehProg) { ($g -replace '^\d+_', '') -replace '_', ' ' } else { $g }
+            $h.Add("<h3>" + (HEnc $tituloGrupo) + "</h3>")
         }
         try {
             $bytes = [IO.File]::ReadAllBytes($f.FullName)
@@ -304,7 +311,7 @@ figcaption{font-size:12px;color:#555;margin-top:2px}
         $arqPdf = [IO.Path]::ChangeExtension($arqHtml, ".pdf")
         $uri = ([System.Uri]$arqHtml).AbsoluteUri
         try {
-            Start-Process $edge -ArgumentList "--headless", "--disable-gpu", "--no-pdf-header-footer", "--print-to-pdf=`"$arqPdf`"", $uri -Wait -WindowStyle Hidden
+            Start-Process $edge -ArgumentList "--headless", "--disable-gpu", "--no-pdf-header-footer", "--log-level=3", "--print-to-pdf=`"$arqPdf`"", $uri -Wait -WindowStyle Hidden -ErrorAction SilentlyContinue
             if (Test-Path $arqPdf) {
                 Write-Host "  [OK] Relatorio PDF salvo em:  $arqPdf" -ForegroundColor Green
                 Remove-Item $arqHtml -Force -ErrorAction SilentlyContinue
