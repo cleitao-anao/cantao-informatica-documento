@@ -281,9 +281,16 @@ function prepararSelect(select) {
 // =====================================================================
 
 function celulaArmazenamento(n, primeiroCampo) {
+  const isTestes = primeiroCampo === 7;
+  const selectTopo = isTestes
+    ? `<div class="teste-rapido-container">
+            <select class="save" data-opt="opt1" data-id="campo_arm${n}_${primeiroCampo}"></select>
+            <input type="checkbox" class="save check-atendente" data-id="check_arm${n}" title="Checklist Testes">
+          </div>`
+    : `<select class="save" data-opt="opt1" data-id="campo_arm${n}_${primeiroCampo}"></select>`;
   return `
         <td>
-          <select class="save" data-opt="opt1" data-id="campo_arm${n}_${primeiroCampo}"></select>
+          ${selectTopo}
           <hr>
           <select class="save" data-opt="opt17" data-id="campo_arm${n}_${primeiroCampo + 1}"></select>
           <hr>
@@ -604,6 +611,7 @@ function limparCelula(td) {
     select.selectedIndex = 0;
   });
   if (!td.hasAttribute('colspan')) {
+    td.querySelectorAll('input[type="checkbox"]').forEach(campo => { campo.checked = false; });
     td.querySelectorAll('input[type="text"], textarea').forEach(campo => {
       campo.value = '';
     });

@@ -169,6 +169,29 @@ input[type="checkbox"] {
     margin-right: 6px;
 }
 
+/* Checkbox de Teste RÃƒÂ¡pido / Checklist na coluna Testes */
+.teste-rapido-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.teste-rapido-container select,
+.teste-rapido-container input[type="text"] {
+    flex: 1;
+    min-width: 0;
+}
+
+.check-atendente {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--cor-primaria);
+    margin: 0;
+}
+
 textarea {
     field-sizing: content;
     resize: vertical;
@@ -935,13 +958,14 @@ body.dark-mode .avisos-pendencia {
 
 .assinatura-celula {
     text-align: center;
-    padding: 0 30px 10px !important;
+    padding: 0 15px 10px !important;
     border: none !important;
     vertical-align: bottom;
 }
 
 .assinatura-linha {
-    width: 220px;
+    width: 180px;
+    max-width: 90%;
     border-top: 1px solid var(--cor-texto-claro);
     margin: 50px auto 8px;
 }
@@ -1608,7 +1632,7 @@ body.dark-mode .fab-defeito {
       <tr data-device="pc,notebook,tv">
         <td>FONTE / PLACA FONTE</td>
         <td><select class="save" data-opt="opt1" data-id="campo_4"></select></td>
-        <td><select class="save" data-opt="opt1" data-id="campo_5"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_5"></select><input type="checkbox" class="save check-atendente" data-id="check_5" title="Checklist Testes"></div></td>
       </tr>
 
       <tr data-device="notebook">
@@ -1619,7 +1643,7 @@ body.dark-mode .fab-defeito {
           <input type="text" class="save saude" placeholder="Saúde (%)" data-id="campo_10">
         </td>
         <td>
-          <select class="save" data-opt="opt1" data-id="campo_11"></select>
+          <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_11"></select><input type="checkbox" class="save check-atendente" data-id="check_11" title="Checklist Testes"></div>
           <hr>
           <input type="text" class="save saude" placeholder="Saúde (%)" data-id="campo_13">
         </td>
@@ -1628,7 +1652,7 @@ body.dark-mode .fab-defeito {
       <tr data-device="notebook">
         <td>CONECTOR POWER JACK</td>
         <td><select class="save" data-opt="opt1" data-id="campo_15"></select></td>
-        <td><select class="save" data-opt="opt1" data-id="campo_16"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_16"></select><input type="checkbox" class="save check-atendente" data-id="check_16" title="Checklist Testes"></div></td>
       </tr>
 
       <!-- ACIONAMENTO -->
@@ -1639,7 +1663,7 @@ body.dark-mode .fab-defeito {
       <tr data-device="pc,notebook,tv">
         <td>BOTÃO POWER</td>
         <td><select class="save" data-opt="opt2" data-id="campo_19"></select></td>
-        <td><select class="save" data-opt="opt2" data-id="campo_20"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt2" data-id="campo_20"></select><input type="checkbox" class="save check-atendente" data-id="check_20" title="Checklist Testes"></div></td>
       </tr>
 
       <!-- CARCAÇA -->
@@ -1650,7 +1674,7 @@ body.dark-mode .fab-defeito {
       <tr data-device="pc,notebook,tv">
         <td>CARCAÇA</td>
         <td><select class="save" data-opt="opt3" data-id="campo_23"></select></td>
-        <td><select class="save" data-opt="opt3" data-id="campo_24"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt3" data-id="campo_24"></select><input type="checkbox" class="save check-atendente" data-id="check_24" title="Checklist Testes"></div></td>
       </tr>
 
       <!-- PLACA / PROCESSAMENTO -->
@@ -1661,7 +1685,7 @@ body.dark-mode .fab-defeito {
       <tr data-device="pc,notebook,tv">
         <td>PLACA MÃE / PLACA PRINCIPAL</td>
         <td><select class="save" data-opt="opt2" data-id="campo_27"></select></td>
-        <td><select class="save" data-opt="opt2" data-id="campo_28"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt2" data-id="campo_28"></select><input type="checkbox" class="save check-atendente" data-id="check_28" title="Checklist Testes"></div></td>
       </tr>
 
       <tr data-device="pc,notebook">
@@ -1674,7 +1698,7 @@ body.dark-mode .fab-defeito {
           <select class="save" data-opt="opt19" data-id="campo_35"></select>
         </td>
         <td>
-          <select class="save" data-opt="opt2" data-id="campo_36"></select>
+          <div class="teste-rapido-container"><select class="save" data-opt="opt2" data-id="campo_36"></select><input type="checkbox" class="save check-atendente" data-id="check_36" title="Checklist Testes"></div>
           <hr>
           <select class="save" data-opt="opt4" data-id="campo_38"></select>
           <hr>
@@ -1690,7 +1714,7 @@ body.dark-mode .fab-defeito {
           <select class="save" data-opt="opt5" data-id="campo_43"></select>
         </td>
         <td>
-          <select class="save" data-opt="opt2" data-id="campo_44"></select>
+          <div class="teste-rapido-container"><select class="save" data-opt="opt2" data-id="campo_44"></select><input type="checkbox" class="save check-atendente" data-id="check_44" title="Checklist Testes"></div>
           <hr>
           <select class="save" data-opt="opt5" data-id="campo_46"></select>
         </td>
@@ -1705,9 +1729,9 @@ body.dark-mode .fab-defeito {
         <td>
           <select class="save display-check" data-opt="opt6" data-id="campo_48"></select>
         </td>
-        <td>
+        <td><div class="teste-rapido-container">
           <select class="save display-check" data-opt="opt6" data-id="campo_49"></select>
-        </td>
+        <input type="checkbox" class="save check-atendente" data-id="check_49" title="Checklist Testes"></div></td>
       </tr>
 
       <tr data-device="notebook,tv">
@@ -1715,9 +1739,9 @@ body.dark-mode .fab-defeito {
         <td>
           <select class="save" data-opt="opt7" data-id="campo_52"></select>
         </td>
-        <td>
+        <td><div class="teste-rapido-container">
           <select class="save" data-opt="opt7" data-id="campo_53"></select>
-        </td>
+        <input type="checkbox" class="save check-atendente" data-id="check_53" title="Checklist Testes"></div></td>
       </tr>
 
       <tr data-device="notebook,tv">
@@ -1725,9 +1749,9 @@ body.dark-mode .fab-defeito {
         <td>
           <select class="save" data-opt="opt8" data-id="campo_56"></select>
         </td>
-        <td>
+        <td><div class="teste-rapido-container">
           <select class="save" data-opt="opt8" data-id="campo_57"></select>
-        </td>
+        <input type="checkbox" class="save check-atendente" data-id="check_57" title="Checklist Testes"></div></td>
       </tr>
 
       <tr data-device="notebook,tv">
@@ -1735,27 +1759,27 @@ body.dark-mode .fab-defeito {
         <td>
           <select class="save" data-opt="opt9" data-id="campo_60"></select>
         </td>
-        <td>
+        <td><div class="teste-rapido-container">
           <select class="save" data-opt="opt9" data-id="campo_61"></select>
-        </td>
+        <input type="checkbox" class="save check-atendente" data-id="check_61" title="Checklist Testes"></div></td>
       </tr>
 
       <tr data-device="notebook,tv">
         <td>BACKLIGHT (ILUMINAÇÃO)</td>
         <td><select class="save display-check" data-opt="opt10" data-id="campo_64"></select></td>
-        <td><select class="save display-check" data-opt="opt10" data-id="campo_65"></select></td>
+        <td><div class="teste-rapido-container"><select class="save display-check" data-opt="opt10" data-id="campo_65"></select><input type="checkbox" class="save check-atendente" data-id="check_65" title="Checklist Testes"></div></td>
       </tr>
 
       <tr data-device="tv">
         <td>BARRA DE LEDS</td>
         <td><select class="save display-check" data-opt="opt11" data-id="campo_68"></select></td>
-        <td><select class="save display-check" data-opt="opt11" data-id="campo_69"></select></td>
+        <td><div class="teste-rapido-container"><select class="save display-check" data-opt="opt11" data-id="campo_69"></select><input type="checkbox" class="save check-atendente" data-id="check_69" title="Checklist Testes"></div></td>
       </tr>
 
       <tr data-device="notebook,tv">
         <td>CABO FLAT (LVDS/eDP)</td>
         <td><select class="save display-check" data-opt="opt12" data-id="campo_72"></select></td>
-        <td><select class="save display-check" data-opt="opt12" data-id="campo_73"></select></td>
+        <td><div class="teste-rapido-container"><select class="save display-check" data-opt="opt12" data-id="campo_73"></select><input type="checkbox" class="save check-atendente" data-id="check_73" title="Checklist Testes"></div></td>
       </tr>
 
       <tr data-device="notebook,tv">
@@ -1774,43 +1798,43 @@ body.dark-mode .fab-defeito {
       <tr data-device="pc,notebook,tv">
         <td>PAINEL</td>
         <td><select class="save" data-opt="opt1" data-id="campo_77"></select></td>
-        <td><select class="save" data-opt="opt1" data-id="campo_78"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_78"></select><input type="checkbox" class="save check-atendente" data-id="check_78" title="Checklist Testes"></div></td>
 
       </tr>
 
       <tr data-device="pc,notebook,tv">
         <td>HDMI</td>
         <td><select class="save" data-opt="opt1" data-id="campo_77h"></select></td>
-        <td><select class="save" data-opt="opt1" data-id="campo_78h"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_78h"></select><input type="checkbox" class="save check-atendente" data-id="check_78h" title="Checklist Testes"></div></td>
       </tr>
 
       <tr data-device="pc,notebook,tv">
         <td>USB / USB-C</td>
         <td><select class="save" data-opt="opt1" data-id="campo_81"></select></td>
-        <td><select class="save" data-opt="opt1" data-id="campo_82"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_82"></select><input type="checkbox" class="save check-atendente" data-id="check_82" title="Checklist Testes"></div></td>
       </tr>
 
       <tr data-device="pc,notebook">
         <td>VGA</td>
         <td><select class="save" data-opt="opt1" data-id="campo_85"></select></td>
-        <td><select class="save" data-opt="opt1" data-id="campo_86"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_86"></select><input type="checkbox" class="save check-atendente" data-id="check_86" title="Checklist Testes"></div></td>
       </tr>
       <tr data-device="pc,notebook">
         <td>LAN</td>
         <td><select class="save" data-opt="opt1" data-id="campo_89"></select></td>
-        <td><select class="save" data-opt="opt1" data-id="campo_90"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_90"></select><input type="checkbox" class="save check-atendente" data-id="check_90" title="Checklist Testes"></div></td>
       </tr>
 
       <tr data-device="pc,notebook">
         <td>WIFI</td>
         <td><select class="save" data-opt="opt1" data-id="campo_93"></select></td>
-        <td><select class="save" data-opt="opt1" data-id="campo_94"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_94"></select><input type="checkbox" class="save check-atendente" data-id="check_94" title="Checklist Testes"></div></td>
       </tr>
 
       <tr data-device="pc,notebook">
         <td>BLUETOOTH</td>
         <td><select class="save" data-opt="opt1" data-id="campo_97"></select></td>
-        <td><select class="save" data-opt="opt1" data-id="campo_98"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_98"></select><input type="checkbox" class="save check-atendente" data-id="check_98" title="Checklist Testes"></div></td>
       </tr>
 
 
@@ -1822,7 +1846,7 @@ body.dark-mode .fab-defeito {
           <select class="save" data-opt="opt15" data-id="campo_103"></select>
         </td>
         <td>
-          <select class="save" data-opt="opt1" data-id="campo_104"></select>
+          <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_104"></select><input type="checkbox" class="save check-atendente" data-id="check_104" title="Checklist Testes"></div>
           <hr>
           <select class="save" data-opt="opt15" data-id="campo_106"></select>
         </td>
@@ -1831,44 +1855,44 @@ body.dark-mode .fab-defeito {
       <tr data-device="notebook">
         <td>TOUCHPAD</td>
         <td><select class="save" data-opt="opt1" data-id="campo_108"></select></td>
-        <td><select class="save" data-opt="opt1" data-id="campo_109"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_109"></select><input type="checkbox" class="save check-atendente" data-id="check_109" title="Checklist Testes"></div></td>
       </tr>
 
       <tr data-device="notebook">
         <td>CÂMERA</td>
         <td><select class="save" data-opt="opt1" data-id="campo_112"></select></td>
-        <td><select class="save" data-opt="opt1" data-id="campo_113"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_113"></select><input type="checkbox" class="save check-atendente" data-id="check_113" title="Checklist Testes"></div></td>
       </tr>
 
       <tr data-device="notebook">
         <td>MICROFONE</td>
         <td><select class="save" data-opt="opt1" data-id="campo_116"></select></td>
-        <td><select class="save" data-opt="opt1" data-id="campo_117"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_117"></select><input type="checkbox" class="save check-atendente" data-id="check_117" title="Checklist Testes"></div></td>
       </tr>
 
       <tr data-device="notebook,tv">
         <td>AUDIO INTERNO</td>
         <td><select class="save" data-opt="opt1" data-id="campo_120"></select></td>
-        <td><select class="save" data-opt="opt1" data-id="campo_121"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_121"></select><input type="checkbox" class="save check-atendente" data-id="check_121" title="Checklist Testes"></div></td>
       </tr>
 
       <tr data-device="pc,notebook,tv">
         <td>CONECTOR P2</td>
         <td><select class="save" data-opt="opt1" data-id="campo_124"></select></td>
-        <td><select class="save" data-opt="opt1" data-id="campo_125"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_125"></select><input type="checkbox" class="save check-atendente" data-id="check_125" title="Checklist Testes"></div></td>
       </tr>
 
       <tr data-device="pc,notebook">
         <td>SISTEMA OPERACIONAL</td>
         <td><select class="save" data-opt="opt16" data-id="campo_128"></select></td>
-        <td><select class="save" data-opt="opt16" data-id="campo_129"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt16" data-id="campo_129"></select><input type="checkbox" class="save check-atendente" data-id="check_129" title="Checklist Testes"></div></td>
       </tr>
 
       <!-- PLACA GRÁFICA -->
       <tr data-device="pc,notebook">
         <td>PLACA GRÁFICA</td>
         <td><select class="save" data-opt="opt1" data-id="campo_132"></select></td>
-        <td><select class="save" data-opt="opt1" data-id="campo_133"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_133"></select><input type="checkbox" class="save check-atendente" data-id="check_133" title="Checklist Testes"></div></td>
       </tr>
 
       <!-- ARMAZENAMENTO -->
@@ -1886,7 +1910,7 @@ body.dark-mode .fab-defeito {
           <input type="text" class="save saude" placeholder="Saúde (%)" data-id="campo_140">
         </td>
         <td>
-          <select class="save" data-opt="opt1" data-id="campo_141"></select>
+          <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_141"></select><input type="checkbox" class="save check-atendente" data-id="check_141" title="Checklist Testes"></div>
           <hr>
           <select class="save" data-opt="opt17" data-id="campo_143"></select>
           <hr>
@@ -1923,7 +1947,7 @@ body.dark-mode .fab-defeito {
       <tr data-device="pc,notebook,tv">
         <td>PREVENTIVA</td>
         <td><select class="save" data-opt="opt18" data-id="campo_146"></select></td>
-        <td><select class="save" data-opt="opt18" data-id="campo_147"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt18" data-id="campo_147"></select><input type="checkbox" class="save check-atendente" data-id="check_147" title="Checklist Testes"></div></td>
       </tr>
 
       <!-- RESULTADO -->
@@ -1955,6 +1979,10 @@ body.dark-mode .fab-defeito {
   <div class="assinatura-area">
   <table>
     <tr>
+      <td class="assinatura-celula">
+        <div class="assinatura-linha"></div>
+        <div class="assinatura-nome">ASSINATURA DO ATENDENTE</div>
+      </td>
       <td class="assinatura-celula">
         <div class="assinatura-linha"></div>
         <div class="assinatura-nome">ASSINATURA DO TÉCNICO</div>
@@ -2618,6 +2646,7 @@ function limparCelula(td) {
     select.selectedIndex = 0;
   });
   if (!td.hasAttribute('colspan')) {
+    td.querySelectorAll('input[type="checkbox"]').forEach(campo => { campo.checked = false; });
     td.querySelectorAll('input[type="text"], textarea').forEach(campo => {
       campo.value = '';
     });

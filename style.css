@@ -153,6 +153,29 @@ input[type="checkbox"] {
     margin-right: 6px;
 }
 
+/* Checkbox de Teste Rápido / Checklist na coluna Testes */
+.teste-rapido-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.teste-rapido-container select,
+.teste-rapido-container input[type="text"] {
+    flex: 1;
+    min-width: 0;
+}
+
+.check-atendente {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--cor-primaria);
+    margin: 0;
+}
+
 textarea {
     field-sizing: content;
     resize: vertical;
@@ -919,13 +942,14 @@ body.dark-mode .avisos-pendencia {
 
 .assinatura-celula {
     text-align: center;
-    padding: 0 30px 10px !important;
+    padding: 0 15px 10px !important;
     border: none !important;
     vertical-align: bottom;
 }
 
 .assinatura-linha {
-    width: 220px;
+    width: 180px;
+    max-width: 90%;
     border-top: 1px solid var(--cor-texto-claro);
     margin: 50px auto 8px;
 }

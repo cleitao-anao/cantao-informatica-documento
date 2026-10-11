@@ -1,0 +1,7 @@
+# Ignorar binários e arquivos pesados na pasta de ferramentas (mantendo os diretórios com .gitkeep)
+script/Ferramentas/*/*
+!script/Ferramentas/*/.gitkeep
+
+# Ignorar relatórios e diagnósticos gerados
+script/OS/*
+!script/OS/.gitkeep

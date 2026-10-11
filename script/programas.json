@@ -1,0 +1,13 @@
+{
+  "programas": [
+    { "nome": "01_HDDScan",         "pasta": "HDDScan",                  "exe": "HDDScan.exe",                          "modo": "fundo",  "maximizar": true, "espera": 6,  "desc": "Leitura do disco",              "rapido": true,  "estresse": false, "perifericos": false, "soF12": false },
+    { "nome": "02_CrystalDiskInfo", "pasta": "CrystalDiskInfo9_9_2",     "exe": "DiskInfo64.exe",                       "modo": "auto",   "maximizar": true, "espera": 8,  "desc": "Saude dos discos",              "rapido": true,  "estresse": false, "perifericos": false, "soF12": false },
+    { "nome": "03_HDSentinel",      "pasta": "hdsentinel_pro_portable",  "exe": "HDSentinel.exe|HDSentinel*.exe",       "modo": "auto",   "maximizar": true, "espera": 12, "desc": "Saude e desempenho do disco",   "rapido": false, "estresse": false, "perifericos": false, "soF12": false },
+    { "nome": "04_HWiNFO",          "pasta": "hwi_854",                  "exe": "HWiNFO64.exe",                         "modo": "manual", "maximizar": true, "espera": 15, "desc": "Informacoes de hardware",       "rapido": true,  "estresse": false, "perifericos": false, "soF12": false },
+    { "nome": "05_BatteryInfoView", "pasta": "batteryinfoview-x64",      "exe": "BatteryInfoView.exe",                  "modo": "auto",   "maximizar": true, "espera": 5,  "desc": "Saude da bateria",              "rapido": false, "estresse": false, "perifericos": false, "soF12": false },
+    { "nome": "06_KeyboardTest",    "pasta": "KeyboardTestUtility",      "exe": "KeyboardTest64.exe|KeyboardTest*.exe", "modo": "manual", "maximizar": true, "espera": 4,  "desc": "Teste de teclado",              "rapido": false, "estresse": false, "perifericos": true,  "soF12": true  },
+    { "nome": "07_UsbTreeView",     "pasta": "UsbTreeView_x64",          "exe": "UsbTreeView.exe|UsbTreeView*.exe",     "modo": "manual", "maximizar": true, "espera": 4,  "desc": "Portas e dispositivos USB",     "rapido": false, "estresse": false, "perifericos": true,  "soF12": false },
+    { "nome": "08_Victoria",        "pasta": "Victoria537",              "exe": "Victoria*.exe",                        "modo": "manual", "maximizar": true, "espera": 6,  "desc": "Diagnostico avancado de disco", "rapido": false, "estresse": false, "perifericos": false, "soF12": false },
+    { "nome": "09_FurMark",         "pasta": "FurMark_win64",            "exe": "FurMark_GUI.exe",                      "modo": "manual", "maximizar": true, "espera": 8,  "desc": "Estresse da GPU",               "rapido": false, "estresse": true,  "perifericos": false, "soF12": false }
+  ]
+}
