@@ -870,7 +870,11 @@ function Loop-Foto($p, $proc) {
         $fg = [W]::GetForegroundWindow()
         if (Pertence-App $fg) { $ultima = $fg }
 
-        if (Tecla $TeclaJanela) {
+        # Programas SoF12 (KeyboardTest) capturam teclas: foto exige Ctrl junto (Ctrl+F9 / Ctrl+F8)
+        $ctrlOk = $true
+        if ($p.SoF12) { $ctrlOk = [bool](Tecla 0x11) }
+
+        if ($ctrlOk -and (Tecla $TeclaJanela)) {
             $alvo = $fg
             if (-not (Pertence-App $fg)) {
                 # foco esta no terminal/outro lugar: volta para a ultima janela do programa
@@ -884,7 +888,7 @@ function Loop-Foto($p, $proc) {
             } else { Foto-Janela $alvo $p.Nome }
             Soltar $TeclaJanela
         }
-        elseif (Tecla $TeclaTela) {
+        elseif ($ctrlOk -and (Tecla $TeclaTela)) {
             Foto-Tela $p.Nome
             Soltar $TeclaTela
         }
@@ -952,9 +956,10 @@ function Testar($p) {
             return
         } else {
             $teclaCont = "Alt+F12"
-            if ($p.SoF12) { $teclaCont = "F12" }
-            Write-Host "    Use o programa. F9 = foto da janela | F8 = tela inteira | $teclaCont ou feche a janela [X] = continuar" -ForegroundColor Gray
-            [HUD]::SetText("$($p.Nome) -> F9 Foto | Fechar [X] ou $teclaCont")
+            $teclaFoto = "F9 = foto da janela | F8 = tela inteira"
+            if ($p.SoF12) { $teclaCont = "F12"; $teclaFoto = "Ctrl+F9 = foto da janela | Ctrl+F8 = tela inteira" }
+            Write-Host "    Use o programa. $teclaFoto | $teclaCont ou feche a janela [X] = continuar" -ForegroundColor Gray
+            [HUD]::SetText("$($p.Nome) -> $(if ($p.SoF12) { 'Ctrl+F9' } else { 'F9' }) Foto | Fechar [X] ou $teclaCont")
             Loop-Foto $p $proc
         }
     }
