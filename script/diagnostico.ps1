@@ -769,7 +769,53 @@ Write-Host $nomesModo -ForegroundColor White
 Write-Host ""
 if (-not $admin -and -not $isPE) { Write-Host "  [!] Rode como administrador para os programas funcionarem 100%." -ForegroundColor Yellow; Write-Host "" }
 
-$os  = Read-Host "Numero da OS"
+$os = $null
+$pastaTesteFinal = $null   # quando definido, tudo do teste final vai para essa pasta
+if ($script:EhTesteFinal) {
+    Write-Host "  TESTE FINAL - onde salvar?" -ForegroundColor Cyan
+    Write-Host "  [1] Escolher uma OS existente (cria a pasta 'teste final' dentro dela)" -ForegroundColor White
+    Write-Host "  [2] Criar uma OS nova (pasta '{numero da OS} - teste final')" -ForegroundColor White
+    Write-Host ""
+    $modoTf = ""
+    while ($modoTf -ne "1" -and $modoTf -ne "2") { $modoTf = (Read-Host "  Escolha [1/2]").Trim() }
+
+    if ($modoTf -eq "1") {
+        $existentes = @()
+        if (Test-Path $PastaOS) { $existentes = @(Get-ChildItem $PastaOS -Directory | Sort-Object LastWriteTime -Descending) }
+        if ($existentes.Count -eq 0) {
+            Write-Host "  [!] Nenhuma OS encontrada em $PastaOS. Vou criar uma OS nova." -ForegroundColor Yellow
+            $modoTf = "2"
+        } else {
+            Write-Host ""
+            for ($i = 0; $i -lt $existentes.Count; $i++) {
+                $numStr = "[$($i + 1)]".PadRight(5)
+                Write-Host "  $numStr $($existentes[$i].Name.PadRight(30)) - $($existentes[$i].LastWriteTime.ToString('dd/MM/yyyy HH:mm'))" -ForegroundColor Cyan
+            }
+            Write-Host ""
+            $selOs = $null
+            while (-not $selOs) {
+                $esc = (Read-Host "  Escolha a OS (numero da lista ou nome da pasta; 0 para criar OS nova)").Trim()
+                $nIdx = 0
+                if ($esc -eq "0") { $modoTf = "2"; break }
+                if ([int]::TryParse($esc, [ref]$nIdx) -and $nIdx -ge 1 -and $nIdx -le $existentes.Count) { $selOs = $existentes[$nIdx - 1] }
+                else { $selOs = $existentes | Where-Object { $_.Name -eq $esc } | Select-Object -First 1 }
+                if (-not $selOs) { Write-Host "  [!] OS '$esc' nao encontrada." -ForegroundColor Yellow }
+            }
+            if ($selOs) {
+                $os = $selOs.Name
+                $pastaTesteFinal = Join-Path $selOs.FullName "teste final"
+            }
+        }
+    }
+    if ($modoTf -eq "2") {
+        $os = Read-Host "Numero da OS"
+        $pastaTesteFinal = Join-Path $PastaOS ("$os - teste final" -replace '[\\/:*?"<>|]', '_')
+    }
+    Write-Host "  Pasta do teste final: $pastaTesteFinal" -ForegroundColor Green
+    Write-Host ""
+} else {
+    $os  = Read-Host "Numero da OS"
+}
 $cliente = Read-Host "Nome do cliente"
 $tecPad  = [string]$Config.tecnico
 $msgTec  = "Tecnico"
@@ -780,7 +826,7 @@ elseif ($tecnico -ne $tecPad) { Salvar-Tecnico $tecnico }
 $modeloPad = (Get-CimInstance Win32_ComputerSystem).Model
 $equip   = Read-Host "Equipamento [$modeloPad]"
 if (-not $equip) { $equip = $modeloPad }
-$dir = Join-Path $PastaOS $os
+if ($pastaTesteFinal) { $dir = $pastaTesteFinal } else { $dir = Join-Path $PastaOS $os }
 New-Item -ItemType Directory -Force $dir | Out-Null
 # fotos ficam na raiz da OS; textos e documentos em subpastas
 $dirTxt = Join-Path $dir "Textos";      New-Item -ItemType Directory -Force $dirTxt | Out-Null
