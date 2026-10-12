@@ -851,6 +851,22 @@ function Preparar-App($p, $proc) {
 function Loop-Foto($p, $proc) {
     $ultima = [IntPtr]::Zero
     while ($true) {
+        # Se fechar a janela / finalizar o programa no [X], continua imediatamente
+        if ($proc) {
+            $fechou = $false
+            try {
+                $proc.Refresh()
+                if ($proc.HasExited) { $fechou = $true }
+            } catch { $fechou = $true }
+            if (-not $fechou -and $proc.Id) {
+                if (-not (Get-Process -Id $proc.Id -ErrorAction SilentlyContinue)) { $fechou = $true }
+            }
+            if ($fechou) {
+                Write-Host "    [+] Programa $($p.Nome) fechado. Continuando..." -ForegroundColor Green
+                break
+            }
+        }
+
         $fg = [W]::GetForegroundWindow()
         if (Pertence-App $fg) { $ultima = $fg }
 
@@ -937,8 +953,8 @@ function Testar($p) {
         } else {
             $teclaCont = "Alt+F12"
             if ($p.SoF12) { $teclaCont = "F12" }
-            Write-Host "    Use o programa. F9 = foto da janela | F8 = tela inteira | $teclaCont = continuar" -ForegroundColor Gray
-            [HUD]::SetText("$($p.Nome) -> F9 Foto | $teclaCont Pular")
+            Write-Host "    Use o programa. F9 = foto da janela | F8 = tela inteira | $teclaCont ou feche a janela [X] = continuar" -ForegroundColor Gray
+            [HUD]::SetText("$($p.Nome) -> F9 Foto | Fechar [X] ou $teclaCont")
             Loop-Foto $p $proc
         }
     }
