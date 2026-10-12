@@ -1187,17 +1187,25 @@ if ($script:ModoPerifericos -ne 2 -and -not ($isPE -and $script:ModoPerifericos 
     Write-Host "Aperte Alt+F12 quando terminar."
     [HUD]::SetText("Perifericos -> F9 Foto | Alt+F12 Terminar")
     $script:n = 0
-    while (-not (Prox)) {
-        if (Tecla $TeclaJanela) {
+    $usaHook = [KH]::Ok
+    $c9 = [KH]::C9; $c12a = [KH]::C12A
+    while ($true) {
+        if ($usaHook) {
+            $n9 = [KH]::C9; $n12a = [KH]::C12A
+            $d9 = ($n9 -ne $c9); $dFim = ($n12a -ne $c12a)
+            $c9 = $n9; $c12a = $n12a
+        } else {
+            $d9 = Tecla $TeclaJanela; $dFim = Prox
+        }
+        if ($dFim) { break }
+        if ($d9) {
             $fg = [W]::GetForegroundWindow()
             if (Eh-Terminal $fg) {
                 Write-Host "    [!] o foco esta no terminal. Clique na janela do app e aperte F9." -ForegroundColor Yellow
             } else { Foto-Janela $fg "10_Testes_Perifericos" }
-            Soltar $TeclaJanela
         }
         Start-Sleep -Milliseconds 80
     }
-    Soltar $TeclaProx
     Start-Sleep -Milliseconds 300
     # fecha a Camera do Windows para nao deixar nada aberto
     Get-Process -Name "WindowsCamera" -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
