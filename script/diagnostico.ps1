@@ -128,6 +128,55 @@ public class W {
     }
 }
 
+public class KH {
+    delegate IntPtr HP(int n, IntPtr w, IntPtr l);
+    struct MSG { public IntPtr h; public uint m; public IntPtr w; public IntPtr l; public uint t; public int x; public int y; }
+    [DllImport("user32.dll")] static extern IntPtr SetWindowsHookEx(int id, HP p, IntPtr h, uint t);
+    [DllImport("user32.dll")] static extern IntPtr CallNextHookEx(IntPtr hh, int n, IntPtr w, IntPtr l);
+    [DllImport("user32.dll")] static extern int GetMessage(out MSG m, IntPtr h, uint a, uint b);
+    [DllImport("kernel32.dll")] static extern IntPtr GetModuleHandle(string n);
+    public static volatile int C9, C8, C12, C12A;
+    public static volatile bool Ok;
+    static HP proc = Hook;
+    static IntPtr hh = IntPtr.Zero;
+    static bool d9, d8, d12, started;
+    public static void Start() {
+        if (started) return;
+        started = true;
+        var t = new System.Threading.Thread(Run);
+        t.IsBackground = true;
+        t.Start();
+        System.Threading.Thread.Sleep(400);
+    }
+    static void Run() {
+        hh = SetWindowsHookEx(13, proc, GetModuleHandle(null), 0);
+        Ok = (hh != IntPtr.Zero);
+        if (!Ok) return;
+        MSG m;
+        while (GetMessage(out m, IntPtr.Zero, 0, 0) > 0) { }
+    }
+    static IntPtr Hook(int n, IntPtr w, IntPtr l) {
+        if (n >= 0) {
+            int vk = Marshal.ReadInt32(l, 0);
+            int fl = Marshal.ReadInt32(l, 8);
+            int msg = (int)w;
+            bool inj = (fl & 0x10) != 0;
+            bool down = (msg == 0x100 || msg == 0x104);
+            bool up = (msg == 0x101 || msg == 0x105);
+            bool alt = (fl & 0x20) != 0;
+            if (!inj) {
+                if (vk == 0x78) { if (down) { if (!d9) { d9 = true; C9++; } } else if (up) d9 = false; }
+                else if (vk == 0x77) { if (down) { if (!d8) { d8 = true; C8++; } } else if (up) d8 = false; }
+                else if (vk == 0x7B) {
+                    if (down) { if (!d12) { d12 = true; if (alt) C12A++; else C12++; } }
+                    else if (up) d12 = false;
+                }
+            }
+        }
+        return CallNextHookEx(hh, n, w, l);
+    }
+}
+
 '@
 try { Add-Type -TypeDefinition $srcW -ErrorAction Stop }
 catch {
@@ -137,6 +186,9 @@ catch {
     if ($isPE) { Write-Host "  No WinPE isso acontece quando falta o compilador .NET (csc.exe). Use o Diagnostico.exe (C#) compilado no Windows normal." -ForegroundColor Yellow }
     Read-Host "  Enter para sair"; exit
 }
+
+# hook de teclado (F9/F8/F12) - se falhar, o Loop-Foto cai para GetAsyncKeyState
+try { [KH]::Start() } catch {}
 
 $srcHud = @'
 public class HUD {
@@ -848,9 +900,23 @@ function Preparar-App($p, $proc) {
 }
 
 # Fica ouvindo as teclas: F9 foto da janela, F8 tela inteira, Alt+F12 sai do laco
+# As teclas vem de um hook de teclado proprio (classe KH): conta eventos reais de tecla pressionada,
+# funciona mesmo quando o app em foco (ex.: KeyboardTest) captura o teclado, e ignora teclas injetadas.
 function Loop-Foto($p, $proc) {
     $ultima = [IntPtr]::Zero
+    $usaHook = [KH]::Ok
+    $c9 = [KH]::C9; $c8 = [KH]::C8; $c12 = [KH]::C12; $c12a = [KH]::C12A
+    $d9 = $false; $d8 = $false; $dProx = $false
     while ($true) {
+        # le os eventos de tecla desde a ultima volta
+        if ($usaHook) {
+            $n9 = [KH]::C9; $n8 = [KH]::C8; $n12 = [KH]::C12; $n12a = [KH]::C12A
+            $d9 = ($n9 -ne $c9); $d8 = ($n8 -ne $c8)
+            if ($p.SoF12) { $dProx = (($n12 -ne $c12) -or ($n12a -ne $c12a)) } else { $dProx = ($n12a -ne $c12a) }
+            $c9 = $n9; $c8 = $n8; $c12 = $n12; $c12a = $n12a
+        } else {
+            $d9 = Tecla $TeclaJanela; $d8 = Tecla $TeclaTela; $dProx = Prox $p
+        }
         # Se fechar a janela / finalizar o programa no [X], continua imediatamente
         if ($proc) {
             $fechou = $false
@@ -870,11 +936,7 @@ function Loop-Foto($p, $proc) {
         $fg = [W]::GetForegroundWindow()
         if (Pertence-App $fg) { $ultima = $fg }
 
-        # Programas SoF12 (KeyboardTest) capturam teclas: foto exige Ctrl junto (Ctrl+F9 / Ctrl+F8)
-        $ctrlOk = $true
-        if ($p.SoF12) { $ctrlOk = [bool](Tecla 0x11) }
-
-        if ($ctrlOk -and (Tecla $TeclaJanela)) {
+        if ($d9) {
             $alvo = $fg
             if (-not (Pertence-App $fg)) {
                 # foco esta no terminal/outro lugar: volta para a ultima janela do programa
@@ -886,14 +948,11 @@ function Loop-Foto($p, $proc) {
             if ($alvo -eq [IntPtr]::Zero -or (Eh-Terminal $alvo)) {
                 Write-Host "    [!] nao achei a janela do programa" -ForegroundColor Yellow
             } else { Foto-Janela $alvo $p.Nome }
-            Soltar $TeclaJanela
         }
-        elseif ($ctrlOk -and (Tecla $TeclaTela)) {
+        elseif ($d8) {
             Foto-Tela $p.Nome
-            Soltar $TeclaTela
         }
-        elseif (Prox $p) {
-            Soltar $TeclaProx
+        elseif ($dProx) {
             if (-not $script:fotoTirada) {
                 $f = New-Object Windows.Forms.Form
                 $f.TopMost = $true
@@ -956,10 +1015,9 @@ function Testar($p) {
             return
         } else {
             $teclaCont = "Alt+F12"
-            $teclaFoto = "F9 = foto da janela | F8 = tela inteira"
-            if ($p.SoF12) { $teclaCont = "F12"; $teclaFoto = "Ctrl+F9 = foto da janela | Ctrl+F8 = tela inteira" }
-            Write-Host "    Use o programa. $teclaFoto | $teclaCont ou feche a janela [X] = continuar" -ForegroundColor Gray
-            [HUD]::SetText("$($p.Nome) -> $(if ($p.SoF12) { 'Ctrl+F9' } else { 'F9' }) Foto | Fechar [X] ou $teclaCont")
+            if ($p.SoF12) { $teclaCont = "F12" }
+            Write-Host "    Use o programa. F9 = foto da janela | F8 = tela inteira | $teclaCont ou feche a janela [X] = continuar" -ForegroundColor Gray
+            [HUD]::SetText("$($p.Nome) -> F9 Foto | Fechar [X] ou $teclaCont")
             Loop-Foto $p $proc
         }
     }
