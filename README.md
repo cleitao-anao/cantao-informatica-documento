@@ -33,28 +33,33 @@ A tabela do sistema espelha as etapas reais de atendimento na assistência:
 
 ---
 
-## ⚡ Suite de Automação de Diagnóstico (`script/`)
+## ⚡ Script de Diagnóstico (`script/`)
 
-Localizada na pasta `script/`, é a ferramenta técnica utilizada na bancada de manutenção e em ambientes WinPE / Strelec.
+Script PowerShell usado na bancada. Fica na raiz de um **pen drive (Ventoy)** junto das ferramentas portáteis e da pasta `OS/`, e é iniciado pelo `iniciar.bat`.
 
-Para detalhes completos de uso, opções de menu, atalhos e configuração das ferramentas, consulte o [README do Script](script/README.md).
+> [!IMPORTANT]
+> Funciona no **Windows 10/11**. No **WinPE (Strelec) ainda não funciona**. Existe um **app profissional** planejado para substituir o script e resolver isso.
 
-### Resumo das capacidades do script:
-* **Diagnóstico Rápido e Completo:** Automatiza abertura e testes de ferramentas como CrystalDiskInfo, HDDScan, HDSentinel, HWiNFO, BatteryInfoView, KeyboardTest, UsbTreeView, Victoria e FurMark.
-* **Captura Inteligente via Hook de Baixo Nível:** Captura fotos de janelas (`F9`) ou tela cheia (`F8`) sem travamentos e com identificação automática de foco.
-* **Avanço Automático:** Fecha programas e avança automaticamente ao fechar no `[X]` ou via `Alt+F12` / `F12`.
-* **Teste Final Dedicado:** Permite testar periféricos vinculando a uma OS existente (criando subpasta `teste final`) ou criando uma nova OS (`{OS} - teste final`), gerando o arquivo JSON compatível com a coluna de Testes.
-* **Relatório Unificado (HTML & PDF):** Compila todos os dados de hardware, prints e status em um relatório visual completo com exportação automática via Microsoft Edge.
+Guia completo (menus, atalhos, estrutura do pen drive, **explicação do `config.json`**, WinPE): **[script/README.md](script/README.md)**.
+
+### Resumo
+* **Modos de teste:** Rápido, Completo, Completo + Estresse, Periféricos/Portas, Personalizado e **Teste Final**.
+* **Ferramentas automatizadas:** HDDScan, CrystalDiskInfo, HDSentinel, HWiNFO, BatteryInfoView, KeyboardTest, UsbTreeView, Victoria e FurMark. A lista é configurável no `config.json`, sem mexer no código.
+* **Prints por teclado:** `F9` (janela em foco), `F8` (tela inteira) e `Alt+F12`/`F12` para seguir. Fechar a janela no `[X]` também avança sozinho. Nenhum print é automático por tempo.
+* **Teste Final:** testa periféricos e portas e preenche a coluna **TESTES** do laudo. Salva em uma OS existente (subpasta `teste final`) ou numa OS nova (`{OS} - teste final`).
+* **Saídas por OS:** prints, textos de hardware, relatório HTML/PDF e JSONs para importar no laudo.
 
 ---
 
 ## 🚀 Como Executar
 
-### 1. Sistema de Laudo Web
-Abra o arquivo **`index.html`** com qualquer navegador moderno (Edge, Chrome, Firefox). Não requer instalação ou servidores locais.
+### Laudo Web
+Abra **`index.html`** em qualquer navegador moderno (Edge, Chrome, Firefox). Não precisa de instalação nem servidor.
 
-### 2. Automação de Bancada
-No Windows ou WinPE, execute como Administrador o atalho **`script/iniciar.bat`** ou:
+### Script de bancada
+No Windows, execute **`script/iniciar.bat`** como **Administrador**, ou:
 ```powershell
-powershell -ExecutionPolicy Bypass -File "script/diagnostico.ps1"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "script/diagnostico.ps1"
 ```
+As ferramentas portáteis **não** estão no repositório: coloque cada uma em `script/Ferramentas/<pasta>` conforme o `config.json`.
+
