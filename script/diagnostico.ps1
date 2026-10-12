@@ -459,7 +459,7 @@ function Linha-Menu($texto, $cor = "White") {
 function Lista-Opcao($n) {
     if ($n -eq 1) { return @($TodosProgramas | Where-Object { $_.Rapido }) }
     if ($n -eq 2) { return @($TodosProgramas | Where-Object { -not $_.Estresse }) }
-    if ($n -eq 4) { return @($TodosProgramas | Where-Object { $_.Perifericos }) }
+    if ($n -eq 4 -or $n -eq 6) { return @($TodosProgramas | Where-Object { $_.Perifericos }) }
     return @($TodosProgramas)
 }
 
@@ -534,6 +534,11 @@ function Mostrar-Menu {
     # Opcao 5 - Personalizado
     Linha-Opcao 5 "Personalizado" "Magenta" ""
     Linha-Menu "       Escolha os programas manualmente" "DarkGray"
+    Linha-Menu ""
+
+    # Opcao 6 - Teste Final (Coluna TESTES)
+    Linha-Opcao 6 "Teste Final (Coluna TESTES)" "Yellow" "~5 min"
+    Linha-Menu "       Perifericos preenchendo a coluna Testes/Checklist" "DarkGray"
     Linha-Menu ""
 
     $txtModo = "OFFLINE (apps + Windows)"
@@ -629,15 +634,17 @@ function Escolher-Menu {
     while ($true) {
         if ($pagina -eq 1) {
             Mostrar-Menu
-            $r = Read-Host "  Escolha [1-5], [P] proxima pagina ou [0] online/offline"
+            $r = Read-Host "  Escolha [1-6], [P] proxima pagina ou [0] online/offline"
             switch ($r) {
                 "0" { $script:ModoPerifericos = ($script:ModoPerifericos + 1) % 3 }
-                "1" { return (Lista-Opcao 1) }
-                "2" { return (Lista-Opcao 2) }
-                "3" { return (Lista-Opcao 3) }
-                "4" { return (Lista-Opcao 4) }
+                "1" { $script:EhTesteFinal = $false; return (Lista-Opcao 1) }
+                "2" { $script:EhTesteFinal = $false; return (Lista-Opcao 2) }
+                "3" { $script:EhTesteFinal = $false; return (Lista-Opcao 3) }
+                "4" { $script:EhTesteFinal = $false; return (Lista-Opcao 4) }
+                "6" { $script:EhTesteFinal = $true;  return (Lista-Opcao 6) }
                 { $_ -eq "p" -or $_ -eq "P" } { $pagina = 2 }
                 "5" {
+                    $script:EhTesteFinal = $false
                     # Personalizado: comeca com tudo marcado exceto o que e estresse
                     $sel = @(1..$TodosProgramas.Count | ForEach-Object { $false })
                     for ($i = 0; $i -lt $TodosProgramas.Count; $i++) {
@@ -666,7 +673,7 @@ function Escolher-Menu {
                     }
                 }
                 default {
-                    Write-Host "  [!] Digite de 1 a 5, [P] para proxima pagina ou [0]" -ForegroundColor Yellow
+                    Write-Host "  [!] Digite de 1 a 6, [P] para proxima pagina ou [0]" -ForegroundColor Yellow
                     Start-Sleep 1
                 }
             }
@@ -1521,56 +1528,153 @@ function Estado-Pagina($v) {
     return "Selecione"
 }
 
-# Tudo vai na coluna TECNICO da pagina (2a coluna de cada linha)
-$j = [ordered]@{}
-$j["campo_1"]               = $cliente
-$j["campo_2"]               = $equip
-$j["campo_os"]              = $os
-$j["campo_tecnico_tecnico"] = $tecnico
-$j["campo_102"] = Estado-Pagina ($perg["TECLADO_OK"])
-$j["campo_116"] = Estado-Pagina ($perg["MICROFONE_OK"])
-$j["campo_120"] = Estado-Pagina ($perg["AUDIO_OK"])
-$j["campo_112"] = Estado-Pagina ($perg["WEBCAM_OK"])
+if ($script:EhTesteFinal) {
+    # ===== MODO TESTE FINAL (PREENCHE A COLUNA TESTES E O CHECKLIST DA PAGINA) =====
+    $j = [ordered]@{}
+    $j["campo_1"]               = $cliente
+    $j["campo_2"]               = $equip
+    $j["campo_os"]              = $os
+    $j["campo_tecnico_testes"]  = $tecnico
 
-# detectados automaticamente
-if ($sist.CpuOpt)  { $j["campo_34"] = $sist.CpuOpt }
-if ($sist.RamOpt)  { $j["campo_43"] = $sist.RamOpt }
-if ($sist.VideoIntegrado) { $j["campo_35"] = "Com v$([char]0xED)deo integrado" }
-if ($sist.ResOpt)  { $j["campo_56"] = $sist.ResOpt }
-if ($sist.HzOpt)   { $j["campo_60"] = $sist.HzOpt }
-if ($sist.GpuDedicadaOk) { $j["campo_132"] = "Funcionando" }
-if ($sist.WifiOk)        { $j["campo_93"]  = "Funcionando" }
-if ($sist.LanOk)         { $j["campo_89"]  = "Funcionando" }
-if ($sist.BluetoothOk)   { $j["campo_97"]  = "Funcionando" }
-if (-not $isPE) { $j["campo_128"] = "Funcionando" }   # o Windows iniciou e rodou o diagnostico (no WinPE nao diz nada sobre o SO do cliente)
+    # Teclado
+    $stTec = Estado-Pagina ($perg["TECLADO_OK"])
+    $j["campo_104"] = $stTec
+    if ($stTec -eq "Funcionando") { $j["check_104"] = $true }
 
-if ($bat.Tem) {
-    $j["campo_9"]  = Estado-Pagina ($perg["BATERIA_OK"])
-    $j["campo_10"] = "$($bat.PctNum)"
+    # Microfone
+    $stMic = Estado-Pagina ($perg["MICROFONE_OK"])
+    $j["campo_117"] = $stMic
+    if ($stMic -eq "Funcionando") { $j["check_117"] = $true }
+
+    # Audio interno
+    $stAud = Estado-Pagina ($perg["AUDIO_OK"])
+    $j["campo_121"] = $stAud
+    if ($stAud -eq "Funcionando") { $j["check_121"] = $true }
+
+    # Camera / Webcam
+    $stCam = Estado-Pagina ($perg["WEBCAM_OK"])
+    $j["campo_113"] = $stCam
+    if ($stCam -eq "Funcionando") { $j["check_113"] = $true }
+
+    # USB / USB-C
+    $j["campo_82"] = "Funcionando"
+    $j["check_82"] = $true
+
+    # Wi-Fi
+    if ($sist.WifiOk) {
+        $j["campo_94"] = "Funcionando"
+        $j["check_94"] = $true
+    }
+
+    # LAN
+    if ($sist.LanOk) {
+        $j["campo_90"] = "Funcionando"
+        $j["check_90"] = $true
+    }
+
+    # Bluetooth
+    if ($sist.BluetoothOk) {
+        $j["campo_98"] = "Funcionando"
+        $j["check_98"] = $true
+    }
+
+    # Sistema Operacional
+    if (-not $isPE) {
+        $j["campo_129"] = "Funcionando"
+        $j["check_129"] = $true
+    }
+
+    # Placa Grafica
+    if ($sist.GpuDedicadaOk) {
+        $j["campo_133"] = "Funcionando"
+        $j["check_133"] = $true
+    }
+
+    # Bateria (se houver)
+    if ($bat.Tem) {
+        $stBat = Estado-Pagina ($perg["BATERIA_OK"])
+        $j["campo_11"] = $stBat
+        $j["campo_13"] = "$($bat.PctNum)"
+        if ($stBat -eq "Funcionando") { $j["check_11"] = $true }
+    }
+
+    # Armazenamento (se houver)
+    $stArm = Estado-Pagina ($perg["ARMAZENAMENTO_OK"])
+    if ($discosJson.Count -eq 0) {
+        $j["campo_141"] = $stArm
+        if ($stArm -eq "Funcionando") { $j["check_141"] = $true }
+    }
+    $i = 0
+    foreach ($d in $discosJson) {
+        $i++
+        if ($i -eq 1) {
+            $kSt = "campo_141"; $kTp = "campo_143"; $kSa = "campo_144"; $kCk = "check_141"
+        } else {
+            $kSt = "campo_arm${i}_7"; $kTp = "campo_arm${i}_8"; $kSa = "campo_arm${i}_9"; $kCk = "check_arm${i}"
+        }
+        $j[$kSt] = $stArm
+        if ($d.Tipo) { $j[$kTp] = $d.Tipo }
+        if ($d.Pct)  { $j[$kSa] = (($d.Pct -replace '[^\d,\.]', '') -split '[,\.]')[0] }
+        if ($stArm -eq "Funcionando") { $j[$kCk] = $true }
+    }
+
+    $nomeJson = ("$os - TESTES_FINAL - $cliente.json") -replace '[\\/:*?"<>|]', '_'
+    $arqJson  = Join-Path $dirDoc $nomeJson
+    $utf8 = New-Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllText($arqJson, ($j | ConvertTo-Json -Depth 5), $utf8)
+    Write-Host "JSON de Testes Finais salvo em: $arqJson" -ForegroundColor Green
+} else {
+    # Tudo vai na coluna TECNICO da pagina (2a coluna de cada linha)
+    $j = [ordered]@{}
+    $j["campo_1"]               = $cliente
+    $j["campo_2"]               = $equip
+    $j["campo_os"]              = $os
+    $j["campo_tecnico_tecnico"] = $tecnico
+    $j["campo_102"] = Estado-Pagina ($perg["TECLADO_OK"])
+    $j["campo_116"] = Estado-Pagina ($perg["MICROFONE_OK"])
+    $j["campo_120"] = Estado-Pagina ($perg["AUDIO_OK"])
+    $j["campo_112"] = Estado-Pagina ($perg["WEBCAM_OK"])
+
+    # detectados automaticamente
+    if ($sist.CpuOpt)  { $j["campo_34"] = $sist.CpuOpt }
+    if ($sist.RamOpt)  { $j["campo_43"] = $sist.RamOpt }
+    if ($sist.VideoIntegrado) { $j["campo_35"] = "Com v$([char]0xED)deo integrado" }
+    if ($sist.ResOpt)  { $j["campo_56"] = $sist.ResOpt }
+    if ($sist.HzOpt)   { $j["campo_60"] = $sist.HzOpt }
+    if ($sist.GpuDedicadaOk) { $j["campo_132"] = "Funcionando" }
+    if ($sist.WifiOk)        { $j["campo_93"]  = "Funcionando" }
+    if ($sist.LanOk)         { $j["campo_89"]  = "Funcionando" }
+    if ($sist.BluetoothOk)   { $j["campo_97"]  = "Funcionando" }
+    if (-not $isPE) { $j["campo_128"] = "Funcionando" }   # o Windows iniciou e rodou o diagnostico (no WinPE nao diz nada sobre o SO do cliente)
+
+    if ($bat.Tem) {
+        $j["campo_9"]  = Estado-Pagina ($perg["BATERIA_OK"])
+        $j["campo_10"] = "$($bat.PctNum)"
+    }
+
+    $stArm = Estado-Pagina ($perg["ARMAZENAMENTO_OK"])
+    if ($discosJson.Count -eq 0) { $j["campo_138"] = $stArm }
+    $i = 0
+    foreach ($d in $discosJson) {
+        $i++
+        if ($i -eq 1) { $kSt = "campo_138"; $kTp = "campo_139"; $kSa = "campo_140" }
+        else          { $kSt = "campo_arm${i}_4"; $kTp = "campo_arm${i}_5"; $kSa = "campo_arm${i}_6" }
+        $j[$kSt] = $stArm
+        if ($d.Tipo) { $j[$kTp] = $d.Tipo }
+        if ($d.Pct)  { $j[$kSa] = (($d.Pct -replace '[^\d,\.]', '') -split '[,\.]')[0] }
+    }
+
+    $j["PARECERTECNICOField"] = Montar-Parecer
+    $j["_modo"] = $modo          # "notebook" ou "pc" (a pagina usa se tiver o ajuste no importarJSON)
+    if ($discosJson.Count -gt 1) { $j["_armazenamentoCount"] = $discosJson.Count - 1 }
+    $j["defeitosObs"] = @{}
+
+    $nomeJson = ("$os - RELATORIO - $cliente.json") -replace '[\\/:*?"<>|]', '_'
+    $arqJson  = Join-Path $dirDoc $nomeJson
+    $utf8 = New-Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllText($arqJson, ($j | ConvertTo-Json -Depth 5), $utf8)
+    Write-Host "JSON para a pagina salvo em: $arqJson" -ForegroundColor Green
 }
-
-$stArm = Estado-Pagina ($perg["ARMAZENAMENTO_OK"])
-if ($discosJson.Count -eq 0) { $j["campo_138"] = $stArm }
-$i = 0
-foreach ($d in $discosJson) {
-    $i++
-    if ($i -eq 1) { $kSt = "campo_138"; $kTp = "campo_139"; $kSa = "campo_140" }
-    else          { $kSt = "campo_arm${i}_4"; $kTp = "campo_arm${i}_5"; $kSa = "campo_arm${i}_6" }
-    $j[$kSt] = $stArm
-    if ($d.Tipo) { $j[$kTp] = $d.Tipo }
-    if ($d.Pct)  { $j[$kSa] = (($d.Pct -replace '[^\d,\.]', '') -split '[,\.]')[0] }
-}
-
-$j["PARECERTECNICOField"] = Montar-Parecer
-$j["_modo"] = $modo          # "notebook" ou "pc" (a pagina usa se tiver o ajuste no importarJSON)
-if ($discosJson.Count -gt 1) { $j["_armazenamentoCount"] = $discosJson.Count - 1 }
-$j["defeitosObs"] = @{}
-
-$nomeJson = ("$os - RELATORIO - $cliente.json") -replace '[\\/:*?"<>|]', '_'
-$arqJson  = Join-Path $dirDoc $nomeJson
-$utf8 = New-Object System.Text.UTF8Encoding($false)
-[System.IO.File]::WriteAllText($arqJson, ($j | ConvertTo-Json -Depth 5), $utf8)
-Write-Host "JSON para a pagina salvo em: $arqJson" -ForegroundColor Green
 
 # ===== RELATORIO UNICO COM TODOS OS PRINTS E FOTOS (HTML + PDF via Edge) =====
 Write-Host "`nGerando relatorio final..." -ForegroundColor Cyan
